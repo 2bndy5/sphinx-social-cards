@@ -1,0 +1,201 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v**
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1,16 * *'
+
+jobs:
+  check_conventions:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        id: python-setup
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pre-commit environments
+        uses: actions/cache@v3
+        with:
+          path: '~/.cache/pre-commit'
+          key: pre-commit-${{ steps.python-setup.outputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - run: pipx run pre-commit run --all-files
+
+  build:
+    needs: [check_conventions]
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-latest'
+          - 'windows-latest'
+          - 'macos-latest'
+        python-version:
+          - '3.x'
+        node-version:
+          - '16.x'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Need full history to determine version number.
+          fetch-depth: 0
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache node.js modules
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - run: npm install
+      - run: python -m pip install nox
+      - name: Build distributions
+        id: dist
+        run: nox -s dist
+      - name: Install wheel
+        run: python -m pip install "${{ steps.dist.outputs.wheel }}"
+      - name: Upload wheels as artifacts
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-packages-${{ runner.os }}
+          path: |
+            dist/*.whl
+            dist/*.tar.*
+      - name: Build docs
+        run: nox -s docs
+      - name: Upload doc builds as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: doc-builds-${{ runner.os }}
+          path: docs/_build/
+      - name: upload docs to github pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && runner.os == 'Linux'
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html
+
+  test:
+    needs: [check_conventions]
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-latest'
+          - 'windows-latest'
+          - 'macos-latest'
+        python-version:
+          - '3.7'
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+        sphinx-version:
+          - 'sphinx4'
+          - 'sphinx5'
+          - 'sphinx6'
+          - 'sphinx7'
+        node-version:
+          - '16.x'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache node.js modules
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Cache nox env
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ matrix.python-version }}-nox-${{ hashFiles('noxfile.py') }}
+      - name: Run Python tests
+        env:
+          COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}.${{ matrix.sphinx-version }}
+        run: pipx run nox -s "tests-${{ matrix.python-version }}(${{ matrix.sphinx-version }})"
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-data-${{ runner.os }}-py${{ matrix.python-version }}-${{ matrix.sphinx-version }}
+          path: .coverage*
+
+  coverage-report:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ci-artifacts
+      - run: mv ci-artifacts/**/.coverage* ./
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Create coverage report
+        run: pipx run nox -s coverage
+      - name: Upload comprehensive coverage HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: htmlcov/
+      - name: Post coverage summary
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          files: ./coverage.xml
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
+  python-publish-package:
+    # Only publish package on push to tag or default branch.
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: python-packages-Linux
+          path: dist
+      - name: Publish to PyPI (test server)
+        if: ${{ ! startsWith(github.ref, 'refs/tags/v') }}
+        run: pipx run twine upload --repository testpypi dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+      - name: Publish to PyPI (main server)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: pipx run twine upload dist/*

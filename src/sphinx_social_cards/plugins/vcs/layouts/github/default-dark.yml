@@ -1,0 +1,16 @@
+# {% extends "github/default.yml" %}
+# {% block color_vals %}
+bg_color: &bg_color "#0D1117"
+repo_name_color: &repo_name_color '#99b0c7'
+watermark_color: &watermark_color '#3f4654'
+stats_color: &stats_color '#6e7681'
+stats_value_typo: &stats_value_typo
+  color: *repo_name_color
+  align: start center
+  font: { family: Archivo }
+stats_suffix_typo: &stats_suffix_typo
+  color: *stats_color
+  align: start top
+  font: { family: Schibsted Grotesk }
+  line: { height: 0.87 }
+# {% endblock %}

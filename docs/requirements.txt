@@ -1,0 +1,2 @@
+sphinx-immaterial
+sphinx-jinja

@@ -1,0 +1,14 @@
+{
+  "project_name": "sphinx-social-cards-custom-plugin",
+  "__repo": "{{ cookiecutter.project_name | slugify }}",
+  "package_name": "{{ cookiecutter.project_name | slugify(separator='_') }}",
+  "short_description": "A short description of the extension",
+  "add_layout": [true, false],
+  "add_context": [true, false],
+  "add_image": [false, true],
+  "github_account": "octocat",
+  "author_name": "<Your name>",
+  "author_email": "<Your email>",
+  "_new_lines": "\n",
+  "_extensions": ["cookiecutter.extensions.SlugifyExtension"]
+}

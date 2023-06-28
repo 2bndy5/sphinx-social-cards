@@ -1,0 +1,13 @@
+.py.attribute.objdesc > .sig.sig-object.highlight.py > .sig-prename.descclassname,
+.py.class.objdesc > .sig.sig-object.highlight.py > .property {
+    display: none;
+}
+
+.py.class.objdesc > .sig.sig-object.highlight.py > .sig-name,
+.objinfo-icon.objinfo-icon__data + span {
+    text-transform: lowercase;
+}
+
+.yaml-vs-jinja {
+    --md-tooltip-width: 500px;
+}

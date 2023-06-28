@@ -41,7 +41,8 @@ pip-delete-this-directory.txt
 htmlcov/
 .tox/
 .nox/
-.coverage*
+.coverage
+.coverage.*
 .cache
 nosetests.xml
 coverage.xml
@@ -131,7 +132,3 @@ dmypy.json
 
 # vscode settings
 .vscode/
-
-# pkg data fetched at build time
-src/sphinx_social_cards/.icons/*
-!src/sphinx_social_cards/.icons/sphinx_logo.svg

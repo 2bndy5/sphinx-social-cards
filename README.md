@@ -1,1 +1,0 @@
-# sphinx-social-cards

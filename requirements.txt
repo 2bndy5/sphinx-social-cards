@@ -1,0 +1,6 @@
+sphinx
+pydantic
+pyyaml
+pillow>=9.2.0
+requests
+typing_extensions
