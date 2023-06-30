@@ -1,0 +1,5 @@
+# {% extends "default.yml" %}
+# {% block color_vals %}
+bg_color: &bg_color '{{ layout.accent }}'
+fg_color: &fg_color '{{ layout.color }}'
+# {% endblock %}

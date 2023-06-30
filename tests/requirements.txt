@@ -1,0 +1,5 @@
+pytest
+coverage[toml]
+furo
+sphinx-immaterial
+-r ../requirements-vcs.txt

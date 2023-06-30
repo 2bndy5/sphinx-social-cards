@@ -1,0 +1,73 @@
+size: { width: 1200, height: 630 }
+layers:
+  # the base layer for the background
+  - background:
+      color: '{{ layout.background_color }}'
+      image: >
+        {% if layout.background_image %}
+        {{ layout.background_image }}
+        {% endif %}
+  # the layer for an embedded icon in the background
+  - size: { width: 570, height: 570 }
+    offset: { x: 820, y: 30 }
+    icon:
+      image: >
+        {% if page.meta.icon %}
+        {{ page.meta.icon }}
+        {% elif layout.logo.image %}
+        {{ layout.logo.image }}
+        {% endif %}
+      color: >
+        {% if layout.background_color in ('#000', 'black') %}
+        #FFFFFF
+        {%- else -%}
+        #000000
+        {%- endif -%}
+        40
+  # the layer for the logo image
+  - size: { width: 90, height: 90 }
+    offset: { x: 60, y: 60 }
+    icon:
+      image: '{{ layout.logo.image }}'
+      color: >
+        {% if layout.logo.color %}
+        {{ layout.logo.color }}
+        {% endif %}
+  # the layer for the site's name
+  - offset: { x: 180, y: 75 }
+    size: { width: 960, height: 60 }
+    typography:
+      content: "{{ config.docstitle }}"
+      line:
+        height: 0.85
+        amount: 1
+      align: start center
+  # the layer for the page's title
+  - size: { width: 1080, height: 270 }
+    offset: { x: 60, y: 180 }
+    typography:
+      content: >
+        {% if page.meta.title %}
+        {{ page.meta.title }}
+        {% elif page.title %}
+        {{ page.title }}
+        {% endif %}
+      line:
+        # height: 1.25
+        amount: 3
+      font:
+        weight: 500
+  # the layer for the site's (or page's) description
+  - offset: { x: 60, y: 480 }
+    size: { width: 1080, height: 90 }
+    typography:
+      content: >
+        {% if page.meta.description %}
+        {{ page.meta.description }}
+        {% else %}
+        {{ config.site_description }}
+        {% endif %}
+      line:
+        height: 0.87
+        amount: 2
+      align: start bottom

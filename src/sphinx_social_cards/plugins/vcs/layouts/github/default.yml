@@ -1,0 +1,189 @@
+# {% block color_vals %}
+bg_color: &bg_color "white"
+repo_name_color: &repo_name_color '#2f363d'
+watermark_color: &watermark_color '#8492af'
+stats_color: &stats_color '#6e7681'
+stats_value_typo: &stats_value_typo
+  color: *repo_name_color
+  align: start center
+  font: { family: Archivo }
+stats_suffix_typo: &stats_suffix_typo
+  color: *stats_color
+  align: start top
+  font: { family: Schibsted Grotesk }
+  line: { height: 0.87 }
+# {% endblock %}
+stats_icon_size: &stats_icon_size
+  size: { width: 38, height: 38 }
+stats_y0a: &stats_y0a 461
+stats_y0b: &stats_y0b 460
+stats_y0c: &stats_y0c 510
+stats_x0a: &stats_x0a 61
+stats_x0b: &stats_x0b 110
+stats_x1a: &stats_x1a 221
+stats_x1b: &stats_x1b 270
+stats_x2a: &stats_x2a 381
+stats_x2b: &stats_x2b 430
+stats_x3a: &stats_x3a 631
+stats_x3b: &stats_x3b 680
+short_value_width: &short_value_width 100
+contrib_value_width: &contrib_value_width 190
+lang_value_width: &lang_value_width 410
+stats_value_height: &stats_value_height 45
+avatar_size: &avatar_size
+  size: { width: 180, height: 180 }
+
+layers:
+  - background: { color: *bg_color }
+  - size: { width: 1200, height: 30 }
+    offset: { x: 0, y: 600}
+    background: { color: '{{ layout.accent }}' }
+  # the layer for the author's avatar
+  - offset: { x: 950, y: 70 }
+    <<: *avatar_size
+    background:
+      image: '{{ plugin.vcs.github.owner.avatar }}'
+    mask:
+      <<: *avatar_size
+      ellipse: { color: black }
+  - offset: { x: 940, y: 60 }
+    size: { width: 200, height: 200 }
+    ellipse:
+      border: { width: 11, color: "{{ layout.accent }}"}
+  - size: { width: 870, height: 75 }
+    offset: { x: 60, y: 60 }
+    typography:
+      overflow: on
+      content: '{{ plugin.vcs.github.owner.login }}/'
+      color: *repo_name_color
+      align: start bottom
+      line: { height: 0.85 }
+      font:
+        family: Archivo
+        weight: 200
+  - size: { width: 870, height: 150 }
+    offset: { x: 60, y: 145 }
+    typography:
+      overflow: on
+      content: '{{ plugin.vcs.github.repo.name }}'
+      color: *repo_name_color
+      line: { amount: 2 }
+      font:
+        family: Schibsted Grotesk
+        weight: 700
+  - size: { width: 1080, height: 115 }
+    offset: { x: 60, y: 305 }
+    typography:
+      content: '{{ plugin.vcs.github.repo.description }}'
+      line:
+        amount: 3
+        height: 0.87
+      color: *repo_name_color
+      font:
+        family: Archivo
+
+  # the layer for the stars icon
+  - offset: { x: *stats_x0a, y: *stats_y0a }
+    <<: *stats_icon_size
+    icon:
+      image: octicons/star-24
+      color: *stats_color
+  # the layer for the stars count
+  - offset: { x: *stats_x0b, y: *stats_y0b }
+    size:
+      width: *short_value_width
+      height: *stats_value_height
+    typography:
+      content: '{{ plugin.vcs.github.repo.stars }}'
+      <<: *stats_value_typo
+  - offset: { x: *stats_x0b, y: *stats_y0c }
+    size:
+      width: *short_value_width
+      height: *stats_value_height
+    typography:
+      content: Stars
+      <<: *stats_suffix_typo
+
+  # the layer for the forks icon
+  - offset: { x: *stats_x1a, y: *stats_y0a }
+    <<: *stats_icon_size
+    icon:
+      image: octicons/repo-forked-24
+      color: *stats_color
+  # the layer for the forks count
+  - offset: { x: *stats_x1b, y: *stats_y0b }
+    size:
+      width: *short_value_width
+      height: *stats_value_height
+    typography:
+      content: '{{ plugin.vcs.github.repo.forks }}'
+      <<: *stats_value_typo
+  - offset: { x: *stats_x1b, y: *stats_y0c }
+    size:
+      width: *short_value_width
+      height: *stats_value_height
+    typography:
+      content: Forks
+      <<: *stats_suffix_typo
+
+  # the layer for the contributors icon
+  - offset: { x: *stats_x2a, y: *stats_y0a }
+    <<: *stats_icon_size
+    icon:
+      image: octicons/people-24
+      color: *stats_color
+  # the layer for the contributors count
+  - offset: { x: *stats_x2b, y: *stats_y0b }
+    size:
+      width: *contrib_value_width
+      height: *stats_value_height
+    typography:
+      content: '{{ plugin.vcs.github.repo.contributors | length }}'
+      <<: *stats_value_typo
+  - offset: { x: *stats_x2b, y: *stats_y0c }
+    size:
+      width: *contrib_value_width
+      height: *stats_value_height
+    typography:
+      content: Contributors
+      <<: *stats_suffix_typo
+
+  # the layer for the language icon
+  - offset: { x: *stats_x3a, y: *stats_y0a }
+    <<: *stats_icon_size
+    icon:
+      image: >
+        {% if plugin.vcs.github.repo.language %}
+        octicons/code-24
+        {% endif %}
+      color: *stats_color
+  # the layer for the language count
+  - offset: { x: *stats_x3b, y: *stats_y0b }
+    size:
+      width: *lang_value_width
+      height: *stats_value_height
+    typography:
+      content: >
+        {% if plugin.vcs.github.repo.language -%}
+        {{ plugin.vcs.github.repo.language }}
+        {%- endif %}
+      <<: *stats_value_typo
+  - offset: { x: *stats_x3b, y: *stats_y0c }
+    size:
+      width: *lang_value_width
+      height: *stats_value_height
+    typography:
+      content: >
+        {% if plugin.vcs.github.repo.language -%}
+        {% if plugin.vcs.github.repo.languages | length -%}
+        {{ plugin.vcs.github.repo.languages[plugin.vcs.github.repo.language] }} %
+        {%- endif %}
+        {%- endif %}
+      <<: *stats_suffix_typo
+
+  # the layer for the watermark icon
+  - size: { width: 50, height: 50 }
+    offset: { x: 1090, y: 520 }
+    icon:
+      image: octicons/mark-github-16
+      color: *watermark_color
