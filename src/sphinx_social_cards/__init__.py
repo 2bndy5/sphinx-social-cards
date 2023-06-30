@@ -64,6 +64,7 @@ from .metadata import (
     get_default_page_title,
 )
 from .plugins import SPHINX_SOCIAL_CARDS_CONFIG_KEY, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY
+from .images import get_magick_cmd
 
 LOGGER = getLogger(__name__)
 _CARD_IMG_CHECK = re.compile(r"(?:property=og|name=twitter):image")
@@ -79,9 +80,9 @@ def _load_config(app: Sphinx, config: Config):
 
     # verify ImageMagick v7+ is installed
     try:
-        subprocess.run(["magick", "-version"], capture_output=True, check=True)
+        subprocess.run([get_magick_cmd(), "-version"], shell=True, check=True)
     except subprocess.CalledProcessError:  # pragma: no cover
-        LOGGER.error("sphinx_social_cards requires ImageMagick installed.")
+        raise RuntimeError("sphinx_social_cards requires ImageMagick v7+ installed.")
 
 
 def _assert_plugin_context(app: Sphinx):

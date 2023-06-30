@@ -18,6 +18,17 @@ LOGGER = getLogger(__name__)
 IMG_PATH_TYPE = Optional[Union[str, Path]]
 
 
+def get_magick_cmd() -> str:
+    magick_path = "magick"
+    if "MAGICK_HOME" in os.environ:
+        magick_home = Path(os.environ["MAGICK_HOME"], magick_path)
+        if platform.system().lower() == "windows":
+            magick_home = magick_home.with_suffix(".exe")
+        assert magick_home.exists()
+        magick_path = str(magick_home)
+    return magick_path
+
+
 def find_image(
     img_name: IMG_PATH_TYPE,
     possible_locations: List[Union[str, Path]],
@@ -69,13 +80,7 @@ def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
     if out_path.exists():
         return out_path
 
-    magick_path = "magick"
-    if "MAGICK_HOME" in os.environ:
-        magick_home = Path(os.environ["MAGICK_HOME"], magick_path)
-        if platform.system().lower() == "windows":
-            magick_home = magick_home.with_suffix(".exe")
-        assert magick_home.exists()
-        magick_path = str(magick_home)
+    magick_path = get_magick_cmd()
 
     # get size of svg via ImageMagick
     svg_info = subprocess.run(
@@ -87,6 +92,7 @@ def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
             str(img_path),
         ],
         check=True,
+        shell=True,
         capture_output=True,
     )
     m = _IDENTIFY_INFO.search(svg_info.stdout.decode(encoding="utf-8"))
@@ -106,7 +112,7 @@ def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
         magick_cmd.insert(1, "-density")
         magick_cmd.insert(2, str(new_dpi))
 
-    subprocess.run(magick_cmd, check=True)
+    subprocess.run(magick_cmd, shell=True, check=True)
     return out_path
 
 
