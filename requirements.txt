@@ -1,5 +1,5 @@
 sphinx
-pydantic
+pydantic>=2.0
 pyyaml
 pillow>=9.2.0
 requests

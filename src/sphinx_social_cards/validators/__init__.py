@@ -5,33 +5,26 @@ from typing import Union, List, Optional, Tuple, cast, Dict, Set
 from PIL import ImageColor
 import pydantic
 import requests
-from requests.exceptions import ConnectionError, Timeout
 from sphinx.config import Config
 from sphinx.util import isurl
 from sphinx.util.logging import getLogger
+from typing_extensions import Annotated
 
 from .base_model import CustomBaseModel
 from .layers import Icon, Font
 from .layout import Layout
 from .contexts import Cards_Layout_Options
 from ..colors import MD_COLORS, auto_get_fg_color
-import platform
 
 LOGGER = getLogger(__name__)
-REQUEST_TIMEOUT = 5
-if platform.system().lower() == "windows":
-    SYSTEM_FONT = "arial.ttf"
-else:
-    SYSTEM_FONT = "helvetica.ttf"
+REQUEST_TIMEOUT = (5, 5)
 
 
-def try_request(url, timeout=REQUEST_TIMEOUT, fail_silent=False) -> requests.Response:
-    try:
-        return requests.get(url, timeout=timeout)
-    except (ConnectionError, Timeout) as exc:
-        if not fail_silent:
-            raise exc
-        return requests.Response()
+def try_request(url, timeout=REQUEST_TIMEOUT, **kwargs) -> requests.Response:
+    response = requests.get(url, timeout=timeout, **kwargs)
+    if response.status_code != 200:
+        raise RuntimeError(f"requested {url} returned {response.status_code}")
+    return response
 
 
 def _validate_color(value: Optional[str]) -> Tuple[Optional[str], bool]:
@@ -88,10 +81,23 @@ class Debug(CustomBaseModel):
         :dry-run:
     """
 
-    @pydantic.validator("color")
+    @pydantic.field_validator("color")
     def validate_color(cls, val):
         color, _ = _validate_color(val)
         return color
+
+
+def _validate_path(val: Union[str, Path]) -> str:
+    val = Path(val)
+    if val.is_absolute():
+        assert_path_exists(val)
+    # relative paths must be resolved at runtime depending on conf.py location
+    return str(val)
+
+
+PathType = Annotated[
+    Union[str, Path], pydantic.functional_validators.AfterValidator(_validate_path)
+]
 
 
 class Social_Cards(CustomBaseModel):
@@ -154,7 +160,7 @@ class Social_Cards(CustomBaseModel):
                     {%- endif %}
         {% endfor %}
     """
-    cards_layout_dir: List[Union[str, Path]] = []
+    cards_layout_dir: List[PathType] = []
     """The list of paths (absolute or relative to conf.py) where the `cards_layout` is
     located. In the case of similarly named layout files, the order in this list takes
     precedence."""
@@ -198,15 +204,13 @@ class Social_Cards(CustomBaseModel):
             ]
         }
     """
-    image_paths: List[Union[str, Path]] = []
+    image_paths: List[PathType] = []
     """A list of directories that contain images to be used in the creation of social
     cards. By default, the path to the directory containing the conf.py file is
     automatically added to this list. Each entry in this list can be an absolute path or
     a path relative to the conf.py file.
 
-    .. _tabler: https://tabler-icons.io/
-
-    This extension includes bundled SVG images with distribution. The path to the
+    This extension includes bundled SVG icons with distribution. The path to the
     bundled icons are appended to this list automatically.
 
     :Bundled Icons:
@@ -229,7 +233,7 @@ class Social_Cards(CustomBaseModel):
             * - :si-icon:`simple/simpleicons`
                 `Simple Icons <https://simpleicons.org/>`_
               - ``simple/<icon-name>``
-            * - :si-icon:`tabler/brand-tabler` tabler_
+            * - :si-icon:`tabler/brand-tabler` `tabler <https://tabler-icons.io/>`_
               - ``tabler/<icon-name>``
     """
     debug: Union[Debug, bool] = Debug()
@@ -244,26 +248,10 @@ class Social_Cards(CustomBaseModel):
     """The directory (relative to the conf.py file) that is used to store cached data
     for generating the social cards."""
 
-    @pydantic.validator("debug")
-    def validate_debug(cls, val):
+    @pydantic.field_validator("debug")
+    def validate_debug(cls, val: Union[bool, Debug]) -> Debug:
         if isinstance(val, bool):
             return Debug(enable=val)
-        return val
-
-    @pydantic.validator("cards_layout_dir", each_item=True)
-    def assert_layout_dir(cls, val):
-        layout_dir = Path(val)
-        if layout_dir.is_absolute():
-            assert_path_exists(layout_dir)
-        # relative paths must be resolved at runtime depending on conf.py location
-        return str(val)
-
-    @pydantic.validator("image_paths", each_item=True)
-    def resolve_image_path(cls, val):
-        val = Path(val)
-        if val.is_absolute() and val.exists():
-            return val
-        # relative paths must be resolved at runtime depending on conf.py location
         return val
 
     def get_fonts(self) -> List[Font]:
@@ -329,16 +317,10 @@ class Social_Cards(CustomBaseModel):
             self.cards_layout_options.logo.image
         ):
             response = try_request(self.cards_layout_options.logo.image)
-            if response.status_code == 200:
-                f_name = Path(self.cards_layout_options.logo.image).name
-                cache_logo = Path(self.cache_dir, f_name)
-                cache_logo.write_bytes(response.content)
-                self.cards_layout_options.logo.image = str(cache_logo)
-            else:
-                LOGGER.error(
-                    "Failed to download image %s",
-                    self.cards_layout_options.logo.image,
-                )
+            f_name = Path(self.cards_layout_options.logo.image).name
+            cache_logo = Path(self.cache_dir, f_name)
+            cache_logo.write_bytes(response.content)
+            self.cards_layout_options.logo.image = str(cache_logo)
 
     def _set_default_colors(self, theme_options: dict):
         color = self.cards_layout_options.background_color
@@ -383,11 +365,5 @@ class Social_Cards(CustomBaseModel):
             and isinstance(theme_options["font"]["text"], str)
         ):
             self.cards_layout_options.font = Font(family=theme_options["font"]["text"])
-        elif (
-            "font" in theme_options
-            and isinstance(theme_options["font"], bool)
-            and theme_options["font"] is False
-        ):
-            self.cards_layout_options.font = Font(path=SYSTEM_FONT)
         else:
             self.cards_layout_options.font = Font()

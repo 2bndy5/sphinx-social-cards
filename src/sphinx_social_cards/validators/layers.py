@@ -2,7 +2,7 @@
 from typing import Optional, Union, List
 
 from typing_extensions import Literal
-from pydantic import validator
+from pydantic import field_validator
 
 from .base_model import CustomBaseModel
 
@@ -362,7 +362,7 @@ class Line(CustomBaseModel):
         {% endfor %}
     """
 
-    @validator("amount")
+    @field_validator("amount")
     def assert_line_amount(cls, val):
         return val or 1
 
@@ -417,7 +417,10 @@ class Typography(CustomBaseModel):
 
     The text content is pre-processed (after parsed from `Jinja syntax`_) to allow
     comprehensive wrapping of words. This is beneficial for long winded programmatic
-    names:
+    names.
+
+    .. caution::
+        Beware that trailing whitespace is stripped from each line.
 
     .. md-tab-set::
 
@@ -445,18 +448,20 @@ class Typography(CustomBaseModel):
 
             .. note:: Line breaks are not supported when using :ref:`metadata-fields`.
 
-            .. social-card::
+            .. social-card:: {"debug": true}
                 :dry-run:
                 :layout-caption: Using a line break between words
+                :hide-conf:
 
-                size: { width: 920, height: 300 }
                 layers:
                   - background: { color: '#4051B2' }
+                  - size: { width: 920, height: 360 }
+                    offset: { x: 60, y: 150 }
                     typography:
                       content: |
                         Paragraph 1
 
-                        Paragraph 2
+                            Line with leading spaces
                       line: { amount: 3 }
     """
     align: Literal[
@@ -532,3 +537,9 @@ class Typography(CustomBaseModel):
 
     .. seealso:: Please review :ref:`choosing-a-font` section.
     """
+
+    @field_validator("align")
+    def _conform_center_align(cls, val: str) -> str:
+        if val == "center":
+            return "center center"
+        return val

@@ -1,10 +1,8 @@
 """
-Social Cards
-============
-
 This extension enables the generation and embedding of social media cards (AKA "social
 media previews").
 
+.. social-card:: {"cards_layout": "default/variant"}
 .. image-generator:: default/variant
 
 .. note::
@@ -22,8 +20,28 @@ The following dependencies are required:
 - `ImageMagick <https://imagemagick.org/script/download.php>`_ for converting SVG images
   into a PNG that ``pillow`` can use.
 
-Installing from source will require Node.js (and npm) installed to bundle
-icons from npm packages.
+  .. important::
+      ImageMagick may internally delegate SVG conversion to `Inkscape
+      <https://inkscape.org/download>`_. Thus, installing Inkscape may be required to
+      properly convert SVG files. Without Inkscape installed, ImageMagick may produce
+      erroneous PNG output (tested/verified on Ubuntu).
+  .. tip::
+      ImageMagick v6 and v7 are explicitly supported at this time. It is also possible
+      to specify which installation of ImageMagick to use by setting an environment
+      variable ``MAGICK_HOME`` with the path to the folder containing the ImageMagick
+      binaries.
+
+Installing
+----------
+
+.. code-block:: text
+    :caption: Install using ``pip``
+
+    pip install sphinx-social-cards
+
+Installing from the source hosted at https://github.com/2bndy5/sphinx-social-cards will
+require Node.js (and npm) available to optimize and bundle SVG icons from npm packages.
+See `image_paths` for a list of bundled icons.
 
 Usage
 -----
@@ -35,11 +53,12 @@ a specific page. Lastly, :doc:`plugins/index` can be used to easily share custom
 between documentation projects.
 """
 import hashlib
+from importlib import import_module
 import json
 from pathlib import Path
 import re
 import subprocess
-from typing import List, cast, Union, Any, Dict, Set, Optional
+from typing import List, cast, Union, Any, Dict, Set, Optional, Tuple
 from urllib.parse import urlparse
 
 import docutils.nodes
@@ -48,6 +67,7 @@ from docutils.parsers.rst.directives.images import Image
 import pydantic
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
+from sphinx.search import languages, SearchLanguage
 from sphinx.directives.code import container_wrapper
 from sphinx.environment import BuildEnvironment
 from sphinx.transforms import SphinxTransform
@@ -70,19 +90,40 @@ LOGGER = getLogger(__name__)
 _CARD_IMG_CHECK = re.compile(r"(?:property=og|name=twitter):image")
 
 
+def _get_lang_name(config: Config) -> Optional[str]:
+    lang = cast(str, getattr(config, "language", "en"))
+    lang_class = (
+        "sphinx.search.en.SearchEnglish" if lang == "en" else languages.get(lang)
+    )
+    module, attr = lang_class.rsplit(".", 1)
+    return cast(SearchLanguage, getattr(import_module(module), attr)).language_name
+
+
 def _load_config(app: Sphinx, config: Config):
-    card_config = pydantic.parse_obj_as(
-        Social_Cards, getattr(config, "social_cards", {})
+    card_config: Social_Cards = pydantic.TypeAdapter(Social_Cards).validate_python(
+        getattr(config, "social_cards", {})
     )
     card_config.set_defaults(app.srcdir, config)
     setattr(config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)
     CardGenerator.doc_src = app.srcdir
 
-    # verify ImageMagick v7+ is installed
-    try:
-        subprocess.run([get_magick_cmd(), "-version"], shell=True, check=True)
-    except subprocess.CalledProcessError:  # pragma: no cover
-        raise RuntimeError("sphinx_social_cards requires ImageMagick v7+ installed.")
+    magick_exe = get_magick_cmd()  # ImageMagick v7
+    if magick_exe is None:  # pragma: no cover
+        magick_exe = get_magick_cmd("identify")  # ImageMagick v6
+        if magick_exe is None:
+            raise OSError(
+                "ImageMagick executable not found (required by sphinx_social_cards)"
+            )
+    # verify ImageMagick is working & get version tuple
+    result = subprocess.run([magick_exe, "-version"], check=True, capture_output=True)
+    im_ver = re.match(
+        r"^Version: ImageMagick (\d+)\.(\d+)\.(\d+)\-",
+        result.stdout.decode(encoding="utf-8"),
+    )
+    assert im_ver is not None and len(im_ver.groups()) == 3
+    version = cast(Tuple[int, int, int], tuple([int(x) for x in im_ver.groups()[:3]]))
+    LOGGER.info("Detected ImageMagick v%d.%d.%d", *version)
+    CardGenerator.imagemagick_version = version
 
 
 def _assert_plugin_context(app: Sphinx):
@@ -110,12 +151,6 @@ def flush_cache(
         parts = doc_name.split("/")
         basename = parts[-1]
         ex_images = Path(cache_root, *parts[:-1]).glob(f"{basename}-*.png")
-        LOGGER.info(
-            "flushing imgs %r for %s in %s",
-            list(ex_images),
-            basename,
-            Path(cache_root, *parts[:-1]),
-        )
         for img in ex_images:
             img.unlink()
     return []
@@ -172,7 +207,7 @@ class SocialCardTransform(SphinxTransform):
                 theme=getattr(self.config, "html_theme_options", {}),
                 site_url=ctx_url,
                 author=getattr(self.config, "author", ""),
-                language=getattr(self.config, "language", ""),
+                language=_get_lang_name(self.config),
                 today=getattr(self.config, "today", ""),
                 site_description=conf.description,
             ),
@@ -244,7 +279,9 @@ class SocialCardDirective(SphinxDirective):
             self.options["hide-conf"] = True
         else:
             conf_src.update(cast(dict, json.loads("".join(self.arguments))))
-        conf = pydantic.parse_obj_as(Social_Cards, conf_src)
+        conf: Social_Cards = pydantic.TypeAdapter(Social_Cards).validate_python(
+            conf_src
+        )
 
         dry_run = "dry-run" in self.options
         valid_conf: Social_Cards = getattr(self.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
@@ -297,11 +334,20 @@ class SocialCardDirective(SphinxDirective):
             page_uri = builder.get_target_uri(self.env.docname).rstrip(
                 builder.link_suffix
             )
+        page_title = get_default_page_title(self.state.document)
+        if page_title is None:
+            LOGGER.error(
+                "Could not find page title for %s. Did you place the directive after "
+                "the top-level section title? NOTE: Top-level section titles in "
+                "docstrings (via `autodoc` directives) may not be detected.",
+                self.env.doc2path(self.env.docname, base=False),
+            )
+
         contexts = JinjaContexts(
             layout=conf.cards_layout_options,
             page=Page(
                 meta={key: val for key, val in merged_meta_data.items()},
-                title=get_default_page_title(self.state.document),
+                title=page_title,
                 canonical_url="/".join([u for u in (ctx_url, page_uri) if u]),
                 is_homepage=self.env.docname == getattr(self.config, "master_doc"),
             ),
@@ -313,7 +359,7 @@ class SocialCardDirective(SphinxDirective):
                     self.config, "html_title", "An example name for a project"
                 ),
                 author=getattr(self.config, "author", ""),
-                language=getattr(self.config, "language", ""),
+                language=_get_lang_name(self.config),
                 today=getattr(self.config, "today", ""),
             ),
             plugin=getattr(self.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {}),
@@ -356,7 +402,8 @@ class SocialCardDirective(SphinxDirective):
             img_name = str(Path(conf.cache_dir, ".social_card_examples", img_name))
             img_node = docutils.nodes.image(
                 "",
-                uri=img_name,
+                uri="../" * (len(uri_parts) - 1)
+                + str(Path(img_name).relative_to(self.env.srcdir)),
                 alt="A image generated by sphinx-social-cards",
                 align="center",
                 classes=self.options.get("class", []),

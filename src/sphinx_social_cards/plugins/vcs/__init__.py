@@ -35,10 +35,17 @@ value to set the repository URL.
     also be parsed from the `site_url <Social_Cards.site_url>` if it uses a standard
     GitHub Pages address (:html:`https://<owner>.github.io/<repo>`).
 
+.. tip::
+    Information from GitHub is fetched using GitHub's REST API endpoints. If there is a
+    need to authenticate HTTP GET requests from the REST API, then set an environment
+    variable ``GITHUB_REST_API_TOKEN`` with the generated access token. This is mostly
+    useful when fetching information about private repositories or to avoid the REST API
+    rate limit.
+
 Dependencies
 ************
 
-To cache the repository's information, the ``appdirs`` dependency is needed. This
+To cache the owner/repository information, the ``appdirs`` dependency is needed. This
 can either be install directly:
 
 .. code-block:: shell
@@ -51,6 +58,17 @@ or using the ``sphinx-social-cards`` package's optional dependency:
     :caption: requirements.txt
 
     sphinx-social-cards[vcs]
+
+.. abstract:: Implementation details about the cached information
+    :collapsible:
+
+    By default, the cache of owner/repository information is updated once a day (unless
+    the cache is purged).
+
+    .. literalinclude:: ../../src/sphinx_social_cards/plugins/vcs/utils/__init__.py
+        :caption: How the cache location is chosen via ``appdirs`` API
+        :language: python
+        :pyobject: get_cache_dir
 """
 from pathlib import Path
 from typing import Dict, Any, Tuple
@@ -92,9 +110,8 @@ def on_builder_init(app: Sphinx):
 
     # Use information to get a JSON payload from a REST API call
     if service == "github":
-        gh_ctx = get_context_github(owner, repo)
-        if gh_ctx:
-            vcs_env["github"] = gh_ctx
+        assert owner is not None
+        vcs_env["github"] = get_context_github(owner, repo)
 
     # Add the fetched information to the builder environment
     add_jinja_context(app, {"vcs": vcs_env})

@@ -29,4 +29,4 @@ repos:
         exclude: ^cookiecutter/
         # exclude: "^(docs/)"
         additional_dependencies:
-          [docutils-stubs, pillow, types-requests, types-PyYAML, pydantic]
+          [docutils-stubs, pillow, types-requests, types-PyYAML, pydantic>=2.0]

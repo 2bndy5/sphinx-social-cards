@@ -3,30 +3,21 @@ import platform
 import re
 import shutil
 import time
-from typing import Tuple, Optional, Union, List, Dict, Any
+from typing import Tuple, Optional
 from urllib.parse import urlparse
 
 from appdirs import user_cache_dir
 from sphinx.util.logging import getLogger
-from ....validators import try_request
 
 LOGGER = getLogger(__name__)
-
-
-def get_response(url: str) -> Tuple[Union[List[Dict[str, Any]], Dict[str, Any]], int]:
-    response = try_request(url)
-    if response.status_code == 200:
-        return response.json(), response.status_code
-    LOGGER.error("Got %d response from URL %r", response.status_code, url)
-    return {}, response.status_code
 
 
 def reduce_big_number(numb: int) -> str:
     if numb < 1000:
         return str(numb)
     elif numb >= 1000000:
-        return f"{round(numb / 1000000, 2)}M"
-    return f"{round(numb / 1000, 2)}k"
+        return f"{int(numb / 1000000)}M"
+    return f"{int(numb / 1000)}k"
 
 
 def strip_url_protocol(url: str) -> str:
@@ -62,6 +53,5 @@ def get_cache_dir() -> str:
         user_cache_dir("sphinx_social_cards.plugins.vcs", "2bndy5", version=today)
     )
     if cache_dir.parent.exists() and not cache_dir.exists():
-        # purge the old cache
-        shutil.rmtree(cache_dir.parent)
+        shutil.rmtree(cache_dir.parent)  # purge the old cache
     return str(cache_dir)

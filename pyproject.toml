@@ -34,17 +34,6 @@ download = "http://github.com/2bndy5/sphinx-social-cards"
 [tool.setuptools]
 zip-safe = false
 include-package-data = true
-# packages = [
-#     "sphinx_social_cards",
-#     "sphinx_social_cards.validators",
-#     "sphinx_social_cards.plugins",
-#     "sphinx_social_cards.plugins.vcs",
-#     "sphinx_social_cards.plugins.vcs.utils",
-# ]
-# package-dir = {"sphinx_social_cards" = "src/sphinx_social_cards"}
-#
-# [tool.setuptools.package-data]
-# sphinx_social_cards = ["**/layouts/**/*.yml", ".icons/**/*.svg"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -71,6 +60,7 @@ plugins = ["pydantic.mypy"]
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
+addopts = "--durations=0 --durations-min=1"
 
 [tool.coverage.run]
 source_pkgs = ["sphinx_social_cards"]

@@ -2,8 +2,9 @@ import hashlib
 import os
 import platform
 import re
+import shutil
 import subprocess
-from typing import List, Union, Optional, cast
+from typing import List, Union, Optional, cast, Tuple
 from urllib.parse import urlparse, quote
 
 from pathlib import Path
@@ -18,15 +19,15 @@ LOGGER = getLogger(__name__)
 IMG_PATH_TYPE = Optional[Union[str, Path]]
 
 
-def get_magick_cmd() -> str:
-    magick_path = "magick"
+def get_magick_cmd(program="magick") -> Optional[str]:
     if "MAGICK_HOME" in os.environ:
-        magick_home = Path(os.environ["MAGICK_HOME"], magick_path)
+        magick_home = Path(os.environ["MAGICK_HOME"], program)
         if platform.system().lower() == "windows":
             magick_home = magick_home.with_suffix(".exe")
         assert magick_home.exists()
-        magick_path = str(magick_home)
-    return magick_path
+        return str(magick_home)
+    else:
+        return shutil.which(program)
 
 
 def find_image(
@@ -44,8 +45,6 @@ def find_image(
             file_name = file_name.with_suffix(".png")
         if not file_name.exists():
             response = try_request(str(img_name))
-            if response.status_code != 200:
-                return None
             file_name.write_bytes(response.content)
         img_name = file_name
     img_name = Path(img_name)
@@ -66,10 +65,15 @@ def find_image(
     return None
 
 
-_IDENTIFY_INFO = re.compile(r"DPI: (\d+) SIZE: (\d+)x(\d+)")
+_IDENTIFY_INFO = re.compile(r"DPI: (\d+\.?\d+?) SIZE: (\d+)x(\d+) UNITS: (\w+)")
 
 
-def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
+def convert_svg(
+    img_path: Path,
+    cache: Union[str, Path],
+    size: Size,
+    imagemagick_version: Tuple[int, int, int],
+) -> Path:
     out_name = (
         img_path.name
         + f"_{size.width}x{size.height}_"
@@ -79,28 +83,40 @@ def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
     out_path = Path(cache, out_name)
     if out_path.exists():
         return out_path
+    img_in = f"'{str(img_path)}'" if " " in str(img_path) else str(img_path)
+    img_out = f"'{str(out_path)}'" if " " in str(out_path) else str(out_path)
 
-    magick_path = get_magick_cmd()
+    magick_exe = get_magick_cmd("magick" if imagemagick_version >= (7,) else "identify")
+    assert isinstance(magick_exe, str)
+    magick_cmd = [
+        magick_exe,
+        "-format",
+        '"DPI: %[fx:resolution.x] SIZE: %[fx:w]x%[fx:h] UNITS: %[units]"',
+        img_in,
+    ]
+    if imagemagick_version >= (7,):
+        magick_cmd.insert(1, "identify")
 
     # get size of svg via ImageMagick
-    svg_info = subprocess.run(
-        [
-            magick_path,
-            "identify",
-            "-format",
-            "DPI: %[fx:resolution.x] SIZE: %[fx:w]x%[fx:h]",
-            str(img_path),
-        ],
-        check=True,
-        shell=True,
-        capture_output=True,
-    )
+    svg_info = subprocess.run(magick_cmd, check=True, capture_output=True)
     m = _IDENTIFY_INFO.search(svg_info.stdout.decode(encoding="utf-8"))
-    assert m is not None and isinstance(m, re.Match) and len(m.groups()) == 3
-    svg_dpi, w, h = [int(x) for x in m.groups()]
-    svg_size = Size(width=w, height=h)
+    assert m is not None and len(m.groups()) == 4
+    dpi, w, h, svg_units = m.groups()
+    svg_dpi = float(dpi)
+    if svg_units == "PixelsPerCentimeter":
+        svg_dpi *= 2.54
+    # LOGGER.info("DPI: %d", svg_dpi)
+    svg_size = Size(width=int(w), height=int(h))
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    magick_cmd = [magick_path, "-background", "none", str(img_path), str(out_path)]
+    magick_exe = get_magick_cmd("magick" if imagemagick_version >= (7,) else "convert")
+    assert isinstance(magick_exe, str)
+    magick_cmd = [
+        magick_exe,
+        "-background",
+        "none",
+        img_in,
+        img_out,
+    ]
 
     if size.width > svg_size.width or size.height > svg_size.height:
         # resize svg using density of DPI based on original size
@@ -112,7 +128,7 @@ def convert_svg(img_path: Path, cache: Union[str, Path], size: Size) -> Path:
         magick_cmd.insert(1, "-density")
         magick_cmd.insert(2, str(new_dpi))
 
-    subprocess.run(magick_cmd, shell=True, check=True)
+    subprocess.run(magick_cmd, check=True)
     return out_path
 
 
@@ -121,13 +137,14 @@ def resize_image(
     cache: Union[str, Path],
     size: Size,
     aspect: Union[bool, Literal["width", "height"]],
+    imagemagick_version: Tuple[int, int, int],
 ) -> Image.Image:
     """Resize an image according to specified `size`."""
     if img_path is None:
         return None
     img_path = Path(img_path)
     if img_path.suffix.lower() == ".svg":
-        img_path = convert_svg(img_path, cache, size)
+        img_path = convert_svg(img_path, cache, size, imagemagick_version)
     img = Image.open(img_path)
     if hasattr(img, "n_frames"):
         img = cast(Image.Image, ImageSequence.all_frames(img.copy())[0])

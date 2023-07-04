@@ -53,3 +53,25 @@ Test Title
     app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
+
+
+@pytest.mark.xfail
+def test_before_title(sphinx_make_app) -> None:
+    app: SphinxTestApp = sphinx_make_app(
+        extra_conf="""html_theme = 'furo'
+social_cards["enable"] = False
+""",
+        files={
+            "index.rst": """
+.. image-generator::
+
+Test Title
+==========
+
+"""
+        },
+    )
+
+    app.build()
+    assert not app._warning.getvalue()
+    # print(app._status.getvalue())

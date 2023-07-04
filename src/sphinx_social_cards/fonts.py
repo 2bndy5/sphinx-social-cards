@@ -19,37 +19,37 @@ if not features.check_module("freetype2"):  # pragma: no cover
 
 class FontSourceManager:
     api_version = "v1/fonts"
-    cache_path: Path
+    cache_path = Path.cwd()
+    dist_cache = Path(__file__).parent / ".fonts"
 
     @classmethod
     def get_font_file_name(cls, font: Font) -> str:
         return f"{font.family} {font.style} ({font.subset} {font.weight})"
 
     @classmethod
-    def get_font(cls, font: Font) -> bool:
-        cls.get_info(font)  # fills in unset `Font` specs
+    def get_font(cls, font: Font):
+        info_cache = cls._get_info(font)  # fills in unset `Font` specs
         font_file_name = cls.get_font_file_name(font)
-        if Path(cls.cache_path, font_file_name).with_suffix(".ttf").exists():
-            font.path = str(Path(cls.cache_path, font_file_name).with_suffix(".ttf"))
-            return True
-        return cls.download(font)
+        ttf_cache = Path(info_cache.parent, font_file_name).with_suffix(".ttf")
+        if ttf_cache.exists():
+            font.path = str(ttf_cache)
+            return
+        cls._download(font, info_cache)
 
     @classmethod
-    def get_info(cls, font: Font):
+    def _get_info(cls, font: Font) -> Path:
         info_cache = Path(cls.cache_path, font.family).with_suffix(".json")
+        if font.family == "Roboto":
+            info_cache = Path(cls.dist_cache, font.family).with_suffix(".json")
         if info_cache.exists():
             font_info = json.loads(info_cache.read_text(encoding="utf-8"))
         else:
             url = f"{_FONT_SOURCE_API}{cls.api_version}?family={quote(font.family)}"
             response = try_request(url)
-            if response.status_code is not None and response.status_code != 200:
-                LOGGER.warning("failed to get info for font:\n%r", font)
-                return {}
             info: List[Dict[str, Any]] = response.json()
             LOGGER.info("Polling font info using url: %s", url)
             if not info:
-                LOGGER.info("no info for font query: %s", font.family)
-                return {}
+                raise ValueError(f"no info for font query: {font.family}")
             if len(info) > 1:
                 LOGGER.info(
                     "Found more than 1 font for family %s. Using the first entry:\n%s",
@@ -87,19 +87,16 @@ class FontSourceManager:
                     closest = diff
                     weight = weights[index]
             font.weight = weight
-        return font_info
+        return info_cache
 
     @classmethod
-    def download(cls, font: Font) -> bool:
-        info_cache = Path(cls.cache_path, font.family).with_suffix(".json")
+    def _download(cls, font: Font, info_cache: Path) -> None:
         assert info_cache.exists()
         info: Dict[str, Any] = json.loads(info_cache.read_text(encoding="utf-8"))
         font_id = info.get("id", None)
         assert font_id is not None
         if "variants" not in info:
             response = try_request(f"{_FONT_SOURCE_API}{cls.api_version}/{font_id}")
-            if response.status_code is not None and response.status_code != 200:
-                return False
             info = response.json()
             info_cache.write_text(json.dumps(info, indent=2), encoding="utf-8")
         font_file_name = cls.get_font_file_name(font)
@@ -112,9 +109,6 @@ class FontSourceManager:
         )
         assert variant_url is not None and "ttf" in variant_url
         response = try_request(variant_url["ttf"])
-        if response.status_code is not None and response.status_code == 200:
-            font_path.parent.mkdir(parents=True, exist_ok=True)
-            font_path.write_bytes(response.content)
-            font.path = str(font_path)
-            return True
-        return False
+        font_path.parent.mkdir(parents=True, exist_ok=True)
+        font_path.write_bytes(response.content)
+        font.path = str(font_path)

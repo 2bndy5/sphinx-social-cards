@@ -148,8 +148,22 @@ jobs:
         include:
           - python-version: '3.7'
             sphinx-version: 'sphinx4'
+            os: 'ubuntu-latest'
           - python-version: '3.7'
             sphinx-version: 'sphinx5'
+            os: 'ubuntu-latest'
+          - python-version: '3.7'
+            sphinx-version: 'sphinx4'
+            os: 'windows-latest'
+          - python-version: '3.7'
+            sphinx-version: 'sphinx5'
+            os: 'windows-latest'
+          - python-version: '3.7'
+            sphinx-version: 'sphinx4'
+            os: 'macos-latest'
+          - python-version: '3.7'
+            sphinx-version: 'sphinx5'
+            os: 'macos-latest'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -169,6 +183,7 @@ jobs:
       - name: Run Python tests
         env:
           COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}.${{ matrix.sphinx-version }}
+          GITHUB_REST_API_TOKEN: ${{ secrets.TEST_VCS_PLUGIN_GITHUB }}
         run: pipx run nox -s "tests-${{ matrix.python-version }}(${{ matrix.sphinx-version }})"
       - name: Upload coverage data
         uses: actions/upload-artifact@v3
@@ -200,7 +215,7 @@ jobs:
       - name: Post coverage summary
         uses: codecov/codecov-action@v3
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)

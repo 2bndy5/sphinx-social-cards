@@ -1,3 +1,16 @@
+.. image:: https://github.com/2bndy5/sphinx-social-cards/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/2bndy5/sphinx-social-cards/actions/workflows/build.yml
+    :alt: Build
+.. image:: https://img.shields.io/pypi/v/sphinx-social-cards.svg
+    :target: https://pypi.python.org/pypi/sphinx-social-cards
+    :alt: latest version on PyPI
+.. image:: https://static.pepy.tech/personalized-badge/sphinx-social-cards?period=total&units=international_system&left_color=grey&right_color=blue&left_text=PyPi%20Downloads
+    :target: https://pepy.tech/project/sphinx-social-cards
+    :alt: Total PyPI downloads
+.. image:: https://codecov.io/gh/2bndy5/sphinx-social-cards/branch/master/graph/badge.svg?token=0CKIC3TVB6
+    :target: https://codecov.io/gh/2bndy5/sphinx-social-cards
+    :alt: Code Coverage
+
 sphinx-social-cards
 ===================
 

@@ -90,7 +90,7 @@ def tests(session: nox.Session, sphinx: str):
     session.install(whl)
     session.install(f"sphinx{sphinx}")
     session.install("-r", "tests/requirements.txt")
-    session.run("coverage", "run", "-m", "pytest", "-vv", "-s")
+    session.run("coverage", "run", "-m", "pytest", "-v")
 
 
 @nox.session

@@ -16,6 +16,7 @@ conf.py file as well. So, the `social_cards <Social_Cards>` option also needs to
 
 .. autoclass:: sphinx_social_cards.validators.Social_Cards
     :members:
+    :exclude-members: model_post_init
 
 .. _choosing-a-font:
 
@@ -53,9 +54,10 @@ multiple places. The order of precedence is:
 Both approaches use the same `font <Font>` specification.
 
 .. note::
-    If fonts cannot be fetched from Fontsource_ (and they are not already cached in the `cache_dir`),
-    then a system font (Arial on Windows or Helvetica on Linux/MacOS) will be used as a fallback.
-    Using system fonts does not currently respect a specified `weight` and `style`.
+    The ``Roboto`` font is cached and distributed with this extension.
+
+    If fonts cannot be fetched from Fontsource_ (and they are not already cached in the
+    `cache_dir` or the distributed cache of ``Roboto`` fonts), then an error will be thrown.
 
 Weights over styles
 ~~~~~~~~~~~~~~~~~~~
@@ -92,9 +94,9 @@ Non-English languages
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Some fonts will render boxes because they do not contain CJK characters, like for example the
-default :themeconf:`font`, ``Roboto``. If the :confval:`project` name, :meta-field:`description`,
-or page :meta-field:`title` contain CJK characters, choose another font from `Fontsource`_ which
-comes with CJK characters.
+default `font <Font>`, ``Roboto``. If any text (eg. the :confval:`project` name,
+:meta-field:`description`, or page :meta-field:`title`) contain CJK characters, then choose another
+font from `Fontsource`_ which comes with CJK characters.
 
 .. jinja::
 
@@ -107,7 +109,7 @@ comes with CJK characters.
         .. md-tab-item:: {{name}}
 
             .. code-block:: python
-                :caption: Using the the Noto Sans font family
+                :caption: Using the the Noto Sans font family's ``{{ subset }}`` subset
 
                 social_cards = {
                     "cards_layout_options": {

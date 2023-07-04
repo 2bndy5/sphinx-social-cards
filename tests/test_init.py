@@ -30,12 +30,10 @@ social_cards["enable"] = {enable}
 :title: A test
 :description: A unit test of the extension
 :icon: sphinx_logo
-:card-icon: tabler/message
+:card-icon: images/message
 
 Test Title
 ==========
-
-.. image-generator::
 """
         },
     )

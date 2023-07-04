@@ -164,7 +164,7 @@ class Config(BaseModel):
     docstitle: Optional[str] = None
     #: The :confval:`author` value.
     author: Optional[str] = None
-    #: The :confval:`language` value.
+    #: The full language name that corresponds to the :confval:`language` value
     language: Optional[str] = None
     #: The :confval:`today` value.
     today: Optional[str] = None

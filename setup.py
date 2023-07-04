@@ -1,6 +1,9 @@
+import json
 from pathlib import Path
 import subprocess
 import shutil
+from typing import List, Dict, Any
+from urllib.request import Request, urlopen
 from setuptools import setup, Command
 from setuptools.command.build import SubCommand
 from setuptools.command.build_py import build_py
@@ -66,7 +69,7 @@ class BundleCommand(Command, SubCommand):
         ):
             raise OSError("Building package 'dirty', but no generated SVG files exist.")
 
-    def run(self):
+    def run(self) -> None:
         """Run command."""
 
         def __run_process(*cmd: str):
@@ -104,6 +107,48 @@ class BundleCommand(Command, SubCommand):
                         Path(icons_dist, icons_src.name).write_bytes(
                             icons_src.read_bytes()
                         )
+
+            # get default font
+            header = dict(
+                # needed to avoid response 403
+                user_agent=(
+                    "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"
+                )
+            )
+            font_cache = Path(pkg_root, "src", "sphinx_social_cards", ".fonts")
+            font_cache.mkdir(exist_ok=True)
+            with urlopen(
+                Request("https://api.fontsource.org/v1/fonts/roboto", headers=header)
+            ) as response:
+                data: Dict[str, Any] = json.loads(response.read())
+            assert "family" in data
+            family = data["family"]
+            # cache the font info
+            info_cache = Path(font_cache, family).with_suffix(".json")
+            info_cache.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+            # get all weights from default subset of normal style in TTF format
+            assert "weights" in data and data["weights"]
+            weights: List[int] = data["weights"]
+            style = "normal"
+            assert "defSubset" in data
+            subset = data["defSubset"]
+            assert "variants" in data
+            for weight in weights:
+                assert str(weight) in data["variants"]
+                assert style in data["variants"][str(weight)]
+                assert subset in data["variants"][str(weight)][style]
+                assert "url" in data["variants"][str(weight)][style][subset]
+                assert "ttf" in data["variants"][str(weight)][style][subset]["url"]
+                ttf_url: str = data["variants"][str(weight)][style][subset]["url"][
+                    "ttf"
+                ]
+                with urlopen(Request(ttf_url, headers=header)) as font:
+                    ttf = font.read()
+                    # cache ttf font
+                    font_file_name = f"{family} {style} ({subset} {weight})"
+                    ttf_cache = Path(font_cache, font_file_name).with_suffix(".ttf")
+                    ttf_cache.write_bytes(ttf)
 
 
 # all install info is located in pyproject.toml

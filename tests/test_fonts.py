@@ -1,9 +1,11 @@
 import pytest
 from sphinx.testing.util import SphinxTestApp
+from sphinx_social_cards.validators.layers import Font
+from sphinx_social_cards.fonts import FontSourceManager
 
 
 @pytest.mark.parametrize(
-    "style", ["normal", pytest.param("bold", marks=pytest.mark.xfail)]
+    "style", ["normal", pytest.param("bold", marks=pytest.mark.xfail), "italic"]
 )
 @pytest.mark.parametrize("weight", [400, 555])
 @pytest.mark.parametrize(
@@ -14,7 +16,7 @@ def test_font(sphinx_make_app, style: str, weight: int, subset: str):
         extra_conf=f"""html_theme = 'furo'
 social_cards["cards_layout_options"] = {{
     "font": {{
-        "family": "Noto Sans",
+        "family": "Roboto",
         "style": '{style}',
         "weight": {weight},
         "subset": '{subset}',
@@ -39,3 +41,8 @@ A Really Long Test Title That Overflows 2 Lines
     )
     app.build()
     assert not app._warning.getvalue()
+
+
+@pytest.mark.xfail
+def test_invalid_family() -> None:
+    FontSourceManager.get_font(Font(family="X"))

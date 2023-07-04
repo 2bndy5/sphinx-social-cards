@@ -2,22 +2,15 @@ from pathlib import Path
 import pytest
 from sphinx.testing.util import SphinxTestApp
 from sphinx_social_cards.plugins import add_images_dir
-from sphinx_social_cards.plugins.vcs.utils import (
-    get_response,
-    reduce_big_number,
-    strip_url_protocol,
-)
+from sphinx_social_cards.plugins.vcs.utils import reduce_big_number, strip_url_protocol
+
+
+def test_blank_url():
+    assert strip_url_protocol("") == ""
 
 
 def test_big_number():
-    assert reduce_big_number(1048576) == "1.05M"
-
-
-@pytest.mark.xfail
-def test_bad_url():
-    url = ""
-    assert strip_url_protocol(url) == url
-    assert get_response(url) == ({}, 404)
+    assert reduce_big_number(1048576) == "1M"
 
 
 @pytest.mark.parametrize(
@@ -28,8 +21,10 @@ def test_bad_url():
         pytest.param(
             "social_cards['site_url']", "https://RF24.rtfd.io", marks=pytest.mark.xfail
         ),
+        ["repo_url", "https://github.com/2bndy5"],
+        ["repo_url", "https://github.com/2bndy5/CirquePinnacle"],
     ),
-    ids=["repo_url", "site_url", "invalid_url"],
+    ids=["repo_url", "site_url", "invalid_url", "only_owner", "from_cache"],
 )
 def test_vcs_github(
     sphinx_make_app, caplog: pytest.LogCaptureFixture, url_key: str, url: str
@@ -46,8 +41,6 @@ social_cards["cards_layout"] = "github/default"
 
 Test Title
 ==========
-
-.. image-generator::
 """
         },
     )

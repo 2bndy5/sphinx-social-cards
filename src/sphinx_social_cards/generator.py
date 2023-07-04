@@ -15,7 +15,7 @@ from PIL import (
 )
 import pydantic
 from sphinx.util.logging import getLogger
-from .validators import SYSTEM_FONT, Social_Cards, _validate_color
+from .validators import Social_Cards, _validate_color
 from .validators.layers import Typography, LayerImage, Rectangle, Ellipse
 from .validators.layout import Layer, Layout
 from .validators.contexts import JinjaContexts
@@ -44,6 +44,7 @@ class CardGenerator:
     """A factory for generating social card images"""
 
     doc_src: str = ""
+    imagemagick_version: Tuple[int, int, int] = (0, 0, 0)
 
     def __init__(self, context: JinjaContexts, config: Social_Cards):
         self.context = context
@@ -67,8 +68,8 @@ class CardGenerator:
         template: Template
         if content is not None:
             template = self._jinja_env.from_string(content)
-            self.config._parsed_layout = pydantic.parse_obj_as(
-                Layout, yaml.safe_load(template.render(self.context).strip())
+            self.config._parsed_layout = pydantic.TypeAdapter(Layout).validate_python(
+                yaml.safe_load(template.render(self.context).strip())
             )
         else:
             for ext in (".yml", ".yaml", ".YML", ".YAML"):
@@ -83,16 +84,14 @@ class CardGenerator:
                 raise ValueError(f"Could not find layout: '{self.config.cards_layout}'")
             template_result = template.render(self.context)
             try:
-                self.config._parsed_layout = pydantic.parse_obj_as(
-                    Layout, yaml.safe_load(template_result)
-                )
+                self.config._parsed_layout = pydantic.TypeAdapter(
+                    Layout
+                ).validate_python(yaml.safe_load(template_result))
             except ComposerError as exc:
                 LOGGER.error("failed to parse template:\n%s", template_result)
                 raise exc
 
     def get_color(self, spec: Optional[str]) -> Optional[str]:
-        if not spec:
-            return None
         color, is_pil_color = _validate_color(spec)
         if not is_pil_color and color:
             raise ValueError("Invalid color specified: '%s'", color)
@@ -104,10 +103,8 @@ class CardGenerator:
 
     def load_font(self, typography: Typography, font_size) -> ImageFont.FreeTypeFont:
         typo_font = typography.font or self.config.cards_layout_options.font
-        assert typo_font is not None
-        if typo_font.path is not None:
-            return ImageFont.truetype(typo_font.path, font_size)
-        return ImageFont.truetype(SYSTEM_FONT, font_size)
+        assert typo_font is not None and typo_font.path is not None
+        return ImageFont.truetype(typo_font.path, font_size)
 
     @staticmethod
     def calc_font_size(
@@ -141,12 +138,12 @@ class CardGenerator:
     ) -> Tuple[List[List[str]], int, Union[int, float]]:
         assert layer.size is not None
         typo_font = typography.font or self.config.cards_layout_options.font
-        assert typo_font is not None
+        assert typo_font is not None and typo_font.path is not None
         spacing, font_size = self.calc_font_size(
             typography.line.amount,
             typography.line.height,
             layer.size.height,
-            typo_font.path or SYSTEM_FONT,
+            typo_font.path,
         )
         font = self.load_font(typography, font_size)
 
@@ -158,11 +155,13 @@ class CardGenerator:
             if word == "\0":
                 continue
             elif word == "\n":
-                if line_count < typography.line.amount or (
-                    line_count >= typography.line.amount and typography.overflow
-                ):
+                if line_count < typography.line.amount - 1:
                     display_text.append([])
                     line_count += 1
+                    continue
+                elif line_count == typography.line.amount - 1 and typography.overflow:
+                    typography.line.amount += 1
+                    return self.make_text_block(typography, layer, canvas)
                 else:
                     word = " "  # just discard the token if we can't add another line
             test_str = "".join(display_text[line_count] + [word])
@@ -181,18 +180,18 @@ class CardGenerator:
             else:  # text has overflow but typography.overflow is disabled
                 if display_text[line_count]:
                     # backtrack 1 char at a time till we can fit the '...'
-                    this_line = "".join(display_text[line_count]).strip()
+                    this_line = "".join(display_text[line_count]).rstrip()
                     x, y, w, h = brush.textbbox(
                         offset, this_line + "...", font=font, spacing=spacing
                     )
                     while w - x > layer.size.width and this_line:
                         x, y, w, h = brush.textbbox(
                             offset,
-                            this_line[:-1].strip() + "...",
+                            this_line[:-1].rstrip() + "...",
                             font=font,
                             spacing=spacing,
                         )
-                        this_line = this_line[:-1].strip()
+                        this_line = this_line[:-1].rstrip()
                     display_text[line_count] = re.split(r"(\s)", this_line + "...")
                 else:  # append ellipses to the empty line
                     display_text[line_count].append("...")
@@ -204,7 +203,7 @@ class CardGenerator:
         assert layer.size is not None
         text_block, font_size, spacing = self.make_text_block(typography, layer, canvas)
         font = self.load_font(typography, font_size)
-        full_text = "\n".join(["".join(r).strip() for r in text_block]).strip()
+        full_text = "\n".join(["".join(r).rstrip() for r in text_block]).rstrip()
         brush = ImageDraw.Draw(canvas)
         x, y, w, h = brush.textbbox((0, 0), full_text, font, spacing=spacing)
 
@@ -213,8 +212,6 @@ class CardGenerator:
             color = self.get_color(typography.color)
 
         align = [a.lower() for a in typography.align.split()[:2]]
-        if len(align) < 2 and align[0] == "center":
-            align.append("center")
         anchor_translator = dict(start="l", center="m", end="r", top="a", bottom="d")
 
         def get_anchor_offset(anchor: str, length: int):
@@ -225,19 +222,22 @@ class CardGenerator:
                 return int(length / 2)
             return 0  # if anchor in ("start", "top")
 
-        y_offset = y * (align[1] != "top")
-        padding = layer.size.height - (
-            (h - y + y_offset) / len(text_block) * typography.line.amount
+        padding = (
+            (layer.size.height - (h - y) - (y if align[1] != "top" else 0))
+            / typography.line.amount
+            * len(text_block)
+            / max(1, typography.line.amount - 1)
         )
         brush.text(
             (
                 get_anchor_offset(align[0], layer.size.width),
-                get_anchor_offset(align[1], layer.size.height) - y_offset,
+                get_anchor_offset(align[1], layer.size.height)
+                - (y if align[1] == "top" else 0),
             ),
             full_text,
             font=font,
             fill=color,
-            spacing=spacing + padding / max(1, typography.line.amount - 1),
+            spacing=spacing + padding,
             anchor="".join([anchor_translator[a] for a in align]),
         )
         return canvas
@@ -248,15 +248,13 @@ class CardGenerator:
         color: Optional[str] = None
         if img_config.image is not None:
             img_path = find_image(
-                img_config.image,
+                img_config.image.strip(),
                 self.config.image_paths,
                 self.doc_src,
                 self.config.cache_dir,
             )
             if img_path is None and img_config.image:
-                raise FileNotFoundError(
-                    f"image path is not found: '{img_config.image}'"
-                )
+                raise FileNotFoundError(f"Image not found: '{img_config.image}'")
         if img_config.color:
             color = self.get_color(img_config.color)
         return img_path, color
@@ -267,7 +265,11 @@ class CardGenerator:
         if img_path is not None:
             assert layer.size is not None
             img = resize_image(
-                img_path, self.config.cache_dir, layer.size, img_config.preserve_aspect
+                img_path,
+                self.config.cache_dir,
+                layer.size,
+                img_config.preserve_aspect,
+                self.imagemagick_version,
             )
             if color is not None:
                 img = overlay_color(img, color, mask=True)
@@ -282,7 +284,11 @@ class CardGenerator:
         assert layer.size is not None
         if img_path is not None:
             img = resize_image(
-                img_path, self.config.cache_dir, layer.size, img_config.preserve_aspect
+                img_path,
+                self.config.cache_dir,
+                layer.size,
+                img_config.preserve_aspect,
+                self.imagemagick_version,
             )
         if color is not None:
             if not img:
@@ -349,7 +355,9 @@ class CardGenerator:
         if area[1] >= self.config._parsed_layout.size.height:
             area[1] = self.config._parsed_layout.size.height - 1
         size = tuple(area)
-        font = ImageFont.truetype(SYSTEM_FONT, 10)
+        font = ImageFont.truetype(
+            str(Path(__file__).parent / ".fonts" / "Roboto normal (latin 400).ttf"), 10
+        )
         brush = ImageDraw.Draw(self._canvas)
         try:
             brush.rectangle((offset, size), outline=ImageColor.getrgb(color.fill))
@@ -421,12 +429,6 @@ class CardGenerator:
             masked = None
             if layer.mask is not None:
                 mask = self.render_layer(layer.mask)
-                if layer.mask.offset.x < 0 or layer.mask.offset.y < 0:
-                    mask_x = abs(layer.mask.offset.x) if layer.mask.offset.x < 0 else 0
-                    mask_y = abs(layer.mask.offset.y) if layer.mask.offset.y < 0 else 0
-                    mask_w = mask.size[0] + mask_x
-                    mask_h = mask.size[1] + mask_y
-                    mask = mask.crop((mask_x, mask_y, mask_w, mask_h))
                 if (
                     mask.size[0] > _tmp_canvas.size[0]
                     or mask.size[1] > _tmp_canvas.size[1]

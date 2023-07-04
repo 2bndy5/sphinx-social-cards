@@ -1,22 +1,21 @@
 """This module contains validating dataclasses for a parsed yaml layout."""
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing_extensions import Annotated
 from .base_model import CustomBaseModel
 from .layers import Background, Icon, Typography, Ellipse, Rectangle
 
-
-CARD_W = 1200
-CARD_H = 630
+PositiveInt = Annotated[int, Field(gt=0)]
 
 
 class Size(CustomBaseModel):
     """An attribute to describe a layer's or layout's size."""
 
-    width: int = CARD_W
+    width: PositiveInt = 1200
     """The width of the layer (relative to the `offset <Offset>`).
     Defaults to 1200 pixels width."""
-    height: int = CARD_H
+    height: PositiveInt = 630
     """The height of the layer (relative to the `offset <Offset>`).
     Defaults to 630 pixels height."""
 
@@ -204,40 +203,71 @@ class Mask(Layer):
 
                 layers:
                   - background: { color: "#4051B2" }
+                  # this red background is drawn to prove the transparency of the mask
+                  - background: { color: red }
+                    offset: { x: 600 }
                   - size: { width: 200, height: 200 }
                     offset: { x: 500, y: 215 }
                     rectangle:
                       color: green
                       radius: 50
-                      border: { width: 15, color: red }
                     mask:
                       invert: true
                       size: { width: 150, height: 150 }
                       offset: { x: 25, y: 25 }
                       icon: { image: "sphinx_logo" }
 
-        .. md-tab-item:: Excluding a rectangle
+        .. md-tab-item:: Excluding with negative offset
 
             .. social-card::
                 :dry-run:
 
                 layers:
                   - background: { color: "#4051B2" }
-                  - background: { image: images/rainbow.png }
+                  - background: { color: white }
+                    offset: { x: 450, y: 150 }
+                    size: { width: 300, height: 300 }
                     mask:
                       invert: true
-                      size: { width: 600, height: 315 }
-                      offset: { x: 300, y: 158 }
-                      rectangle:
-                        color: "#FFFFFF7F" # a transparent color
-                        radius: 100
-                        border:
-                          width: 50
-                          color: white
+                      size: { width: 300, height: 300 }
+                      offset: { x: -150 }
+                      ellipse: { color: '#0000007f' }
+
+        .. md-tab-item:: Excluding with same offset
+
+            .. social-card::
+                :dry-run:
+
+                layers:
+                  - background: { color: "#4051B2" }
+                  - background: { color: white }
+                    offset: { x: 450, y: 150 }
+                    size: { width: 300, height: 300 }
+                    mask:
+                      invert: true
+                      size: { width: 300, height: 300 }
+                      ellipse: { color: '#0000007f' }
+
+        .. md-tab-item:: Excluding with positive offset
+
+            .. social-card::
+                :dry-run:
+
+                layers:
+                  - background: { color: "#4051B2" }
+                  - background: { color: white }
+                    offset: { x: 450, y: 150 }
+                    size: { width: 300, height: 300 }
+                    mask:
+                      invert: true
+                      size: { width: 300, height: 300 }
+                      offset: { x: 150 }
+                      ellipse: { color: '#0000007f' }
     """
 
 
-Layer.update_forward_refs()
+# we must do this since the Layer has a Mask attribute whose type inherits from Layer
+Layer.model_rebuild()
 
 
 class Layout(BaseModel):

@@ -209,10 +209,6 @@ social_cards = {
 }
 # END Options for sphinx_social_cards
 
-# -- Options for sphinx_social_cards.plugins.vcs -----------------------------
-repo_url = "https://github.com/2bndy5/CirquePinnacle"
-# END Options for sphinx_social_cards.plugins.vcs
-
 rst_prolog = """
 .. role:: python(code)
    :language: python

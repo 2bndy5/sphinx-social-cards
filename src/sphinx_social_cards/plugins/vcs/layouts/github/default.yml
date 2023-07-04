@@ -20,15 +20,15 @@ stats_y0b: &stats_y0b 460
 stats_y0c: &stats_y0c 510
 stats_x0a: &stats_x0a 61
 stats_x0b: &stats_x0b 110
-stats_x1a: &stats_x1a 221
-stats_x1b: &stats_x1b 270
-stats_x2a: &stats_x2a 381
-stats_x2b: &stats_x2b 430
-stats_x3a: &stats_x3a 631
-stats_x3b: &stats_x3b 680
-short_value_width: &short_value_width 100
+stats_x1a: &stats_x1a 271
+stats_x1b: &stats_x1b 320
+stats_x2a: &stats_x2a 481
+stats_x2b: &stats_x2b 530
+stats_x3a: &stats_x3a 731
+stats_x3b: &stats_x3b 780
+short_value_width: &short_value_width 150 # was 100
 contrib_value_width: &contrib_value_width 190
-lang_value_width: &lang_value_width 410
+lang_value_width: &lang_value_width 310
 stats_value_height: &stats_value_height 45
 avatar_size: &avatar_size
   size: { width: 180, height: 180 }

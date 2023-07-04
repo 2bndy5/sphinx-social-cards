@@ -26,4 +26,7 @@
     plugins/index
     plugins/vcs
 
+Social Cards
+============
+
 .. automodule:: sphinx_social_cards

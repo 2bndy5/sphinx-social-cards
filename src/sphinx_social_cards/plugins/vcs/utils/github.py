@@ -1,10 +1,12 @@
+import os
 from pathlib import Path
 from typing import Dict, Optional, cast, List, Union, Any
 from urllib.parse import quote
 
 import pydantic
 from sphinx.util.logging import getLogger
-from . import get_response, reduce_big_number, strip_url_protocol, get_cache_dir
+from . import reduce_big_number, strip_url_protocol, get_cache_dir
+from ....validators import try_request
 
 LOGGER = getLogger(__name__)
 
@@ -116,20 +118,30 @@ class Github(pydantic.BaseModel):
     repo: Repo = Repo()
 
 
-def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, Any]:
-    if owner is None:
+def get_api_token() -> Dict[str, Dict[str, str]]:
+    token = os.environ.get("GITHUB_REST_API_TOKEN", "")
+    if not token:
         return {}
+    return {"headers": {"Authorization": token}}
+
+
+def get_context_github(owner: str, repo: Optional[str]) -> Dict[str, Any]:
     gh_ctx = Github()
     cache_dir = get_cache_dir()
     owner_cache_name = quote(owner)
     owner_cache_file = Path(cache_dir, owner_cache_name).with_suffix(".json")
+    request_args = get_api_token()
     if owner_cache_file.exists():
-        gh_ctx.owner = pydantic.parse_file_as(Owner, owner_cache_file)
+        gh_ctx.owner = Owner.model_validate_json(
+            owner_cache_file.read_text(encoding="utf-8")
+        )
     else:
         owner_cache_file.parent.mkdir(parents=True, exist_ok=True)
         # get github account account info
         LOGGER.info("Fetching info for github context about account: %s", owner)
-        res_json, _ = get_response(f"https://api.github.com/users/{owner}")
+        res_json = try_request(
+            f"https://api.github.com/users/{owner}", **request_args
+        ).json()
         assert isinstance(res_json, dict)
         gh_ctx.owner = Owner(
             **{
@@ -154,8 +166,8 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         )
         gh_ctx.owner.avatar = res_json.get("avatar_url", "")
         gh_ctx.owner.html_url = strip_url_protocol(res_json.get("html_url", ""))
-        if "organizations" in res_json:
-            response, _ = get_response(res_json["organizations"])
+        if "organizations_url" in res_json:
+            response = try_request(res_json["organizations_url"], **request_args).json()
             for org in cast(List[Dict[str, str]], response):
                 gh_ctx.owner.organizations.append(
                     Organization(
@@ -164,19 +176,23 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
                         description=org.get("description", ""),
                     )
                 )
-        owner_cache_file.write_text(gh_ctx.owner.json(indent=2), encoding="utf-8")
+        owner_cache_file.write_text(
+            gh_ctx.owner.model_dump_json(indent=2), encoding="utf-8"
+        )
 
     if repo is None:
-        return gh_ctx.dict()
+        return gh_ctx.model_dump()
     # its a repo
     repo_cache_name = quote("/".join([owner, quote(repo)]))
     repo_cache_file = Path(cache_dir, repo_cache_name).with_suffix(".json")
     if repo_cache_file.exists():
-        gh_ctx.repo = pydantic.parse_file_as(Repo, repo_cache_file)
+        gh_ctx.repo = Repo.model_validate_json(
+            repo_cache_file.read_text(encoding="utf-8")
+        )
     else:
         repo_cache_file.parent.mkdir(parents=True, exist_ok=True)
         LOGGER.info("Fetching info for github context about repo: %s/%s", owner, repo)
-        res_json, _ = get_response(f"https://api.github.com/repos/{owner}/{repo}")
+        res_json = try_request(f"https://api.github.com/repos/{owner}/{repo}").json()
         res_json = cast(Dict[str, Any], res_json)
         gh_ctx.repo = Repo(
             stars=reduce_big_number(res_json.get("stargazers_count", 0)),
@@ -192,7 +208,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
             html_url=strip_url_protocol(res_json.get("html_url", "")),
         )
         if "languages_url" in res_json:
-            langs, _ = get_response(res_json["languages_url"])
+            langs = try_request(res_json["languages_url"]).json()
             langs = cast(Dict[str, float], langs)
             # convert arbitrary units to percentages
             total = sum(list(langs.values()))
@@ -200,7 +216,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
                 langs[lang] = round(langs[lang] / total * 100, 1)
             gh_ctx.repo.languages = langs
         if "contributors_url" in res_json:
-            response, _ = get_response(res_json["contributors_url"])
+            response = try_request(res_json["contributors_url"]).json()
             response = cast(List[Dict[str, Any]], response)
             gh_ctx.repo.contributors = [
                 Contributor(
@@ -211,8 +227,10 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
                 for u in response
             ]
         if "tags_url" in res_json:
-            response, _ = get_response(res_json["tags_url"])
+            response = try_request(res_json["tags_url"]).json()
             gh_ctx.repo.tags = [t["name"] for t in cast(List[Dict[str, str]], response)]
-        repo_cache_file.write_text(gh_ctx.repo.json(indent=2), encoding="utf-8")
+        repo_cache_file.write_text(
+            gh_ctx.repo.model_dump_json(indent=2), encoding="utf-8"
+        )
 
-    return gh_ctx.dict()
+    return gh_ctx.model_dump()

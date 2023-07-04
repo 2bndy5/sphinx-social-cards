@@ -22,11 +22,7 @@ These are examples of the layouts added:
     {% for layout in layouts %}
         .. md-tab-item:: {{ layout }}
 
-            .. social-card::
-                {
-                    "cards_layout" : "{{ layout }}"
-                }
-                :dry-run:
+            .. image-generator:: {{ layout }}
     {% endfor %}
     {% endfor %}
 
