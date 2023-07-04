@@ -109,12 +109,12 @@ class BundleCommand(Command, SubCommand):
                         )
 
             # get default font
-            header = dict(
+            header = {
                 # needed to avoid response 403
-                user_agent=(
+                "User-Agent": (
                     "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"
-                )
-            )
+                ),
+            }
             font_cache = Path(pkg_root, "src", "sphinx_social_cards", ".fonts")
             font_cache.mkdir(exist_ok=True)
             with urlopen(
