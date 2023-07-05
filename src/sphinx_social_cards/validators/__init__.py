@@ -233,8 +233,6 @@ class Social_Cards(CustomBaseModel):
             * - :si-icon:`simple/simpleicons`
                 `Simple Icons <https://simpleicons.org/>`_
               - ``simple/<icon-name>``
-            * - :si-icon:`tabler/brand-tabler` `tabler <https://tabler-icons.io/>`_
-              - ``tabler/<icon-name>``
     """
     debug: Union[Debug, bool] = Debug()
     """A field to specify layout debugging helpers. See `Debugging Layouts`_ for more

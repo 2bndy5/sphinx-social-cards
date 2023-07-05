@@ -21,14 +21,20 @@ The following dependencies are required:
   into a PNG that ``pillow`` can use.
 
   .. important::
-      ImageMagick may internally delegate SVG conversion to `Inkscape
+      :title: Inkscape may be required for certain SVG files
+
+      Internally, ImageMagick prefers to delegate SVG handling to `Inkscape
       <https://inkscape.org/download>`_. Thus, installing Inkscape may be required to
-      properly convert SVG files. Without Inkscape installed, ImageMagick may produce
-      erroneous PNG output (tested/verified on Ubuntu).
+      properly convert SVG files. Without Inkscape installed, ImageMagick will use its
+      own internal SVG handling, but this is known to produce erroneous output for some
+      SVG images.
+
+      For example, the `tabler icon set <https://tabler-icons.io/>`_ is known to require
+      Inkscape installed. Otherwise, the tabler SVG files will render as a blank image.
   .. tip::
       ImageMagick v6 and v7 are explicitly supported at this time. It is also possible
       to specify which installation of ImageMagick to use by setting an environment
-      variable ``MAGICK_HOME`` with the path to the folder containing the ImageMagick
+      variable ``MAGICK_HOME`` with the path to the directory containing the ImageMagick
       binaries.
 
 Installing

@@ -131,7 +131,7 @@ class Cards_Layout_Options(BaseModel):
         {
             "cards_layout_options": {
                 "logo": {
-                    "image": "tabler/message",
+                    "image": "images/message.png",
                     "color": "#4051B2"
                 }
             }

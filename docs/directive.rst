@@ -76,7 +76,7 @@ The :rst:dir:`image-generator` directive is a derivative to inject generated ima
                 :meta-data:
                     {
                         "title": "My overridden page title",
-                        "icon": "tabler/messages"
+                        "icon": "images/messages.png"
                     }
                 :hide-meta-data:
 

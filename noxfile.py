@@ -10,7 +10,6 @@ nox.options.reuse_existing_virtualenvs = True
 def bundle_icons(session: nox.Session, quiet: bool = True):
     """Bundle icons for distribution"""
     icon_pkgs = {
-        "tabler": ["@tabler/icons/icons", "@tabler/icons/LICENSE"],
         "material": ["@mdi/svg/svg", "@mdi/svg/LICENSE"],
         "octicons": ["@primer/octicons/build/svg", "@primer/octicons/LICENSE"],
         "simple": ["simple-icons/icons", "simple-icons/LICENSE.md"],

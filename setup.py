@@ -11,7 +11,6 @@ from setuptools.command.sdist import sdist
 
 pkg_root = Path(__file__).parent
 icon_pkgs = {
-    "tabler": ["@tabler/icons/icons", "@tabler/icons/LICENSE"],
     "material": ["@mdi/svg/svg", "@mdi/svg/LICENSE"],
     "octicons": ["@primer/octicons/build/svg", "@primer/octicons/LICENSE"],
     "simple": ["simple-icons/icons", "simple-icons/LICENSE.md"],
@@ -64,7 +63,7 @@ class BundleCommand(Command, SubCommand):
         if (
             self.dirty
             and not Path(
-                pkg_root, "src", "sphinx_social_cards", ".icons", "tabler"
+                pkg_root, "src", "sphinx_social_cards", ".icons", "material"
             ).exists()
         ):
             raise OSError("Building package 'dirty', but no generated SVG files exist.")
