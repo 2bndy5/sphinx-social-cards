@@ -2,14 +2,18 @@
 from typing import Optional, Union, List
 
 from typing_extensions import Literal
-from pydantic import field_validator
+from pydantic import field_validator, Field
+from typing_extensions import Annotated
 
 from .base_model import CustomBaseModel
+
+PositiveInt = Annotated[int, Field(gt=0)]
+PositiveFloat = Annotated[float, Field(gt=0)]
 
 
 class Border(CustomBaseModel):
     #: The border's width in pixels. Defaults to :yaml:`0`.
-    width: int = 0
+    width: Annotated[int, Field(ge=0)] = 0
     #: The border's color.
     color: Optional[str] = None
 
@@ -309,8 +313,8 @@ class Line(CustomBaseModel):
     absolute maximum `size <Size>`."""
 
     #: The maximum number of lines that can be used in the layer.
-    amount: int = 1
-    height: float = 1
+    amount: PositiveInt = 1
+    height: PositiveFloat = 1
     """The relative height allotted to each line. This has a direct affect on spacing
     between lines because each layer has an absolute maximum `size <Size>`.
 
@@ -362,10 +366,6 @@ class Line(CustomBaseModel):
         {% endfor %}
     """
 
-    @field_validator("amount")
-    def assert_line_amount(cls, val):
-        return val or 1
-
 
 class Font(CustomBaseModel):
     """The specification that describes the font to be used.
@@ -395,7 +395,7 @@ class Font(CustomBaseModel):
         Instead, the layout customization could be used to individually layer stylized
         text.
     """
-    weight: int = 400
+    weight: PositiveInt = 400
     """The weight of the font used. If this doesn't match the weights available, then
     the first weight defined for the font is used and a warning is emitted. Default is
     :yaml:`400`."""

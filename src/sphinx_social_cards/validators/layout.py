@@ -1,12 +1,9 @@
 """This module contains validating dataclasses for a parsed yaml layout."""
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
-from typing_extensions import Annotated
+from pydantic import BaseModel
 from .base_model import CustomBaseModel
-from .layers import Background, Icon, Typography, Ellipse, Rectangle
-
-PositiveInt = Annotated[int, Field(gt=0)]
+from .layers import Background, Icon, Typography, Ellipse, Rectangle, PositiveInt
 
 
 class Size(CustomBaseModel):

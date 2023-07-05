@@ -65,7 +65,7 @@ def find_image(
     return None
 
 
-_IDENTIFY_INFO = re.compile(r"DPI: (\d+\.?\d+?) SIZE: (\d+)x(\d+) UNITS: (\w+)")
+_IDENTIFY_INFO = re.compile(r'^"DPI: ([^\s]*) SIZE: ([^x]*)x([^\s]*) UNITS: (.*)"$')
 
 
 def convert_svg(
@@ -100,13 +100,28 @@ def convert_svg(
     # get size of svg via ImageMagick
     svg_info = subprocess.run(magick_cmd, check=True, capture_output=True)
     m = _IDENTIFY_INFO.search(svg_info.stdout.decode(encoding="utf-8"))
-    assert m is not None and len(m.groups()) == 4
+    assert (
+        m is not None
+    ), "ImageMagick identify output unrecognized:\n" + svg_info.stdout.decode(
+        encoding="utf-8"
+    )
+    assert len(m.groups()) == 4, (
+        "ImageMagick identify output is malformed. Captured data: %r" % m.groups()
+    )
     dpi, w, h, svg_units = m.groups()
-    svg_dpi = float(dpi)
+    try:
+        svg_dpi = float(dpi)
+    except ValueError as exc:
+        raise ValueError(f"Invalid DPI value: {dpi}") from exc
+    assert svg_dpi, "ImageMagick reported SVG's DPI as 0. Is Inkscape installed?"
     if svg_units == "PixelsPerCentimeter":
         svg_dpi *= 2.54
-    # LOGGER.info("DPI: %d", svg_dpi)
-    svg_size = Size(width=int(w), height=int(h))
+    try:
+        width = int(w)
+        height = int(h)
+    except ValueError as exc:
+        raise ValueError(f"Invalid width/height value(s): (w={w}, h={h})") from exc
+    svg_size = Size(width=width, height=height)  # can also raise ValueError
     out_path.parent.mkdir(parents=True, exist_ok=True)
     magick_exe = get_magick_cmd("magick" if imagemagick_version >= (7,) else "convert")
     assert isinstance(magick_exe, str)
