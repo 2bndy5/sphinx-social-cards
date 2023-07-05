@@ -65,7 +65,7 @@ def find_image(
     return None
 
 
-_IDENTIFY_INFO = re.compile(r'^"DPI: ([^\s]*) SIZE: ([^x]*)x([^\s]*) UNITS: (.*)"$')
+_IDENTIFY_INFO = re.compile(r'^"DPI: ([^\s]*) SIZE: ([^x]*)x([^\s]*) UNITS: ([^"]*)"$')
 
 
 def convert_svg(
@@ -99,7 +99,7 @@ def convert_svg(
 
     # get size of svg via ImageMagick
     svg_info = subprocess.run(magick_cmd, check=True, capture_output=True)
-    m = _IDENTIFY_INFO.search(svg_info.stdout.decode(encoding="utf-8"))
+    m = _IDENTIFY_INFO.match(svg_info.stdout.decode(encoding="utf-8"))
     assert (
         m is not None
     ), "ImageMagick identify output unrecognized:\n" + svg_info.stdout.decode(
@@ -109,19 +109,35 @@ def convert_svg(
         "ImageMagick identify output is malformed. Captured data: %r" % m.groups()
     )
     dpi, w, h, svg_units = m.groups()
-    try:
-        svg_dpi = float(dpi)
-    except ValueError as exc:
-        raise ValueError(f"Invalid DPI value: {dpi}") from exc
-    assert svg_dpi, "ImageMagick reported SVG's DPI as 0. Is Inkscape installed?"
+    if not dpi.isdecimal() or not dpi.isdigit():
+        raise ValueError(f"Invalid DPI value: {dpi}")
+    # NOTE: reported DPI can be 0 if Inkscape is not installed
+    svg_dpi = float(dpi) or 96  # assume std DPI of 96 if 0 was reported
     if svg_units == "PixelsPerCentimeter":
         svg_dpi *= 2.54
-    try:
-        width = int(w)
-        height = int(h)
-    except ValueError as exc:
-        raise ValueError(f"Invalid width/height value(s): (w={w}, h={h})") from exc
-    svg_size = Size(width=width, height=height)  # can also raise ValueError
+    if not w.isdecimal() or not w.isdigit() or not h.isdecimal() or not h.isdigit():
+        raise ValueError(f"Invalid width/height value(s): (w={w}, h={h})")
+    svg_size = Size(width=int(w), height=int(h))  # can also raise ValueError
+
+    # NOTE: Workaround clipping of converted small images when Inkscape is not
+    # installed by telling ImageMagick to use an input canvas of enlarged -size
+    # with -density applied.
+    enlarged = Size(
+        width=svg_size.width + (48 * (svg_size.width < 48)),
+        height=svg_size.height + (48 * (svg_size.height < 48)),
+    )
+    new_dpi = svg_dpi
+    if size.width > svg_size.width or size.height > svg_size.height:
+        # resize SVG <path> elements using density of DPI based on original size
+        if size.height < size.width:
+            new_dpi = round(svg_dpi * (size.height / svg_size.height))
+        else:
+            new_dpi = round(svg_dpi * (size.width / svg_size.width))
+    elif svg_size.width < enlarged.width:
+        # still need to set density as part of workaround noted above
+        new_dpi = round(svg_dpi * (enlarged.width * svg_size.width))
+    # LOGGER.info("new DPI: %s", new_dpi)
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     magick_exe = get_magick_cmd("magick" if imagemagick_version >= (7,) else "convert")
     assert isinstance(magick_exe, str)
@@ -129,19 +145,15 @@ def convert_svg(
         magick_exe,
         "-background",
         "none",
+        "-density",
+        str(new_dpi),
+        "-size",
+        f"{enlarged.width}x{enlarged.height}",
         img_in,
         img_out,
     ]
-
-    if size.width > svg_size.width or size.height > svg_size.height:
-        # resize svg using density of DPI based on original size
-        if size.height < size.width:
-            new_dpi = int(svg_dpi * (size.height / svg_size.height))
-        else:
-            new_dpi = int(svg_dpi * (size.width / svg_size.width))
-        # LOGGER.info("new DPI: %s", new_dpi)
-        magick_cmd.insert(1, "-density")
-        magick_cmd.insert(2, str(new_dpi))
+    if imagemagick_version >= (7,):
+        magick_cmd.insert(1, "convert")
 
     subprocess.run(magick_cmd, check=True)
     return out_path
