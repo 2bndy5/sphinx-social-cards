@@ -94,6 +94,8 @@ jobs:
         node-version:
           - '16.x'
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -107,27 +109,29 @@ jobs:
       - name: Install wheel
         shell: bash
         run: python -m pip install $(ls dist/*.whl)
-      # - name: Setup ImageMagick
-      #   uses: mfinelli/setup-imagemagick@v2
-      # - name: Install appimage deps on Linux
-      #   if: runner.os == 'Linux'
-      #   run: sudo apt-get install -y libfuse2
+      # Inkscape seems to be a preferred "delegate" for ImageMagick to work with SVGs
+      # - name: Install Inkscape
+      #   # NOTE: This action is not published to the marketplace!
+      #   # See .github/actions/install_inkscape/action.yml for more detail.
+      #   uses: ./.github/actions/install_inkscape
       - name: Build docs
-        run: pipx run nox -s docs
+        env:
+          GITHUB_REST_API_TOKEN: ${{ secrets.TEST_VCS_PLUGIN_GITHUB }}
+        run: pipx run nox -s "docs(html)"
       - name: Upload doc builds as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: doc-builds-${{ runner.os }}
-          path: docs/_build/
+          path: docs/_build/html
       - name: upload docs to github pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && runner.os == 'Linux'
-        uses: peaceiris/actions-gh-pages@v3.9.3
+        uses: peaceiris/actions-gh-pages@v3
         with:
+          publish_dir: docs/_build/html
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_build/html
 
   test:
-    needs: [build]
+    needs: [check_conventions]
     strategy:
       fail-fast: false
       matrix:
@@ -176,10 +180,6 @@ jobs:
         with:
           path: "**/.nox"
           key: ${{ runner.os }}-${{ matrix.python-version }}-nox-${{ hashFiles('noxfile.py') }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: python-packages-${{ runner.os }}
-          path: dist
       - name: Run Python tests
         env:
           COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}.${{ matrix.sphinx-version }}

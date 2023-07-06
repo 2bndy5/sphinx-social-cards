@@ -1,0 +1,37 @@
+name: 'Install Inkscape'
+description: 'A GitHub Composite Action to install Inkscape'
+
+# if using this action in a different repository's CI:
+#
+# jobs:
+#   my_first_job:
+#     steps:
+#       - name: checkout sphinx-social-cards repo
+#         uses: actions/checkout@v3
+#         with:
+#           path: .github
+#           repository: 2bndy5/sphinx-social-cards
+#       - name: Install Inkscape
+#         uses: .github/sphinx-social-cards/.github/actions/install_inkscape
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Using Linux'
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      runs: |
+        sudo add-apt-repository -y ppa:inkscape.dev/stable
+        sudo apt-get update
+        sudo apt-get install -y inkscape
+    - name: 'Using MacOS'
+      if: ${{ runner.os == 'MacOS' }}
+      shell: bash
+      # using homebrew seems to be unofficial (?)
+      # TODO: Install Inkscape via recommended downloads: https://inkscape.org/release/1.2.2/mac-os-x/
+      runs: |
+        brew install --cask inkscape
+    - name: 'Using Windows'
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      runs: winget install --id Inkscape.Inkscape --silent

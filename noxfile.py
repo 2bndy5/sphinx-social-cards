@@ -80,13 +80,7 @@ def docs(session: nox.Session, builder: str):
 )
 def tests(session: nox.Session, sphinx: str):
     """Run unit tests and collect code coverage analysis."""
-    dist_dir = Path(__file__).parent / "dist"
-    for f in dist_dir.glob("*.whl"):
-        whl = str(f)
-        break
-    else:
-        raise FileNotFoundError("dist/*.whl not found. Have you built the pkg?")
-    session.install(whl)
+    session.install("-e", ".")
     session.install(f"sphinx{sphinx}")
     session.install("-r", "tests/requirements.txt")
     session.run("coverage", "run", "-m", "pytest", "-v")

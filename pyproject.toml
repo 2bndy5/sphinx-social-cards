@@ -60,10 +60,10 @@ plugins = ["pydantic.mypy"]
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
-addopts = "--durations=0 --durations-min=1"
+addopts = "--durations=0 --durations-min=1 -rs"
 
 [tool.coverage.run]
-source_pkgs = ["sphinx_social_cards"]
+source = ["src/sphinx_social_cards"]
 dynamic_context = "test_function"
 # These options are useful if combining coverage data from multiple tested envs
 parallel = true
