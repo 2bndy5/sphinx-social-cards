@@ -42,7 +42,7 @@ exclude = ["plugins*", "validators*"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-optional-dependencies = { vcs = { file = ["requirements-vcs.txt"] }}
+optional-dependencies = { github = { file = ["requirements-github.txt"] }}
 
 [tool.setuptools_scm]
 # It would be nice to include the commit hash in the version, but that

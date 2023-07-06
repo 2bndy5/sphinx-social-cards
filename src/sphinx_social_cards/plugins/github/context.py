@@ -5,8 +5,8 @@ from urllib.parse import quote
 
 import pydantic
 from sphinx.util.logging import getLogger
-from . import reduce_big_number, strip_url_protocol, get_cache_dir
-from ....validators import try_request
+from .utils import reduce_big_number, strip_url_protocol, get_cache_dir
+from ...validators import try_request
 
 LOGGER = getLogger(__name__)
 
@@ -125,8 +125,10 @@ def get_api_token() -> Dict[str, Dict[str, str]]:
     return {"headers": {"Authorization": token}}
 
 
-def get_context_github(owner: str, repo: Optional[str]) -> Dict[str, Any]:
+def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, Any]:
     gh_ctx = Github()
+    if owner is None:
+        return gh_ctx.model_dump()
     cache_dir = get_cache_dir()
     owner_cache_name = quote(owner)
     owner_cache_file = Path(cache_dir, owner_cache_name).with_suffix(".json")

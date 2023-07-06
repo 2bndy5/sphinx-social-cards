@@ -27,30 +27,28 @@ def strip_url_protocol(url: str) -> str:
     return f"{url_parts.netloc}{url_parts.path}"
 
 
-def match_url(
-    repo_url: str, site_url: str
-) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+def match_url(repo_url: str, site_url: str) -> Tuple[Optional[str], Optional[str]]:
     LOGGER.info("repo_url: %s", repo_url)
     match_repo_url = re.match(
         r"^.+github\.com\/([^/]+)\/?([^/]+)?",
         repo_url,
     )
     match_gh_pages_url = re.match(r"^[^:]+://(.*).github.io/(.*)/?$", site_url)
-    owner, repo, service = (None, None, None)
+    owner, repo = (None, None)
     if match_repo_url is not None:
         owner, repo = match_repo_url.groups()[:2]
-        service = "github"
     elif match_gh_pages_url is not None:
         owner, repo = match_gh_pages_url.groups()[:2]
-        service = "github"
-    return owner, repo, service
+    return owner, repo
 
 
 def get_cache_dir() -> str:
     time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
     today = time.strftime(time_fmt, time.localtime())
     cache_dir = Path(
-        user_cache_dir("sphinx_social_cards.plugins.vcs", "2bndy5", version=today)
+        user_cache_dir(
+            "sphinx_social_cards.plugins.vcs", "2bndy5", version=today  # (1)!
+        )
     )
     if cache_dir.parent.exists() and not cache_dir.exists():
         shutil.rmtree(cache_dir.parent)  # purge the old cache

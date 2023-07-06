@@ -41,7 +41,7 @@ extensions = [
     "sphinx_immaterial.theme_result",
     "sphinx_immaterial.task_lists",
     "sphinx_social_cards",
-    "sphinx_social_cards.plugins.vcs",
+    "sphinx_social_cards.plugins.github",
 ]
 
 templates_path = ["_templates"]
@@ -246,21 +246,18 @@ layouts = sorted(
     key=lambda n: n if n != "blog" else "z",
 )
 
-shipped_plugins = Path(pkg_root, "plugins")
-vcs_plugin_layouts = Path(shipped_plugins, "vcs", "layouts")
-vcs_layouts = {
-    brands.name: sorted(
-        [
-            layout.relative_to(vcs_plugin_layouts).with_suffix("").as_posix()
-            for layout in brands.rglob("*.yml")
-        ]
-    )
-    for brands in vcs_plugin_layouts.glob("*")
-}
+shipped_plugins = Path()
+github_plugin_layouts = Path(pkg_root, "plugins", "github", "layouts")
+github_layouts = sorted(
+    [
+        layout.relative_to(github_plugin_layouts).with_suffix("").as_posix()
+        for layout in github_plugin_layouts.rglob("*.yml")
+    ]
+)
 
 jinja_contexts = {
     "layouts": {"layouts": layouts},
-    "plugins.vcs": {"brands": vcs_layouts},
+    "github_plugin_layouts": {"layouts": github_layouts},
 }
 
 

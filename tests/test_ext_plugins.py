@@ -3,7 +3,10 @@ import pytest
 from sphinx.testing.util import SphinxTestApp
 from sphinx.errors import ExtensionError
 from sphinx_social_cards.plugins import add_images_dir
-from sphinx_social_cards.plugins.vcs.utils import reduce_big_number, strip_url_protocol
+from sphinx_social_cards.plugins.github.utils import (
+    reduce_big_number,
+    strip_url_protocol,
+)
 
 
 def test_blank_url():
@@ -27,11 +30,11 @@ def test_big_number():
     ),
     ids=["repo_url", "site_url", "invalid_url", "only_owner", "from_cache"],
 )
-def test_vcs_github(sphinx_make_app, url_key: str, url: str):
+def test_plugin_github(sphinx_make_app, url_key: str, url: str):
     try:
         app: SphinxTestApp = sphinx_make_app(
             extra_conf=f"""html_theme = "furo"
-extensions.append("sphinx_social_cards.plugins.vcs")
+extensions.append("sphinx_social_cards.plugins.github")
 social_cards["cards_layout"] = "github/default"
 {url_key}="{url}"
 """,

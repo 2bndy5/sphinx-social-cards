@@ -14,7 +14,7 @@ To enable this plugin, add it to your list of sphinx :confval:`extensions` in co
 
     extensions = [
         "sphinx_social_cards",
-        "sphinx_social_cards.plugins.vcs",
+        "sphinx_social_cards.plugins.github",
     ]
 
 Configuration
@@ -44,8 +44,9 @@ value to set the repository URL.
 
 Dependencies
 ************
+.. _appdirs: https://github.com/ActiveState/appdirs
 
-To cache the owner/repository information, the ``appdirs`` dependency is needed. This
+To cache the owner/repository information, the appdirs_ dependency is needed. This
 can either be install directly:
 
 .. code-block:: shell
@@ -57,7 +58,7 @@ or using the ``sphinx-social-cards`` package's optional dependency:
 .. code-block:: text
     :caption: requirements.txt
 
-    sphinx-social-cards[vcs]
+    sphinx-social-cards[github]
 
 .. abstract:: Implementation details about the cached information
     :collapsible:
@@ -65,18 +66,30 @@ or using the ``sphinx-social-cards`` package's optional dependency:
     By default, the cache of owner/repository information is updated once a day (unless
     the cache is purged).
 
-    .. literalinclude:: ../../src/sphinx_social_cards/plugins/vcs/utils/__init__.py
-        :caption: How the cache location is chosen via ``appdirs`` API
+    .. literalinclude:: ../../src/sphinx_social_cards/plugins/github/utils.py
+        :caption: How the cache location is chosen via appdirs_ API
         :language: python
         :pyobject: get_cache_dir
+
+    .. code-annotations::
+        1. Following the appdirs_ README, this will create a cache according to the
+           OS used:
+
+           - On Windows:
+             ``C:\\Users\\%USERNAME%\\AppData\\Local\\2bndy5\\sphinx-social-cards\\Cache\\\
+<month> <day> <year>``
+           - On Linux: ``/home/$(whoami)/.cache/sphinx-social-cards/<month> <day>
+             <year>``
+           - On MacOS: ``/Users/$(id -un)/Library/Caches/sphinx-social-cards/<month>
+             <day> <year>``
 """
 from pathlib import Path
-from typing import Dict, Any, Tuple
+from typing import Tuple
 
 from sphinx.application import Sphinx
 from sphinx.util.logging import getLogger
 from .utils import match_url
-from .utils.github import get_context_github
+from .context import get_context_github
 from .. import (
     SPHINX_SOCIAL_CARDS_CONFIG_KEY,
     add_jinja_context,
@@ -99,22 +112,19 @@ def _get_config_info(app: Sphinx) -> Tuple[str, str]:
 
 def on_builder_init(app: Sphinx):
     repo_url, site_url = _get_config_info(app)
-    owner, repo, service = match_url(repo_url, site_url)
+    owner, repo = match_url(repo_url, site_url)
 
-    vcs_env: Dict[str, Any] = {}
-    if service is None:
+    if owner is None and repo is None:
         LOGGER.warning("Failed to identify owner/repository from %s", repo_url)
 
     # Add the custom layouts to the `cards_layout_dir` list
     add_layouts_dir(app, Path(__file__).parent / "layouts")
 
     # Use information to get a JSON payload from a REST API call
-    if service == "github":
-        assert owner is not None
-        vcs_env["github"] = get_context_github(owner, repo)
+    gh_ctx = get_context_github(owner, repo)
 
     # Add the fetched information to the builder environment
-    add_jinja_context(app, {"vcs": vcs_env})
+    add_jinja_context(app, {"github": gh_ctx})
 
 
 def setup(app: Sphinx):
