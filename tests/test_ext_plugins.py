@@ -1,5 +1,9 @@
+import os
 from pathlib import Path
+import platform
+import sys
 import pytest
+from sphinx import version_info as sphinx_version
 from sphinx.testing.util import SphinxTestApp
 from sphinx.errors import ExtensionError
 from sphinx_social_cards.plugins import add_images_dir
@@ -31,6 +35,16 @@ def test_big_number():
     ids=["repo_url", "site_url", "invalid_url", "only_owner", "from_cache"],
 )
 def test_plugin_github(sphinx_make_app, url_key: str, url: str):
+    if (
+        os.environ.get("CI", False)  # should not be set locally
+        and platform.system().lower() != "Linux"
+        and sys.version_info < (3, 11)  # TODO: update this when applicable
+        and sphinx_version < (7,)
+    ):
+        pytest.skip(
+            "To avoid REST API rate limit, this test runs (in CI) only on Linux with "
+            "Python v3.11+ and Sphinx v7+"
+        )
     try:
         app: SphinxTestApp = sphinx_make_app(
             extra_conf=f"""html_theme = "furo"

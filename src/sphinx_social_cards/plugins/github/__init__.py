@@ -76,8 +76,8 @@ or using the ``sphinx-social-cards`` package's optional dependency:
            OS used:
 
            - On Windows:
-             ``C:\\Users\\%USERNAME%\\AppData\\Local\\2bndy5\\sphinx-social-cards\\Cache\\\
-<month> <day> <year>``
+             ``%LOCALAPPDATA%\\2bndy5\\sphinx-social-cards\\Cache\\<month> <day>
+             <year>``
            - On Linux: ``/home/$(whoami)/.cache/sphinx-social-cards/<month> <day>
              <year>``
            - On MacOS: ``/Users/$(id -un)/Library/Caches/sphinx-social-cards/<month>
