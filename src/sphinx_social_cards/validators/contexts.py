@@ -1,10 +1,15 @@
 """This module holds the data classes used to populate the jinja contexts."""
 from pathlib import Path
+import platform
+import time
 from typing import Union, Dict, Optional, Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from .base_model import CustomBaseModel
 from .layers import Icon, Font
+
+time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
+today_default = time.strftime(time_fmt, time.localtime())
 
 
 class Cards_Layout_Options(BaseModel):
@@ -167,7 +172,13 @@ class Config(BaseModel):
     #: The full language name that corresponds to the :confval:`language` value
     language: Optional[str] = None
     #: The :confval:`today` value.
-    today: Optional[str] = None
+    today: Optional[str] = today_default
+
+    @field_validator("today")
+    def revert_today_default(cls, val: Optional[str]):
+        if not val:
+            return today_default
+        return val
 
 
 class Page(CustomBaseModel):

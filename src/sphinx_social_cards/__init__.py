@@ -214,7 +214,7 @@ class SocialCardTransform(SphinxTransform):
                 site_url=ctx_url,
                 author=getattr(self.config, "author", ""),
                 language=_get_lang_name(self.config),
-                today=getattr(self.config, "today", ""),
+                today=getattr(self.config, "today", None),
                 site_description=conf.description,
             ),
             page=Page(
@@ -366,7 +366,7 @@ class SocialCardDirective(SphinxDirective):
                 ),
                 author=getattr(self.config, "author", ""),
                 language=_get_lang_name(self.config),
-                today=getattr(self.config, "today", ""),
+                today=getattr(self.config, "today", None),
             ),
             plugin=getattr(self.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {}),
         )
