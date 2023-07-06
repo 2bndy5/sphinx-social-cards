@@ -71,7 +71,7 @@ def add_doc_meta_data(document: docutils.nodes.document, meta_data: Dict[str, st
     parent = docutils.nodes.Element()
 
     for key, val in meta_data.items():
-        node = docutils.nodes.meta()  # type: ignore[attr-defined]
+        node = meta_node_types[0]()  # type: ignore[attr-defined]
         if "=" in key:
             k, v = key.split("=", 1)
             node[k] = v
@@ -83,7 +83,7 @@ def add_doc_meta_data(document: docutils.nodes.document, meta_data: Dict[str, st
     # insert at begin of document
     index = (
         document.first_child_not_matching_class(
-            (docutils.nodes.Titular, docutils.nodes.meta)  # type: ignore[attr-defined]
+            (docutils.nodes.Titular, *meta_node_types)  # type: ignore[attr-defined]
         )
         or 0
     )
