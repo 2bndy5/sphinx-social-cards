@@ -82,7 +82,7 @@ then the closest available weight is used.
     fonts has not been implemented. This is because ``pillow`` requires additional dependencies to
     work with variable fonts.
 
-    Icon fonts, namely the material icon fonts from Google via Fontsource_, are also no supported
+    Icon fonts, namely the material icon fonts from Google via Fontsource_, are also not supported
     because they are designed to be used in a browser with CSS capability. Implementing icon fonts
     without CSS, would require using special string syntax in the yaml layout, and it just
     doesn't seem worth it.

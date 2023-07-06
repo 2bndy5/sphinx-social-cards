@@ -24,7 +24,7 @@
     :caption: Plugins
 
     plugins/index
-    plugins/vcs
+    plugins/github
 
 Social Cards
 ============

@@ -439,8 +439,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../plugins/vcs.html" class="md-nav__link">
-        <span class="md-ellipsis">sphinx_<wbr>social_<wbr>cards.<wbr>plugins.<wbr>vcs</span>
+      <a href="../../../plugins/github.html" class="md-nav__link">
+        <span class="md-ellipsis">sphinx_<wbr>social_<wbr>cards.<wbr>plugins.<wbr>github</span>
       </a>
     </li>
   
@@ -662,8 +662,9 @@
     <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: The full language name that corresponds to the :confval:`language` value</span>
     <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: The :confval:`today` value.</span>
     <span class="n">today</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">today_default</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The :confval:`today` value. Defaults to current date using</span>
+<span class="sd">    :python:`&quot;\&lt;month&gt; \&lt;day&gt; \&lt;year&gt;&quot;` format.&quot;&quot;&quot;</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;today&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">revert_today_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
