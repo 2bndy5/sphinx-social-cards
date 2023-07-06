@@ -37,10 +37,10 @@ def test_meta_directive(sphinx_make_app) -> None:
         files={
             "index.rst": """
 .. meta::
-    :property=og\:description: A test description
-    :property=og\:title: A test title
-    :twitter\:description: A test description
-    :twitter\:title: A test title
+    :property=og\\:description: A test description
+    :property=og\\:title: A test title
+    :twitter\\:description: A test description
+    :twitter\\:title: A test title
 
 Test Title
 ==========
