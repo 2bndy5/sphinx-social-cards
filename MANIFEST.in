@@ -1,3 +1,0 @@
-graft src/sphinx_social_cards/layouts
-graft src/sphinx_social_cards/plugins/vcs/layouts
-graft src/sphinx_social_cards/.icons

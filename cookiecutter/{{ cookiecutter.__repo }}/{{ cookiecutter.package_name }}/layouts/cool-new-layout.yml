@@ -1,9 +1,0 @@
-layers:
-  - background: {}
-  - typography:
-      content: "{{ '{{' }} plugin.{{ cookiecutter.package_name }}.example }}"
-      line: { amount: 2 }
-  - icon: { image: cool_new_image.png }
-    size: { x: 940, y: 215 }
-    offset: { width: 200, height: 200 }
-    rectangle: { border: 5, color: black }

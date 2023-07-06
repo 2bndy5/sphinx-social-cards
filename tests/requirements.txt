@@ -1,4 +1,0 @@
-pytest
-coverage[toml]
-furo
--r ../requirements-vcs.txt

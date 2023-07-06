@@ -1,5 +1,0 @@
-docutils-stubs
-types-requests
-types-PyYAML
-nox
-pre-commit
