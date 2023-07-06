@@ -68,10 +68,12 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm install
+      - run: pip install build
       - name: Build src distribution
-        run: python setup.py sdist
+        if: runner.os == 'Linux'
+        run: python -m build -s
       - name: Build binary distribution
-        run: pip wheel -w dist --no-deps .
+        run: python -m build -w
       - name: Upload wheels as artifacts
         uses: actions/upload-artifact@v3
         with:
