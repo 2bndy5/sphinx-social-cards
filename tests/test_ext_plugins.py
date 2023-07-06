@@ -1,6 +1,7 @@
 from pathlib import Path
 import pytest
 from sphinx.testing.util import SphinxTestApp
+from sphinx.errors import ExtensionError
 from sphinx_social_cards.plugins import add_images_dir
 from sphinx_social_cards.plugins.vcs.utils import reduce_big_number, strip_url_protocol
 
@@ -26,27 +27,32 @@ def test_big_number():
     ),
     ids=["repo_url", "site_url", "invalid_url", "only_owner", "from_cache"],
 )
-def test_vcs_github(
-    sphinx_make_app, caplog: pytest.LogCaptureFixture, url_key: str, url: str
-):
-    caplog.set_level(10, "sphinx.sphinx_social_cards")
-    app: SphinxTestApp = sphinx_make_app(
-        extra_conf=f"""html_theme = "furo"
+def test_vcs_github(sphinx_make_app, url_key: str, url: str):
+    try:
+        app: SphinxTestApp = sphinx_make_app(
+            extra_conf=f"""html_theme = "furo"
 extensions.append("sphinx_social_cards.plugins.vcs")
 social_cards["cards_layout"] = "github/default"
 {url_key}="{url}"
 """,
-        files={
-            "index.rst": """
+            files={
+                "index.rst": """
 
 Test Title
 ==========
 """
-        },
-    )
+            },
+        )
 
-    app.build()
-    assert not app._warning.getvalue()
+        app.build()
+        assert not app._warning.getvalue()
+    except (RuntimeError, ExtensionError) as exc:
+        if "returned 403" in str(exc):
+            pytest.skip(
+                "GitHub REST API hit rate limit. Code coverage may be compromised."
+            )
+        else:
+            raise exc
 
 
 def test_add_images(sphinx_make_app) -> None:
