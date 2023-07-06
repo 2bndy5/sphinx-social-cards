@@ -1,11 +1,23 @@
 from pathlib import Path
 from typing import List, Dict, Union, Optional
+
 import pytest
 from sphinx.testing.util import SphinxTestApp
 from sphinx_social_cards.validators import (
     try_request,
     assert_path_exists,
     _validate_color,
+)
+
+try:
+    from importlib.metadata import version as get_version
+except ImportError:
+    from importlib_metadata import version as get_version  # type: ignore
+
+need_sphinx_immaterial_and_pydantic_v2 = pytest.mark.skipif(
+    tuple([int(x) for x in get_version("sphinx-immaterial").split(".")[:3]])
+    < (0, 11, 5),
+    reason="pydantic v2 API not used by sphinx-immaterial until v0.11.5",
 )
 
 PALETTE = {"primary": "green", "accent": "light-green"}
@@ -26,6 +38,7 @@ def test_bad_color(color: Optional[str]):
     assert _validate_color(color) == (color, False)
 
 
+@need_sphinx_immaterial_and_pydantic_v2
 @pytest.mark.parametrize("palette", [PALETTE, [PALETTE, PALETTE]], ids=["dict", "list"])
 def test_default_immaterial_colors(
     sphinx_make_app, palette: Union[List[Dict[str, str]], Dict[str, str]]
@@ -46,6 +59,7 @@ social_cards["cards_layout_options"] = {{"background_color ": "#00F"}}
     # print(app._status.getvalue())
 
 
+@need_sphinx_immaterial_and_pydantic_v2
 def test_default_colors(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
         extra_conf="""html_theme = 'furo'
@@ -59,6 +73,7 @@ social_cards["cards_layout_options"] = { "background_color ": "#00F" }
     # print(app._status.getvalue())
 
 
+@need_sphinx_immaterial_and_pydantic_v2
 @pytest.mark.parametrize("font", [{"text": "Roboto"}, False], ids=["default", "system"])
 def test_default_font(sphinx_make_app, font: Union[Dict[str, str], bool]):
     app: SphinxTestApp = sphinx_make_app(
@@ -76,6 +91,7 @@ html_theme_options = {{
     # print(app._status.getvalue())
 
 
+@need_sphinx_immaterial_and_pydantic_v2
 @pytest.mark.parametrize(
     "logo,svg",
     (
