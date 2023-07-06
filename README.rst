@@ -7,8 +7,8 @@
 .. image:: https://static.pepy.tech/personalized-badge/sphinx-social-cards?period=total&units=international_system&left_color=grey&right_color=blue&left_text=PyPi%20Downloads
     :target: https://pepy.tech/project/sphinx-social-cards
     :alt: Total PyPI downloads
-.. image:: https://codecov.io/gh/2bndy5/sphinx-social-cards/branch/master/graph/badge.svg?token=0CKIC3TVB6
-    :target: https://codecov.io/gh/2bndy5/sphinx-social-cards
+.. image:: https://codecov.io/github/2bndy5/sphinx-social-cards/branch/main/graph/badge.svg?token=I6E0KUANUO
+    :target: https://codecov.io/github/2bndy5/sphinx-social-cards
     :alt: Code Coverage
 
 sphinx-social-cards
