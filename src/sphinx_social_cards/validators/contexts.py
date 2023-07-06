@@ -171,8 +171,9 @@ class Config(BaseModel):
     author: Optional[str] = None
     #: The full language name that corresponds to the :confval:`language` value
     language: Optional[str] = None
-    #: The :confval:`today` value.
     today: Optional[str] = today_default
+    """The :confval:`today` value. Defaults to current date using
+    :python:`"\<month> \<day> \<year>"` format."""
 
     @field_validator("today")
     def revert_today_default(cls, val: Optional[str]):

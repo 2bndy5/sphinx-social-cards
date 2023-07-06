@@ -53,7 +53,7 @@ class Debug(CustomBaseModel):
         :dry-run:
 
     Each layer will have a boundary box drawn with some text to indicate the layer
-    number (as ordered in the list of `Layout.layers`) and corresponding
+    number (as ordered in the list of layout `layers <Layout.layers>`) and corresponding
     orientation.
 
     - The text in the top-left corner indicates the layer number, `x <Offset.x>`
