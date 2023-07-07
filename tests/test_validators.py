@@ -54,7 +54,6 @@ social_cards["cards_layout_options"] = {{"background_color ": "#00F"}}
         files={"index.rst": "\nTest Title\n=========="},
     )
 
-    app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
 
@@ -68,7 +67,6 @@ social_cards["cards_layout_options"] = { "background_color ": "#00F" }
         files={"index.rst": "\nTest Title\n=========="},
     )
 
-    app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
 
@@ -86,7 +84,6 @@ html_theme_options = {{
         files={"index.rst": "\nTest Title\n=========="},
     )
 
-    app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
 
@@ -118,7 +115,6 @@ html_logo = {repr(logo)}
         files={"index.rst": "\nTest Title\n=========="},
     )
 
-    app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
 

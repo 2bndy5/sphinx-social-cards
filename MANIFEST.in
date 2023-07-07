@@ -1,4 +1,9 @@
 graft src/sphinx_social_cards/layouts
-graft src/sphinx_social_cards/plugins/vcs/layouts
+graft src/sphinx_social_cards/plugins/github/layouts
 graft src/sphinx_social_cards/.icons
 graft src/sphinx_social_cards/.fonts
+recursive-exclude .github **
+recursive-exclude docs **
+recursive-exclude tests **
+recursive-exclude cookiecutter **
+exclude .pre-commit-config.yaml .readthedocs.yaml noxfile.py

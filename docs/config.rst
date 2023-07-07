@@ -49,15 +49,16 @@ multiple places. The order of precedence is:
        layers:
          - typography:
              font:
-               family: "Roboto"
+               family: Roboto
 
 Both approaches use the same `font <Font>` specification.
 
 .. note::
-    The ``Roboto`` font is cached and distributed with this extension.
+    The Roboto fonts are cached and distributed with this extension.
 
     If fonts cannot be fetched from Fontsource_ (and they are not already cached in the
-    `cache_dir` or the distributed cache of ``Roboto`` fonts), then an error will be thrown.
+    `cache_dir` or the distributed cache of Roboto font variants), then an exception will be
+    raised.
 
 Weights over styles
 ~~~~~~~~~~~~~~~~~~~

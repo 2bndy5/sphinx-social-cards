@@ -39,7 +39,7 @@ class FontSourceManager:
     @classmethod
     def _get_info(cls, font: Font) -> Path:
         info_cache = Path(cls.cache_path, font.family).with_suffix(".json")
-        if font.family == "Roboto":
+        if font.family.startswith("Roboto"):
             info_cache = Path(cls.dist_cache, font.family).with_suffix(".json")
         if info_cache.exists():
             font_info = json.loads(info_cache.read_text(encoding="utf-8"))

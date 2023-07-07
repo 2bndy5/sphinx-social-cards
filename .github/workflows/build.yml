@@ -67,13 +67,20 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-      - run: npm install
       - run: pip install build
-      - name: Build src distribution
-        if: runner.os == 'Linux'
-        run: python -m build -s
+      - name: Cache generated package data
+        uses: actions/cache@v3
+        with:
+          path: 'src/sphinx_social_cards/.*/**'
+          key: ${{ runner.os }}-pkg_data-${{ hashFiles('**/package-lock.json', 'setup.py') }}
       - name: Build binary distribution
         run: python -m build -w
+      - name: Build src distribution
+        if: runner.os == 'Linux'
+        env:
+          # skip re-generating the same assets that was already done when building the wheel
+          SPHINX_SOCIAL_CARDS_BUILD_DIRTY: 'true'
+        run: python -m build -s
       - name: Upload wheels as artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -139,7 +146,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   test:
-    needs: [check_conventions]
+    needs: [check_conventions, build]
     strategy:
       fail-fast: false
       matrix:
@@ -188,6 +195,11 @@ jobs:
         with:
           path: "**/.nox"
           key: ${{ runner.os }}-${{ matrix.python-version }}-nox-${{ hashFiles('noxfile.py') }}
+      - name: Cache generated package data
+        uses: actions/cache/restore@v3
+        with:
+          path: 'src/sphinx_social_cards/.*/**'
+          key: ${{ runner.os }}-pkg_data-${{ hashFiles('**/package-lock.json', 'setup.py') }}
       - name: Run Python tests
         env:
           COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}.${{ matrix.sphinx-version }}

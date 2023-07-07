@@ -1,5 +1,3 @@
-from pathlib import Path
-import shutil
 import nox
 
 SUPPORTED_PY_VER = list(f"3.{x}" for x in range(7, 12))
@@ -7,56 +5,7 @@ nox.options.reuse_existing_virtualenvs = True
 
 
 @nox.session(python=False)
-def bundle_icons(session: nox.Session, quiet: bool = True):
-    """Bundle icons for distribution"""
-    icon_pkgs = {
-        "material": ["@mdi/svg/svg", "@mdi/svg/LICENSE"],
-        "octicons": ["@primer/octicons/build/svg", "@primer/octicons/LICENSE"],
-        "simple": ["simple-icons/icons", "simple-icons/LICENSE.md"],
-        "fontawesome": [
-            "@fortawesome/fontawesome-free/svgs",
-            "@fortawesome/fontawesome-free/LICENSE.txt",
-        ],
-    }
-    pkg_root = Path(__file__).parent
-
-    # ensure icons from npm pkg exist
-    session.run("npm", "install", external=True)
-
-    for name, sources in icon_pkgs.items():
-        icons_dist = pkg_root / "src" / "sphinx_social_cards" / ".icons" / name
-        extra_svgo_args = ["-r"]
-        if quiet:
-            extra_svgo_args.append("-q")
-        print("Optimizing", name, "icons")
-        for src in sources:
-            icons_src = pkg_root / "node_modules" / src
-            if icons_src.is_dir():
-                if icons_dist.exists():
-                    shutil.rmtree(str(icons_dist))
-                # copy icons from npm pkg
-                session.run(
-                    "npx",
-                    "svgo",
-                    "--config",
-                    str(pkg_root / "tools" / "svgo_config.js"),
-                    *extra_svgo_args,
-                    "-f",
-                    str(icons_src),
-                    "-o",
-                    str(icons_dist),
-                    external=True,
-                )
-            elif icons_src.is_file():
-                # copy the file (eg. LICENSE)
-                icons_dist.parent.mkdir(parents=True, exist_ok=True)
-                Path(icons_dist, icons_src.name).write_bytes(icons_src.read_bytes())
-
-
-@nox.session(python=False)
-@nox.parametrize(
-    "builder", ["html", "dirhtml", "latex"], ids=["html", "dirhtml", "latex"]
-)
+@nox.parametrize("builder", ["html", "dirhtml"], ids=["html", "dirhtml"])
 def docs(session: nox.Session, builder: str):
     """Build docs."""
     session.run("pip", "install", "-r", "docs/requirements.txt")
