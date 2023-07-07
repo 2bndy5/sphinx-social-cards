@@ -378,8 +378,8 @@ class Font(CustomBaseModel):
     sphinx-immaterial_ theme. However, the sphinx-immaterial theme's :themeconf:`font`
     option is used as a default if that theme is used.
 
-    If the font specified does not exist (eg a typo), then a warning is emitted in the
-    build log and a system font is used.
+    If the font specified is not a Roboto font and cannot be fetched from Fontsource_,
+    then an exception is raised and the docs build is aborted.
     """
     style: str = "normal"
     """The style of the font to be used. Typically, this can be ``italic`` or

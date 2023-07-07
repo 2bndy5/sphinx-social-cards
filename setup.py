@@ -21,6 +21,50 @@ icon_pkgs = {
 }
 
 
+def download_fonts(font_id: str, font_cache: Path):
+    """Downloads all weights and styles of the specified font (.ttf files only).
+
+    :param font_id: The Fontsource font_id is not to be confused with the font family.
+    """
+    header = {
+        # needed to avoid response 403
+        "User-Agent": (
+            "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"
+        ),
+    }
+    with urlopen(
+        Request(f"https://api.fontsource.org/v1/fonts/{font_id}", headers=header)
+    ) as response:
+        data: Dict[str, Any] = json.loads(response.read())
+    assert "family" in data
+    family = data["family"]
+    # cache the font info
+    info_cache = Path(font_cache, family).with_suffix(".json")
+    info_cache.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    # get all weights from default subset of normal style in TTF format
+    assert "weights" in data and data["weights"]
+    weights: List[int] = data["weights"]
+    assert "defSubset" in data
+    subset = data["defSubset"]
+    assert "variants" in data
+    assert "styles" in data
+    for weight in weights:
+        assert str(weight) in data["variants"]
+        for style in data["styles"]:
+            assert style in data["variants"][str(weight)]
+            assert subset in data["variants"][str(weight)][style]
+            assert "url" in data["variants"][str(weight)][style][subset]
+            assert "ttf" in data["variants"][str(weight)][style][subset]["url"]
+            ttf_url: str = data["variants"][str(weight)][style][subset]["url"]["ttf"]
+            with urlopen(Request(ttf_url, headers=header)) as font:
+                ttf = font.read()
+                # cache ttf font
+                font_file_name = f"{family} {style} ({subset} {weight})"
+                ttf_cache = Path(font_cache, font_file_name).with_suffix(".ttf")
+                ttf_cache.write_bytes(ttf)
+
+
 class SrcDistCommand(sdist):
     """Custom sdist command."""
 
@@ -108,46 +152,17 @@ class BundleCommand(Command, SubCommand):
                         )
 
             # get default font
-            header = {
-                # needed to avoid response 403
-                "User-Agent": (
-                    "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"
-                ),
-            }
             font_cache = Path(pkg_root, "src", "sphinx_social_cards", ".fonts")
             font_cache.mkdir(exist_ok=True)
-            with urlopen(
-                Request("https://api.fontsource.org/v1/fonts/roboto", headers=header)
-            ) as response:
-                data: Dict[str, Any] = json.loads(response.read())
-            assert "family" in data
-            family = data["family"]
-            # cache the font info
-            info_cache = Path(font_cache, family).with_suffix(".json")
-            info_cache.write_text(json.dumps(data, indent=2), encoding="utf-8")
-
-            # get all weights from default subset of normal style in TTF format
-            assert "weights" in data and data["weights"]
-            weights: List[int] = data["weights"]
-            style = "normal"
-            assert "defSubset" in data
-            subset = data["defSubset"]
-            assert "variants" in data
-            for weight in weights:
-                assert str(weight) in data["variants"]
-                assert style in data["variants"][str(weight)]
-                assert subset in data["variants"][str(weight)][style]
-                assert "url" in data["variants"][str(weight)][style][subset]
-                assert "ttf" in data["variants"][str(weight)][style][subset]["url"]
-                ttf_url: str = data["variants"][str(weight)][style][subset]["url"][
-                    "ttf"
-                ]
-                with urlopen(Request(ttf_url, headers=header)) as font:
-                    ttf = font.read()
-                    # cache ttf font
-                    font_file_name = f"{family} {style} ({subset} {weight})"
-                    ttf_cache = Path(font_cache, font_file_name).with_suffix(".ttf")
-                    ttf_cache.write_bytes(ttf)
+            for font_id in [
+                "roboto",
+                "roboto-condensed",
+                "roboto-flex",
+                "roboto-mono",
+                "roboto-serif",
+                "roboto-slab",
+            ]:
+                download_fonts(font_id, font_cache)
 
 
 # all install info is located in pyproject.toml

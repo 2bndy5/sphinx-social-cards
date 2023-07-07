@@ -244,7 +244,24 @@ class Social_Cards(CustomBaseModel):
     output in the subfolder '_static/social_cards'."""
     cache_dir: Union[str, Path] = "social_cards_cache"
     """The directory (relative to the conf.py file) that is used to store cached data
-    for generating the social cards."""
+    for generating the social cards. By default, this will create/use a directory named
+    :python:`"social_cards_cache"` located adjacent to the conf.py file.
+
+    .. tip::
+        :title: Caching Fonts
+
+        This path is also used to cache the downloaded fonts except for the distributed
+        cache of Roboto font variants. If this path is checked into a git remote
+        (such as repository hosted on GitHub), then the cache of fonts can be shared
+        with project collaborators or reused in a Continuous Integration workflow.
+
+        .. code-block:: text
+            :caption: .gitignore
+
+            # ignore cached images, but check in cached fonts
+            doc/social_cards_cache/**
+            !docs/social_cards_cache/fonts/*
+    """
 
     @pydantic.field_validator("debug")
     def validate_debug(cls, val: Union[bool, Debug]) -> Debug:
