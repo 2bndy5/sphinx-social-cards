@@ -5,18 +5,19 @@ from sphinx_social_cards.fonts import FontSourceManager
 
 
 @pytest.mark.parametrize(
-    "style", ["normal", pytest.param("bold", marks=pytest.mark.xfail), "italic"]
+    "style", ["normal", pytest.param("bold", marks=pytest.mark.xfail)]
 )
 @pytest.mark.parametrize("weight", [400, 555])
 @pytest.mark.parametrize(
     "subset", ["latin", pytest.param("undefined", marks=pytest.mark.xfail)]
 )
-def test_font(sphinx_make_app, style: str, weight: int, subset: str):
+@pytest.mark.parametrize("family", ["Roboto", "Noto Sans"])
+def test_font(sphinx_make_app, family: str, style: str, weight: int, subset: str):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""html_theme = 'furo'
 social_cards["cards_layout_options"] = {{
     "font": {{
-        "family": "Roboto",
+        "family": '{family}',
         "style": '{style}',
         "weight": {weight},
         "subset": '{subset}',

@@ -101,6 +101,8 @@ def _get_lang_name(config: Config) -> Optional[str]:
     lang_class = (
         "sphinx.search.en.SearchEnglish" if lang == "en" else languages.get(lang)
     )
+    if not isinstance(lang_class, str):
+        return lang
     module, attr = lang_class.rsplit(".", 1)
     return cast(SearchLanguage, getattr(import_module(module), attr)).language_name
 
@@ -114,7 +116,7 @@ def _load_config(app: Sphinx, config: Config):
     CardGenerator.doc_src = app.srcdir
 
     magick_exe = get_magick_cmd()  # ImageMagick v7
-    if magick_exe is None:  # pragma: no cover
+    if magick_exe is None:
         magick_exe = get_magick_cmd("identify")  # ImageMagick v6
         if magick_exe is None:
             raise OSError(

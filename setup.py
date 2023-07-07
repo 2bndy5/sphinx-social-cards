@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import shutil
@@ -10,6 +11,7 @@ from setuptools.command.build_py import build_py
 from setuptools.command.sdist import sdist
 
 pkg_root = Path(__file__).parent
+pkg_src = pkg_root / "src" / "sphinx_social_cards"
 icon_pkgs = {
     "material": ["@mdi/svg/svg", "@mdi/svg/LICENSE"],
     "octicons": ["@primer/octicons/build/svg", "@primer/octicons/LICENSE"],
@@ -87,7 +89,7 @@ class BundleCommand(Command, SubCommand):
     description = "Copy and optimize SVG files from npm modules."
     user_options = [
         # The format is (long option, short option, description).
-        ("dirty", None, "skip bundling icons if they already exist in pkg src"),
+        ("dirty", None, "skip bundling icons/fonts if they already exist in pkg src"),
     ]
 
     def initialize_options(self):
@@ -100,17 +102,28 @@ class BundleCommand(Command, SubCommand):
         if self.dirty is None:
             # If package.json and svgo config doesn't exist, then assume this is
             # building from sdist and icons should already be bundled.
-            npm_able = Path(pkg_root, "package.json").exists() and Path(
-                pkg_root, "tools", "svgo_config.js"
+            npm_able = (
+                Path(pkg_root, "package.json").exists()
+                and Path(pkg_root, "tools", "svgo_config.js").exists()
             )
-            self.dirty = not npm_able
-        if (
-            self.dirty
-            and not Path(
-                pkg_root, "src", "sphinx_social_cards", ".icons", "material"
-            ).exists()
-        ):
-            raise OSError("Building package 'dirty', but no generated SVG files exist.")
+            is_nox_session = os.environ.get("NOX_CURRENT_SESSION", "").startswith(
+                "tests-3."
+            )
+            is_ci_building_dirty = (
+                os.environ.get("SPHINX_SOCIAL_CARDS_BUILD_DIRTY", "") == "true"
+            )
+            self.dirty = not npm_able or is_nox_session or is_ci_building_dirty
+
+        if self.dirty:
+            # NOTE: As of setuptools v64.0.2, we cannot raise an exception here for
+            # editable installs.
+            if not Path(pkg_src, ".fonts").exists():
+                self.dirty = False
+                return
+            for icon_set in icon_pkgs:
+                if not Path(pkg_src, ".icons", icon_set).exists():
+                    self.dirty = False
+                    return
 
     def run(self) -> None:
         """Run command."""
@@ -123,9 +136,9 @@ class BundleCommand(Command, SubCommand):
         if not self.dirty:
             # ensure icons from npm pkg exist
             __run_process("npm", "install")
-
+            # optimize/copy icons to pkg as pkg data
             for name, sources in icon_pkgs.items():
-                icons_dist = pkg_root / "src" / "sphinx_social_cards" / ".icons" / name
+                icons_dist = pkg_src / ".icons" / name
                 for src in sources:
                     icons_src = pkg_root / "node_modules" / src
                     if icons_src.is_dir():
@@ -151,8 +164,8 @@ class BundleCommand(Command, SubCommand):
                             icons_src.read_bytes()
                         )
 
-            # get default font
-            font_cache = Path(pkg_root, "src", "sphinx_social_cards", ".fonts")
+            # get Roboto fonts and store as pkg data
+            font_cache = Path(pkg_src, ".fonts")
             font_cache.mkdir(exist_ok=True)
             for font_id in [
                 "roboto",
