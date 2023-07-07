@@ -869,8 +869,8 @@
 <span class="sd">    sphinx-immaterial_ theme. However, the sphinx-immaterial theme&#39;s :themeconf:`font`</span>
 <span class="sd">    option is used as a default if that theme is used.</span>
 
-<span class="sd">    If the font specified does not exist (eg a typo), then a warning is emitted in the</span>
-<span class="sd">    build log and a system font is used.</span>
+<span class="sd">    If the font specified is not a Roboto font and cannot be fetched from Fontsource_,</span>
+<span class="sd">    then an exception is raised and the docs build is aborted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The style of the font to be used. Typically, this can be ``italic`` or</span>

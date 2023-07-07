@@ -735,7 +735,24 @@
 <span class="sd">    output in the subfolder &#39;_static/social_cards&#39;.&quot;&quot;&quot;</span>
     <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;social_cards_cache&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The directory (relative to the conf.py file) that is used to store cached data</span>
-<span class="sd">    for generating the social cards.&quot;&quot;&quot;</span>
+<span class="sd">    for generating the social cards. By default, this will create/use a directory named</span>
+<span class="sd">    :python:`&quot;social_cards_cache&quot;` located adjacent to the conf.py file.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        :title: Caching Fonts</span>
+
+<span class="sd">        This path is also used to cache the downloaded fonts except for the distributed</span>
+<span class="sd">        cache of Roboto font variants. If this path is checked into a git remote</span>
+<span class="sd">        (such as repository hosted on GitHub), then the cache of fonts can be shared</span>
+<span class="sd">        with project collaborators or reused in a Continuous Integration workflow.</span>
+
+<span class="sd">        .. code-block:: text</span>
+<span class="sd">            :caption: .gitignore</span>
+
+<span class="sd">            # ignore cached images, but check in cached fonts</span>
+<span class="sd">            doc/social_cards_cache/**</span>
+<span class="sd">            !docs/social_cards_cache/fonts/*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@pydantic</span><span class="o">.</span><span class="n">field_validator</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">validate_debug</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Debug</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Debug</span><span class="p">:</span>

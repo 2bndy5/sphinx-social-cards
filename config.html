@@ -387,7 +387,7 @@
         
           <li class="md-nav__item">
   <a href="#sphinx_social_cards.validators.Social_Cards.cache_dir" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards." class="md-ellipsis">cache_<wbr>dir</span>
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &#34;social_cards_cache&#34; located adjacent to the conf.py file." class="md-ellipsis">cache_<wbr>dir</span>
   </a>
   
 </li>
@@ -953,7 +953,7 @@
         
           <li class="md-nav__item">
   <a href="#sphinx_social_cards.validators.Social_Cards.cache_dir" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards." class="md-ellipsis">cache_<wbr>dir</span>
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &#34;social_cards_cache&#34; located adjacent to the conf.py file." class="md-ellipsis">cache_<wbr>dir</span>
   </a>
   
 </li>
@@ -1927,20 +1927,37 @@ output in the subfolder ‘_static/social_cards’.</p>
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cache_dir">
 <span class="sig-name descname"><span class="pre">cache_dir</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>The directory (relative to the conf.py file) that is used to store cached data
-for generating the social cards.</p>
+for generating the social cards. By default, this will create/use a directory named
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;social_cards_cache&quot;</span></code> located adjacent to the conf.py file.</p>
+<div class="tip success admonition">
+<p class="admonition-title">Caching Fonts</p>
+<p>This path is also used to cache the downloaded fonts except for the distributed
+cache of Roboto font variants. If this path is checked into a git remote
+(such as repository hosted on GitHub), then the cache of fonts can be shared
+with project collaborators or reused in a Continuous Integration workflow.</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>.gitignore<a class="headerlink" href="#id12" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><code># ignore cached images, but check in cached fonts
+doc/social_cards_cache/**
+!docs/social_cards_cache/fonts/*
+</code></pre></div>
+</div>
+</div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
 <h2 id="choosing-the-font"><span id="choosing-a-font"></span>Choosing the font<a class="headerlink" href="#choosing-the-font" title="Permalink to this heading">¶</a></h2>
-<p>Fonts are fetched from <a class="reference external" href="https://fontsource.org/">Fontsource</a> and cached in the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> folder. They can be specified in
+<p>Fonts are fetched from <a class="reference external" href="https://fontsource.org/">Fontsource</a> and cached in the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &quot;social_cards_cache&quot; located adjacent to the conf.py file."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> folder. They can be specified in
 multiple places. The order of precedence is:</p>
 <ol class="arabic">
 <li><p>Using the <a class="reference internal" href="layouts/index.html#sphinx_social_cards.validators.Cards_Layout_Options.font" title="sphinx_social_cards.validators.Cards_Layout_Options.font (Python attribute) — The font specification to be used."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_options.font</span></code></a> which is specified in the
 conf.py file under <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="sphinx_social_cards.validators.Social_Cards.cards_layout_options (Python attribute) — A set (dict) of options that can be accessed via the layout.* jinja context. See cards_layout_options for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">social_cards.cards_layout_options</span></code></a> field.</p>
-<div class="literal-block-wrapper docutils container" id="id12">
+<div class="literal-block-wrapper docutils container" id="id13">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>in conf.py<a class="headerlink" href="#id12" title="Permalink to this code">¶</a></span></div>
+</span>in conf.py<a class="headerlink" href="#id13" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1954,13 +1971,13 @@ conf.py file under <a class="reference internal" href="#sphinx_social_cards.vali
 </li>
 <li><p>The <a class="reference internal" href="layouts/typography.html#sphinx_social_cards.validators.layers.Typography.font" title="sphinx_social_cards.validators.layers.Typography.font (Python attribute) — The specified font to use. If not specified, then this defaults to values in cards_layout_options.font."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">typography.font</span></code></a> attribute allows for finite control over each
 layer of text when using <a class="reference internal" href="layouts/index.html"><span class="doc">Customized Layouts</span></a>.</p>
-<div class="literal-block-wrapper docutils container" id="id13">
+<div class="literal-block-wrapper docutils container" id="id14">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>my-custom-layout.yml<a class="headerlink" href="#id13" title="Permalink to this code">¶</a></span></div>
+</span>my-custom-layout.yml<a class="headerlink" href="#id14" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">font</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">family</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Roboto&quot;</span>
+<span class="w">        </span><span class="nt">family</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Roboto</span>
 </code></pre></div>
 </div>
 </div>
@@ -1969,9 +1986,10 @@ layer of text when using <a class="reference internal" href="layouts/index.html"
 <p>Both approaches use the same <a class="reference internal" href="layouts/typography.html#sphinx_social_cards.validators.layers.Font" title="sphinx_social_cards.validators.layers.Font (Python class) — The specification that describes the font to be used."><code class="xref any py py-class docutils literal notranslate"><span class="pre">font</span></code></a> specification.</p>
 <div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">Roboto</span></code> font is cached and distributed with this extension.</p>
+<p>The Roboto fonts are cached and distributed with this extension.</p>
 <p>If fonts cannot be fetched from <a class="reference external" href="https://fontsource.org/">Fontsource</a> (and they are not already cached in the
-<a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> or the distributed cache of <code class="docutils literal notranslate"><span class="pre">Roboto</span></code> fonts), then an error will be thrown.</p>
+<a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &quot;social_cards_cache&quot; located adjacent to the conf.py file."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> or the distributed cache of Roboto font variants), then an exception will be
+raised.</p>
 </div>
 <h3 id="weights-over-styles">Weights over styles<a class="headerlink" href="#weights-over-styles" title="Permalink to this heading">¶</a></h3>
 <p><a class="reference external" href="https://fontsource.org/">Fontsource</a> does not offer <code class="docutils literal notranslate"><span class="pre">bold</span></code> or <code class="docutils literal notranslate"><span class="pre">thin</span></code> (AKA <code class="docutils literal notranslate"><span class="pre">narrow</span></code>) styles of fonts. Instead they
@@ -2008,9 +2026,9 @@ Japanese</label><label class="tabbed-label" for="__tabbed_2_4">
 Korean</label></div>
 <div class="tabbed-content docutils container">
 <div class="tabbed-block docutils container">
-<div class="literal-block-wrapper docutils container" id="id14">
+<div class="literal-block-wrapper docutils container" id="id15">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">chinese-traditional</span></code> subset<a class="headerlink" href="#id14" title="Permalink to this code">¶</a></span></div>
+</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">chinese-traditional</span></code> subset<a class="headerlink" href="#id15" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -2024,9 +2042,9 @@ Korean</label></div>
 </div>
 </div>
 <div class="tabbed-block docutils container">
-<div class="literal-block-wrapper docutils container" id="id15">
+<div class="literal-block-wrapper docutils container" id="id16">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">chinese-simplified</span></code> subset<a class="headerlink" href="#id15" title="Permalink to this code">¶</a></span></div>
+</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">chinese-simplified</span></code> subset<a class="headerlink" href="#id16" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -2040,9 +2058,9 @@ Korean</label></div>
 </div>
 </div>
 <div class="tabbed-block docutils container">
-<div class="literal-block-wrapper docutils container" id="id16">
+<div class="literal-block-wrapper docutils container" id="id17">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">japanese</span></code> subset<a class="headerlink" href="#id16" title="Permalink to this code">¶</a></span></div>
+</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">japanese</span></code> subset<a class="headerlink" href="#id17" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -2056,9 +2074,9 @@ Korean</label></div>
 </div>
 </div>
 <div class="tabbed-block docutils container">
-<div class="literal-block-wrapper docutils container" id="id17">
+<div class="literal-block-wrapper docutils container" id="id18">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">korean</span></code> subset<a class="headerlink" href="#id17" title="Permalink to this code">¶</a></span></div>
+</span>Using the the Noto Sans font family’s <code class="docutils literal notranslate"><span class="pre">korean</span></code> subset<a class="headerlink" href="#id18" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -2188,9 +2206,9 @@ sphinx-social-cards extension.</p>
 <details class="example admonition">
 <summary class="admonition-title">Setting the date dynamically</summary><p>On Linux/MacOS, you can add a <code class="docutils literal notranslate"><span class="pre">-</span></code> between the <code class="docutils literal notranslate"><span class="pre">%</span></code> and format character to strip a
 leading zeroes. On windows, you would use a <code class="docutils literal notranslate"><span class="pre">#</span></code> instead of a <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p>
-<div class="literal-block-wrapper docutils container" id="id18">
+<div class="literal-block-wrapper docutils container" id="id19">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>conf.py<a class="headerlink" href="#id18" title="Permalink to this code">¶</a></span></div>
+</span>conf.py<a class="headerlink" href="#id19" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">time_fmt</span> <span class="o">=</span> <span class="s2">&quot;%B </span><span class="si">%#d</span><span class="s2"> %Y&quot;</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;windows&quot;</span> <span class="k">else</span> <span class="s2">&quot;%B </span><span class="si">%-d</span><span class="s2"> %Y&quot;</span>
 <span class="n">today</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_fmt</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
 </code></pre></div>
@@ -2226,9 +2244,9 @@ leading zeroes. On windows, you would use a <code class="docutils literal notran
 <dd><p>To ease creation of custom layouts, optional debugging glyphs can be <a class="reference internal" href="#sphinx_social_cards.validators.Debug.enable" title="sphinx_social_cards.validators.Debug.enable (Python attribute) — If set to True, then debugging outlines and labels are drawn."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">enable</span></code></a>d
 in the generated social card images.</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id19">
+<div class="literal-block-wrapper docutils container" id="id20">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>conf.py<a class="headerlink" href="#id19" title="Permalink to this code">¶</a></span></div>
+</span>conf.py<a class="headerlink" href="#id20" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages via Sphinx.&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards&quot;</span><span class="p">,</span>
@@ -2266,9 +2284,9 @@ and <a class="reference internal" href="layouts/index.html#sphinx_social_cards.v
 <dd><p>If <a class="reference internal" href="#sphinx_social_cards.validators.Debug.grid" title="sphinx_social_cards.validators.Debug.grid (Python attribute) — If set to True (and enabled), then a grid of dots are drawn."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">grid</span></code></a> is enabled, then this <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a> specifies the distance (in pixels) between
 each dot in the grid. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="mi">30</span></code>.</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id20">
+<div class="literal-block-wrapper docutils container" id="id21">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>conf.py<a class="headerlink" href="#id20" title="Permalink to this code">¶</a></span></div>
+</span>conf.py<a class="headerlink" href="#id21" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages via Sphinx.&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards&quot;</span><span class="p">,</span>
@@ -2290,9 +2308,9 @@ each dot in the grid. Defaults to <code class="code highlight python docutils li
 <dd><p>The color used to draw the debugging outlines, labels, and grid. The color for
 the debugging text is automatically set based on this color value.</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id21">
+<div class="literal-block-wrapper docutils container" id="id22">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>conf.py<a class="headerlink" href="#id21" title="Permalink to this code">¶</a></span></div>
+</span>conf.py<a class="headerlink" href="#id22" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages via Sphinx.&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards&quot;</span><span class="p">,</span>

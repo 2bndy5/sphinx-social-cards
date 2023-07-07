@@ -1100,8 +1100,8 @@ line height.</p>
 be any font hosted by <a class="reference external" href="https://fontsource.org/">Fontsource</a>. Default is <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;Roboto&quot;</span></code> if not using the
 <a class="reference external" href="https://jbms.github.io/sphinx-immaterial">sphinx-immaterial</a> theme. However, the sphinx-immaterial theme’s <a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-font" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">font</span></code></a>
 option is used as a default if that theme is used.</p>
-<p>If the font specified does not exist (eg a typo), then a warning is emitted in the
-build log and a system font is used.</p>
+<p>If the font specified is not a Roboto font and cannot be fetched from <a class="reference external" href="https://fontsource.org/">Fontsource</a>,
+then an exception is raised and the docs build is aborted.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
