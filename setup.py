@@ -71,7 +71,7 @@ class SrcDistCommand(sdist):
     """Custom sdist command."""
 
     def run(self):
-        self.run_command("bundle-icons")
+        self.run_command("bundle-data")
         super().run()
 
 
@@ -79,12 +79,13 @@ class BuildPyCommand(build_py):
     """Custom bdist_wheel command."""
 
     def run(self):
-        self.run_command("bundle-icons")
+        self.run_command("bundle-data")
         super().run()
 
 
 class BundleCommand(Command, SubCommand):
-    """A custom command to run svgo (via nox) on all bundled SVG icons."""
+    """A custom command to generate distributed assets (optimized SVG files and Roboto
+    font variants)."""
 
     description = "Copy and optimize SVG files from npm modules."
     user_options = [
@@ -181,7 +182,7 @@ class BundleCommand(Command, SubCommand):
 # all install info is located in pyproject.toml
 setup(
     cmdclass={
-        "bundle-icons": BundleCommand,
+        "bundle-data": BundleCommand,
         "build_py": BuildPyCommand,
         "sdist": SrcDistCommand,
     },
