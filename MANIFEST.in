@@ -6,4 +6,4 @@ recursive-exclude .github **
 recursive-exclude docs **
 recursive-exclude tests **
 recursive-exclude cookiecutter **
-exclude .pre-commit-config.yaml .readthedocs.yaml noxfile.py
+exclude .gitignore .pre-commit-config.yaml .readthedocs.yaml noxfile.py package*.json tools/svgo_config.js requirements-dev.txt
