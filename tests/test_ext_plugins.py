@@ -36,7 +36,7 @@ def test_big_number():
 )
 def test_plugin_github(sphinx_make_app, url_key: str, url: str):
     if os.environ.get("CI", False) and (
-        platform.system().lower() != "Linux"
+        platform.system().lower() != "linux"
         or sys.version_info < (3, 11)
         or sphinx_version < (7,)
     ):
