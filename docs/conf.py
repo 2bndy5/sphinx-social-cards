@@ -25,7 +25,7 @@ else:
 # Need a way to avoid hitting the GitHub REST API rate limit in repo CI
 use_gh_rest_api = False
 if "CI" not in os.environ or (
-    os.environ.get("CI", False) and platform.system().lower() == "Linux"
+    os.environ.get("CI", False) and platform.system().lower() == "linux"
 ):
     # Only use the GH REST API in CI when building docs for Linux.
     # Also allow local builds to use the GH REST API.

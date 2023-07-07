@@ -92,11 +92,6 @@ def coverage(session: nox.Session):
     session.install("coverage[toml]>=7.0")
     session.run("coverage", "combine")
     total = int(session.run("coverage", "report", "--format=total", silent=True))
-    md = session.run("coverage", "report", "--format=markdown", silent=True)
-    Path(".coverage_.md").write_text(
-        f"<details><summary>Coverage is {total}%</summary>\n\n{md}\n\n</details>",
-        encoding="utf-8",
-    )
     session.run("coverage", "xml")
     session.run("coverage", "html")
     session.log("Coverage is %d%%", total)
