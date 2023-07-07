@@ -11,7 +11,9 @@ These are examples of the layouts added:
 
 .. jinja:: github_plugin_layouts
 
+    {% if layouts -%}
     .. md-tab-set::
+    {%- endif %}
 
     {% for layout in layouts %}
         .. md-tab-item:: {{ layout }}
