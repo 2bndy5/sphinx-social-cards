@@ -28,7 +28,6 @@ def strip_url_protocol(url: str) -> str:
 
 
 def match_url(repo_url: str, site_url: str) -> Tuple[Optional[str], Optional[str]]:
-    LOGGER.info("repo_url: %s", repo_url)
     match_repo_url = re.match(
         r"^.+github\.com\/([^/]+)\/?([^/]+)?",
         repo_url,

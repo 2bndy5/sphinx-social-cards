@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+import platform
 import typing
 import time
 
@@ -19,6 +21,18 @@ if sphinx.version_info >= (6, 1):
     stringify = sphinx.util.typing.stringify_annotation
 else:
     stringify = sphinx.util.typing.stringify
+
+# Need a way to avoid hitting the GitHub REST API rate limit in repo CI
+use_gh_rest_api = False
+if "CI" not in os.environ or (
+    os.environ.get("CI", False) and platform.system().lower() == "Linux"
+):
+    # Only use the GH REST API in CI when building docs for Linux.
+    # Also allow local builds to use the GH REST API.
+    use_gh_rest_api = True
+    LOGGER.info(
+        "NOTE: GitHub REST API will be used (if info cache not found or outdated)"
+    )
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -41,15 +55,15 @@ extensions = [
     "sphinx_immaterial.theme_result",
     "sphinx_immaterial.task_lists",
     "sphinx_social_cards",
-    "sphinx_social_cards.plugins.github",
 ]
+
+if use_gh_rest_api:
+    extensions.append("sphinx_social_cards.plugins.github")
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 default_role = "any"
 # BEGIN manually setting date
-import platform  # noqa: E402
-
 time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
 today = time.strftime(time_fmt, time.localtime())
 # END manually setting date
@@ -110,7 +124,7 @@ html_theme_options = {
         "edit": "material/file-edit-outline",
         "logo": "material/comment-text-multiple",
     },
-    "repo_url": "https://github.com/2bndy5/Sphinx-Social-Cards",
+    "repo_url": "https://github.com/2bndy5/sphinx-social-cards",
     "repo_name": "Sphinx-Social-Cards",
     "edit_uri": "blob/main/docs",
     "features": [
@@ -152,7 +166,7 @@ html_theme_options = {
     "social": [
         {
             "icon": "fontawesome/brands/github",
-            "link": "https://github.com/2bndy5/Sphinx-Social-Cards",
+            "link": "https://github.com/2bndy5/sphinx-social-cards",
             "name": "Source on github.com",
         },
         {
@@ -246,14 +260,16 @@ layouts = sorted(
     key=lambda n: n if n != "blog" else "z",
 )
 
-shipped_plugins = Path()
 github_plugin_layouts = Path(pkg_root, "plugins", "github", "layouts")
-github_layouts = sorted(
-    [
-        layout.relative_to(github_plugin_layouts).with_suffix("").as_posix()
-        for layout in github_plugin_layouts.rglob("*.yml")
-    ]
-)
+if not use_gh_rest_api:
+    github_layouts = []
+else:
+    github_layouts = sorted(
+        [
+            layout.relative_to(github_plugin_layouts).with_suffix("").as_posix()
+            for layout in github_plugin_layouts.rglob("*.yml")
+        ]
+    )
 
 jinja_contexts = {
     "layouts": {"layouts": layouts},
@@ -267,7 +283,10 @@ def _parse_confval_signature(
     values = env.config.values
     registry_option = values.get(signature)
     node += sphinx.addnodes.desc_name(signature, signature)
-    if registry_option is None:
+    if not use_gh_rest_api and signature == "repo_url":
+        # avoids triggering the below warning when CI is not supposed to use GH REST API
+        return signature
+    elif registry_option is None:
         LOGGER.error("Invalid config option: %r", signature, location=node)
     else:
         default, rebuild, types = registry_option

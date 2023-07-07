@@ -25,6 +25,7 @@ def add_jinja_context(app: Sphinx, jinja_ctx: Dict[str, Any]):
     `jinja contexts <jinja-ctx>`."""
     plugins_env = getattr(app.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {})
     plugins_env.update(jinja_ctx)
+    LOGGER.info("Adding social-card jinja context: %r", jinja_ctx)
     setattr(app.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, plugins_env)
 
 
@@ -33,7 +34,7 @@ def add_layouts_dir(app: Sphinx, layouts_dir: Union[str, Path]):
     `cards_layout_dir` `list`."""
     layouts_dir = Path(layouts_dir).resolve()
     card_config: Social_Cards = getattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
-    LOGGER.info("Adding layouts path: %s", str(layouts_dir))
+    LOGGER.info("Adding social-card layouts path: %s", str(layouts_dir))
     card_config.cards_layout_dir.append(str(layouts_dir))
     setattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)
 
@@ -43,5 +44,6 @@ def add_images_dir(app: Sphinx, images_dir: Union[str, Path]):
     `image_paths` `list`."""
     images_dir = Path(images_dir).resolve()
     card_config: Social_Cards = getattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
+    LOGGER.info("Adding social-card images path: %s", str(images_dir))
     card_config.image_paths.append(str(images_dir))
     setattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)

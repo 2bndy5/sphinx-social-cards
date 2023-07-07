@@ -35,11 +35,10 @@ def test_big_number():
     ids=["repo_url", "site_url", "invalid_url", "only_owner", "from_cache"],
 )
 def test_plugin_github(sphinx_make_app, url_key: str, url: str):
-    if (
-        os.environ.get("CI", False)  # should not be set locally
-        and platform.system().lower() != "Linux"
-        and sys.version_info < (3, 11)  # TODO: update this when applicable
-        and sphinx_version < (7,)
+    if os.environ.get("CI", False) and (
+        platform.system().lower() != "Linux"
+        or sys.version_info < (3, 11)
+        or sphinx_version < (7,)
     ):
         pytest.skip(
             "To avoid REST API rate limit, this test runs (in CI) only on Linux with "
