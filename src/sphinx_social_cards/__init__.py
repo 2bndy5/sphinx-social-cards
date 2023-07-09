@@ -16,7 +16,7 @@ Dependencies
 
 The following dependencies are required:
 
-- `pillow (v9.2.0+) <https://pillow.readthedocs.io/en/stable/index.html>`_
+- `pillow (v10+) <https://pillow.readthedocs.io/en/stable/index.html>`_
 - `ImageMagick <https://imagemagick.org/script/download.php>`_ for converting SVG images
   into a PNG that ``pillow`` can use.
 

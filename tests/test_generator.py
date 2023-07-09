@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 import pytest
 from sphinx.testing.util import SphinxTestApp
 
@@ -87,8 +88,9 @@ Test Title
     assert not app._warning.getvalue()
 
 
+@pytest.mark.parametrize("border_color", ["null", "red"], ids=["inherent_color", "red"])
 @pytest.mark.parametrize("overflow", ["on", "off"], ids=["overflow_on", "overflow_off"])
-def test_typography(sphinx_make_app, overflow: str) -> None:
+def test_typography(sphinx_make_app, overflow: str, border_color: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
         extra_conf="html_theme = 'furo'",
         files={
@@ -107,6 +109,8 @@ Test Title
             Symbols
             PictogramsTypographyGlyphs
           overflow: {overflow}
+          border:
+            color: {border_color}
           line: {{ amount: 3 }}
           align: center
 """,
@@ -132,7 +136,7 @@ TEST_AREA = "{ width: 100, height: 100 }"
 def test_mask(sphinx_make_app, size: str, offset: str):
     inverted = size == TEST_AREA and offset == "{}"  # enable for "same" test case
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'",
+        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title
@@ -169,7 +173,7 @@ Test Title
 )
 def test_image(sphinx_make_app, layer_attr: str, image: str, color: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'",
+        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title
@@ -181,6 +185,64 @@ Test Title
       - {layer_attr}:
           image: '{image}'
           color: '{color}'
+""",
+        },
+    )
+    app.build()
+    assert not app._warning.getvalue()
+
+
+@pytest.mark.parametrize("border_to_origin", ["on", "off"])
+def test_ellipse_arc(sphinx_make_app, border_to_origin: str) -> None:
+    app: SphinxTestApp = sphinx_make_app(
+        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        files={
+            "index.rst": f"""
+Test Title
+==========
+
+.. social-card:: {{ "debug": true }}
+
+    size: {{ width: 900, height: 330 }}
+    layers:
+      - ellipse:
+          color: red
+          arc: {{ end: -90 }}
+          border:
+            color: green
+            width: 45
+          border_to_origin: {border_to_origin}
+""",
+        },
+    )
+    app.build()
+    assert not app._warning.getvalue()
+
+
+@pytest.mark.parametrize(
+    "sides",
+    [
+        2,
+        pytest.param("[{ x: 100 }]", marks=pytest.mark.xfail),
+        "[{ x: 100 }, { y: 100 }]",
+    ],
+    ids=["regular", "invalid_custom", "custom"],
+)
+def test_polygon(sphinx_make_app, sides: Union[int, str]) -> None:
+    app: SphinxTestApp = sphinx_make_app(
+        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        files={
+            "index.rst": f"""
+Test Title
+==========
+
+.. social-card:: {{ "debug": true }}
+
+    size: {TEST_AREA}
+    layers:
+      - polygon:
+          color: green
+          sides: {sides}
 """,
         },
     )

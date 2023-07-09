@@ -16,7 +16,14 @@ from PIL import (
 import pydantic
 from sphinx.util.logging import getLogger
 from .validators import Social_Cards, _validate_color
-from .validators.layers import Typography, LayerImage, Rectangle, Ellipse
+from .validators.layers import (
+    Typography,
+    LayerImage,
+    GenericShape,
+    Rectangle,
+    Ellipse,
+    Polygon,
+)
 from .validators.layout import Layer, Layout
 from .validators.contexts import JinjaContexts
 from .fonts import FontSourceManager
@@ -205,11 +212,21 @@ class CardGenerator:
         font = self.load_font(typography, font_size)
         full_text = "\n".join(["".join(r).rstrip() for r in text_block]).rstrip()
         brush = ImageDraw.Draw(canvas)
-        x, y, w, h = brush.textbbox((0, 0), full_text, font, spacing=spacing)
+        x, y, w, h = brush.textbbox(
+            (0, 0),
+            full_text,
+            font,
+            spacing=spacing,
+            stroke_width=typography.border.width,
+        )
 
         color = self.config.cards_layout_options.color
         if typography.color:
             color = self.get_color(typography.color)
+        if not typography.border.color:
+            stroke_color = color
+        else:
+            stroke_color = self.get_color(typography.border.color)
 
         align = [a.lower() for a in typography.align.split()[:2]]
         anchor_translator = dict(start="l", center="m", end="r", top="a", bottom="d")
@@ -239,6 +256,8 @@ class CardGenerator:
             fill=color,
             spacing=spacing + padding,
             anchor="".join([anchor_translator[a] for a in align]),
+            stroke_width=typography.border.width,
+            stroke_fill=stroke_color,
         )
         return canvas
 
@@ -297,7 +316,9 @@ class CardGenerator:
         if img is not None:
             canvas.alpha_composite(img)
 
-    def get_shape_args(self, layer: Layer, shape_config: Ellipse) -> Dict[str, Any]:
+    def get_shape_args(
+        self, layer: Layer, shape_config: GenericShape
+    ) -> Dict[str, Any]:
         assert layer.size is not None
         size = (layer.size.width - 1, layer.size.height - 1)
         border_color: Optional[str] = self.get_color(shape_config.border.color)
@@ -312,7 +333,50 @@ class CardGenerator:
     def render_ellipse(self, layer: Layer, shape_config: Ellipse, canvas: Image.Image):
         args = self.get_shape_args(layer, shape_config)
         brush = ImageDraw.Draw(canvas)
-        brush.ellipse(**args)
+        if shape_config.arc is not None:  # drawing only an arc
+            args["start"] = shape_config.arc.start
+            args["end"] = shape_config.arc.end
+            if shape_config.border_to_origin:
+                brush.pieslice(**args)
+            else:
+                assert "outline" in args
+                outline_color = args.pop("outline")
+                # the angle of the endpoints for the arc needs clipping
+                # so lets create a temp canvas as a mask the default behavior and
+                # paste the result into the the current canvas
+                tmp = Image.new("RGBA", size=canvas.size)
+                mask = tmp.copy()
+                brush = ImageDraw.Draw(tmp)
+                brush_mask = ImageDraw.Draw(mask)
+                brush.pieslice(**args)
+                args["fill"] = "white"
+                brush_mask.pieslice(**args)
+                args["fill"] = outline_color
+                brush.arc(**args)
+                canvas.paste(tmp, mask=mask)
+        else:  # drawing a full ellipse
+            brush.ellipse(**args)
+
+    def render_polygon(self, layer: Layer, shape_config: Polygon, canvas: Image.Image):
+        args = self.get_shape_args(layer, shape_config)
+        args.pop("xy", None)  # we don't use the same size/offset for this
+        brush = ImageDraw.Draw(canvas)
+        if isinstance(shape_config.sides, list):
+            xy: List[Tuple[int, int]] = [
+                (offset.x, offset.y) for offset in shape_config.sides
+            ]
+            brush.polygon(xy=xy, **args)
+        else:
+            assert isinstance(shape_config.sides, int)
+            assert layer.size is not None
+            center = (layer.size.width / 2, layer.size.height / 2)
+            radius = (min(layer.size.width, layer.size.height) / 2) - 0.5
+            brush.regular_polygon(
+                bounding_circle=(center, radius),
+                n_sides=shape_config.sides,
+                rotation=shape_config.rotation,
+                **args,
+            )
 
     def render_rectangle(
         self, layer: Layer, shape_config: Rectangle, canvas: Image.Image
@@ -331,13 +395,6 @@ class CardGenerator:
         xy = cast(List[Tuple[int, int]], args.get("xy"))
         set_radius = shape_config.radius or 1
         max_radius = min(xy[1][0], xy[1][1]) // 2
-        if shape_config.radius and PIL_VER <= (9, 5, 0):
-            # bug in pillow v9.5.0 and earlier about rounded rectangle
-            # see https://github.com/python-pillow/Pillow/pull/7151
-            #
-            # as a workaround, we'll limit the width and height to even numbers
-            xy[1] = (xy[1][0] - (xy[1][0] % 2), xy[1][1] - (xy[1][1] % 2))
-            args["xy"] = xy
         args["radius"] = min(  # type: ignore[type-var]
             *[int(r - (r % 2)) for r in (max_radius, set_radius)]
         )
@@ -405,6 +462,8 @@ class CardGenerator:
             self.render_background(layer, layer.background, _tmp_canvas)
         if layer.ellipse is not None:
             self.render_ellipse(layer, layer.ellipse, _tmp_canvas)
+        if layer.polygon is not None:
+            self.render_polygon(layer, layer.polygon, _tmp_canvas)
         if layer.rectangle is not None:
             self.render_rectangle(layer, layer.rectangle, _tmp_canvas)
         if layer.icon is not None:

@@ -5,7 +5,7 @@ from typing_extensions import Literal
 from pydantic import field_validator, Field
 from typing_extensions import Annotated
 
-from .base_model import CustomBaseModel
+from .base_model import CustomBaseModel, Offset
 
 PositiveInt = Annotated[int, Field(gt=0)]
 PositiveFloat = Annotated[float, Field(gt=0)]
@@ -18,8 +18,50 @@ class Border(CustomBaseModel):
     color: Optional[str] = None
 
 
-class Ellipse(CustomBaseModel):
-    """The ellipse layer attribute renders an ellipse using the layer's size and offset
+class GenericShape(CustomBaseModel):
+    #:The shape's outlining `border <Border>` specification.
+    border: Border = Border()
+    #: The shape's fill color.
+    color: Optional[str] = None
+
+
+class Arc(CustomBaseModel):
+    """This attribute allows specifying starting and ending angles that render as an
+    arc of a circle.
+
+    .. important::
+        The angle of origin (0 degrees) is 3 o'clock and increases clockwise.
+    .. jinja::
+
+        .. md-tab-set::
+
+            {% for start, end in [(45, 135), (135, 225), (225, 315), (315, 45)] %}
+
+            .. md-tab-item:: :yaml:`arc: { start: {{ start }}, end: {{ end }} }`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - ellipse:
+                          arc: { start: {{ start }}, end: {{ end }} }
+                          border: { width: 20, color: red }
+                          border_to_origin: on
+                        size: { width: 500, height: 300 }
+                        offset: { x: 350, y: 165 }
+            {% endfor %}
+    """
+
+    #: The starting angle.
+    start: float = 0
+    #: The ending angle.
+    end: float = 0
+
+
+class Ellipse(GenericShape):
+    """This layer attribute renders an ellipse using the layer's size and offset
     to define the outlining bounding box.
 
     .. md-tab-set::
@@ -31,11 +73,11 @@ class Ellipse(CustomBaseModel):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - ellipse:
                       border:
                         width: 50
-                        color: "red"
+                        color: red
                     size: { width: 500, height: 300 }
                     offset: { x: 350, y: 165 }
 
@@ -46,9 +88,9 @@ class Ellipse(CustomBaseModel):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - ellipse:
-                      color: "green"
+                      color: green
                     size: { width: 300, height: 500 }
                     offset: { x: 450, y: 65 }
 
@@ -59,25 +101,54 @@ class Ellipse(CustomBaseModel):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - ellipse:
                       border:
                         width: 50
-                        color: "red"
-                      color: "green"
+                        color: red
+                      color: green
                     size: { width: 400, height: 400 }
                     offset: { x: 400, y: 115 }
     """
 
-    border: Border = Border()
-    """The shape's outlining `border <Border>` specification."""
-    color: Optional[str] = None
-    """The shape's fill color."""
+    #: The specification for drawing only an `arc <Arc>` of an ellipse.
+    arc: Optional[Arc] = None
+    border_to_origin: bool = False
+    """This switch controls the rendering of the border when :attr:`arc` is specified.
+    If the :attr:`arc` attribute is not specified, then this switch has no effect.
+
+    By default (:yaml:`false`), the border is not drawn between the arc endpoints and
+    the angle's origin -- meaning only the arc itself has a border. Set this to
+    :yaml:`true` to render the border between arc endpoints.
+
+    .. jinja::
+
+        .. md-tab-set::
+
+            {% for switch in ['on', 'off'] %}
+
+            .. md-tab-item:: :yaml:`border_to_origin: {{ switch }}`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - ellipse:
+                          border_to_origin: {{ switch }} {% if switch == 'off' -%}
+                          # this is the default if not specified{% endif %}
+                          arc: { end: 135 }
+                          color: red
+                          border: { width: 25, color: green }
+                        size: { width: 500, height: 300 }
+                        offset: { x: 350, y: 165 }
+            {% endfor %}
+    """
 
 
-class Rectangle(Ellipse):
-    """Similar to how the `ellipse <Ellipse>` attribute works, This layer
-    attribute provides a way of drawing rectangles with rounded corners.
+class Rectangle(GenericShape):
+    """This layer attribute provides a way of drawing rectangles with rounded corners.
 
     .. md-tab-set::
 
@@ -88,12 +159,12 @@ class Rectangle(Ellipse):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - rectangle:
                       radius: 50
                       border:
                         width: 30
-                        color: "red"
+                        color: red
                     size: { width: 500, height: 300 }
                     offset: { x: 350, y: 165 }
 
@@ -104,10 +175,10 @@ class Rectangle(Ellipse):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - rectangle:
                       radius: 50
-                      color: "green"
+                      color: green
                     size: { width: 300, height: 500 }
                     offset: { x: 450, y: 65 }
 
@@ -118,13 +189,13 @@ class Rectangle(Ellipse):
                 :hide-conf:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - rectangle:
                       radius: 50
                       border:
                         width: 30
-                        color: "red"
-                      color: "green"
+                        color: red
+                      color: green
                     size: { width: 400, height: 400 }
                     offset: { x: 400, y: 115 }
     """
@@ -147,10 +218,10 @@ class Rectangle(Ellipse):
 
     .. list-table::
 
-        * - :si-icon:`material/arrow-top-left` ``"top left"``
-          - :si-icon:`material/arrow-top-right` ``"top right"``
-        * - :si-icon:`material/arrow-bottom-left` ``"bottom left"``
-          - :si-icon:`material/arrow-bottom-right` ``"bottom right"``
+        * - :si-icon:`material/arrow-top-left` ``'top left'``
+          - :si-icon:`material/arrow-top-right` ``'top right'``
+        * - :si-icon:`material/arrow-bottom-left` ``'bottom left'``
+          - :si-icon:`material/arrow-bottom-right` ``'bottom right'``
     .. warning::
         The `radius` must always be less than half the rectangle's minimum
         `width <Size.width>` or `height <Size.height>`. Otherwise, ``pillow`` will fail
@@ -159,20 +230,206 @@ class Rectangle(Ellipse):
         :dry-run:
 
         layers:
-          - background: { color: "#4051B2" }
+          - background: { color: '#4051B2' }
           - size: { width: 100, height: 400 }
             offset: { x: 225, y: 115 }
             rectangle:
               radius: 49.9  # cannot be 50 because width is 100
-              corners: ["top left", "bottom left"]
-              color: "red"
+              corners: ['top left', 'bottom left']
+              color: red
           - size: { width: 600, height: 400 }
             offset: { x: 375, y: 115 }
             rectangle:
               radius: 199.9  # cannot be 200 because height is 400
-              corners: ["top right", "bottom right"]
-              color: "green"
+              corners: ['top right', 'bottom right']
+              color: green
     """
+
+
+class Polygon(GenericShape):
+    """This layer attribute provides a way of drawing polygons with varying number of
+    `sides`.
+
+    .. note::
+        The position of the polygon may not always be centered as it depends on the
+        specification of `sides`.
+
+    .. seealso::
+        The size of the rendered polygon is constrained by how the `sides` are
+        specified. Please review the 2 distinct ways to specify a polygon's `sides`.
+
+    .. md-tab-set::
+
+        .. md-tab-item:: Proof of regular polygon's occupied area
+
+            .. social-card:: { "debug": true }
+                :hide-conf:
+                :dry-run:
+                :layout-caption: The area of a regular polygon will never be larger than
+                    the area of a circle within the layer.
+
+                layers:
+                  - background: { color: '#4051B2' }
+                  - size: { width: 400, height: 400 } # size forms a perfect square
+                    offset: { x: 400, y: 115 }
+                    ellipse: # an ellipse to prove the maximum size of the polygon
+                      border: { color: white, width: 4 }
+                    polygon:
+                      border: { width: 20, color: red }
+                      color: green
+
+        .. md-tab-item:: A rectangular layer size for a regular polygon
+
+            .. social-card:: { "debug": true }
+                :hide-conf:
+                :dry-run:
+                :layout-caption: The area of the regular polygon is determined by the
+                    smallest value for the layer's width or height (if not equal).
+
+                layers:
+                  - background: { color: '#4051B2' }
+                  - size: { width: 600, height: 400 } # size is not a perfect square
+                    offset: { x: 300, y: 115 }
+                    polygon:
+                      sides: 6
+                      border: { width: 20, color: red }
+                      color: green
+    """
+
+    sides: Union[PositiveInt, List[Offset]] = 3
+    """.. |offset-list| replace:: a YAML list of `offset <Offset>`\ s
+
+    The specification of the polygon's sides. This can be an integer or
+    |offset-list|.
+
+
+    :Using an Integer (regular polygon):
+        The number of sides that defines the edge of the polygon. This cannot be less
+        than :yaml:`3` if specified as an integer.
+
+        .. important::
+            :title: Area of polygons are *restricted*
+
+            If `sides` is an integer, then the rendered polygon *is* limited to the area
+            of a circle within the layer. In this case, the layer's `size <Size>`
+            determines the size of the polygon, but the layer `size <Size>` should form
+            a perfect square to maximize the area that the polygon occupies. If the
+            `size.width <Size.width>` and `size.height <Size.height>` are not equal,
+            then the smaller of the two is used to limit the size of the polygon.
+
+    :Using a YAML list of offsets (custom polygon):
+        This can also be |offset-list| in which each specified `offset <Offset>` is a
+        point relative to the top-left corner of the layer.
+
+        .. important::
+            :title: Area of polygons are *truncated*
+
+            While there is no restriction on the position of the `offset <Offset>`\ s,
+            the rendered polygon *will* be truncated by the layer's `size <Size>`.
+
+    .. jinja::
+
+        .. md-tab-set::
+
+        {% for sides in [3, 5, 7] %}
+
+            .. md-tab-item:: :yaml:`sides: {{ sides }}`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - polygon:
+                          sides: {{ sides }} {% if sides == 3 -%}
+                          # this is the default if not specified{% endif %}
+                          color: green
+                          border:
+                            width: 30
+                            color: red
+                        size: { width: 400, height: 400 }
+                        offset: { x: 400, y: 115 }
+        {% endfor %}
+            .. md-tab-item:: :yaml:`sides: [offset, offset, offset]`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - polygon:
+                          sides:
+                            - { y: 400 } # bottom left
+                            - { x: 200 } # top center
+                            - { x: 400, y: 400 } # bottom right
+                          color: green
+                          border:
+                            width: 30
+                            color: red
+                        size: { width: 400, height: 400 }
+                        offset: { x: 400, y: 115 }
+
+            .. md-tab-item:: :yaml:`sides: [jinja generated points]`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - polygon:
+                          # {{ '{%' }} set x_points = range(20, 400, 120) %}
+                          sides: # {{ '{%' }} for x in x_points %}
+                            # {{ '{%' }} for y in x_points|reverse %}
+                            - { x: {{ '{{' }} x }}, y: {{ '{{' }} y }} }
+                            # {{ '{%' }} endfor %}{{ '{%' }} endfor %}
+                          color: green
+                          border:
+                            width: 8
+                            color: red
+                        size: { width: 400, height: 400 }
+                        offset: { x: 400, y: 115 }
+    """
+    rotation: int = 0
+    """The angles (in degrees) of arbitrary rotation (increasing counter-clockwise).
+
+    .. error::
+        If the `sides` attribute specifies |offset-list|, then any specified
+        `rotation` is ignored (treated as :yaml:`0`).
+    .. jinja::
+
+        .. md-tab-set::
+
+           {% for rotation in [0, 90, 180, 270, -45] %}
+
+            .. md-tab-item:: :yaml:`rotation: {{ rotation }}`
+
+                .. social-card:: { "debug": true }
+                    :dry-run:
+                    :hide-conf:
+
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - polygon:
+                          rotation: {{ rotation }} {% if not rotation -%}
+                          # this is the default if not specified{% endif %}
+                          color: green
+                        size: { width: 400, height: 400 }
+                        offset: { x: 400, y: 115 }
+           {% endfor %}
+    """
+
+    @field_validator("sides")
+    def assert_sides(
+        cls, val: Union[PositiveInt, List[Offset]]
+    ) -> Union[PositiveInt, List[Offset]]:
+        if isinstance(val, int) and val <= 2:
+            return 3
+        if isinstance(val, list) and len(val) < 2:
+            raise ValueError("List of offsets must have at least 2 items: %r", val)
+        return val
 
 
 class LayerImage(CustomBaseModel):
@@ -363,6 +620,7 @@ class Line(CustomBaseModel):
                           line:
                             amount: 3
                             height: {{ height }}
+                          border: { width: 3, color: red }
         {% endfor %}
     """
 
@@ -537,6 +795,9 @@ class Typography(CustomBaseModel):
 
     .. seealso:: Please review :ref:`choosing-a-font` section.
     """
+    border: Border = Border()
+    """The `border <Border>` specification defines the behavior of rendering an outline
+    around each character."""
 
     @field_validator("align")
     def _conform_center_align(cls, val: str) -> str:
