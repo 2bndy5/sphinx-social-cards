@@ -1,5 +1,5 @@
-Plugins
-=======
+sphinx-social-cards Plugins
+===========================
 
 It is possible to make plugins for this ``sphinx_social_cards`` extension. Such plugins can
 

@@ -2,8 +2,16 @@
 from typing import List, Optional
 
 from pydantic import BaseModel
-from .base_model import CustomBaseModel
-from .layers import Background, Icon, Typography, Ellipse, Rectangle, PositiveInt
+from .base_model import CustomBaseModel, Offset
+from .layers import (
+    Background,
+    Icon,
+    Typography,
+    Ellipse,
+    Rectangle,
+    Polygon,
+    PositiveInt,
+)
 
 
 class Size(CustomBaseModel):
@@ -15,17 +23,6 @@ class Size(CustomBaseModel):
     height: PositiveInt = 630
     """The height of the layer (relative to the `offset <Offset>`).
     Defaults to 630 pixels height."""
-
-
-class Offset(CustomBaseModel):
-    """An attribute to describe a layer's positional offset."""
-
-    x: int = 0
-    """The offset on the X axis (relative to the top-left corner of the card). Defaults
-    to 0."""
-    y: int = 0
-    """The offset on the Y axis (relative to the top-left corner of the card). Defaults
-    to 0."""
 
 
 class Layer(CustomBaseModel):
@@ -40,6 +37,7 @@ class Layer(CustomBaseModel):
 
     1. :attr:`background`
     #. :attr:`ellipse`
+    #. :attr:`polygon`
     #. :attr:`rectangle`
     #. :attr:`icon`
     #. :attr:`typography`
@@ -90,6 +88,8 @@ class Layer(CustomBaseModel):
     rectangle: Optional[Rectangle] = None
     #: An optional :doc:`shapes/ellipse`.
     ellipse: Optional[Ellipse] = None
+    #: An optional :doc:`shapes/polygon`.
+    polygon: Optional[Polygon] = None
     #: An optional :doc:`icon`.
     icon: Optional[Icon] = None
     size: Optional[Size] = None
