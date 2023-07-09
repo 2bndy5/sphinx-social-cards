@@ -425,7 +425,7 @@
   
     <li class="md-nav__item">
       <a href="../../../plugins/index.html" class="md-nav__link">
-        <span class="md-ellipsis">Plugins</span>
+        <span class="md-ellipsis">sphinx-<wbr>social-<wbr>cards Plugins</span>
       </a>
     </li>
   
@@ -496,7 +496,7 @@
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">Field</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span>
 
-<span class="kn">from</span> <span class="nn">.base_model</span> <span class="kn">import</span> <span class="n">CustomBaseModel</span>
+<span class="kn">from</span> <span class="nn">.base_model</span> <span class="kn">import</span> <span class="n">CustomBaseModel</span><span class="p">,</span> <span class="n">Offset</span>
 
 <span class="n">PositiveInt</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
 <span class="n">PositiveFloat</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
@@ -509,8 +509,50 @@
     <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="Ellipse"><a class="viewcode-back" href="../../../layouts/shapes/ellipse.html#sphinx_social_cards.validators.layers.Ellipse">[docs]</a><span class="k">class</span> <span class="nc">Ellipse</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The ellipse layer attribute renders an ellipse using the layer&#39;s size and offset</span>
+<span class="k">class</span> <span class="nc">GenericShape</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
+    <span class="c1">#:The shape&#39;s outlining `border &lt;Border&gt;` specification.</span>
+    <span class="n">border</span><span class="p">:</span> <span class="n">Border</span> <span class="o">=</span> <span class="n">Border</span><span class="p">()</span>
+    <span class="c1">#: The shape&#39;s fill color.</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="Arc"><a class="viewcode-back" href="../../../layouts/shapes/ellipse.html#sphinx_social_cards.validators.layers.Arc">[docs]</a><span class="k">class</span> <span class="nc">Arc</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This attribute allows specifying starting and ending angles that render as an</span>
+<span class="sd">    arc of a circle.</span>
+
+<span class="sd">    .. important::</span>
+<span class="sd">        The angle of origin (0 degrees) is 3 o&#39;clock and increases clockwise.</span>
+<span class="sd">    .. jinja::</span>
+
+<span class="sd">        .. md-tab-set::</span>
+
+<span class="sd">            {% for start, end in [(45, 135), (135, 225), (225, 315), (315, 45)] %}</span>
+
+<span class="sd">            .. md-tab-item:: :yaml:`arc: { start: {{ start }}, end: {{ end }} }`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - ellipse:</span>
+<span class="sd">                          arc: { start: {{ start }}, end: {{ end }} }</span>
+<span class="sd">                          border: { width: 20, color: red }</span>
+<span class="sd">                          border_to_origin: on</span>
+<span class="sd">                        size: { width: 500, height: 300 }</span>
+<span class="sd">                        offset: { x: 350, y: 165 }</span>
+<span class="sd">            {% endfor %}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The starting angle.</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: The ending angle.</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="Ellipse"><a class="viewcode-back" href="../../../layouts/shapes/ellipse.html#sphinx_social_cards.validators.layers.Ellipse">[docs]</a><span class="k">class</span> <span class="nc">Ellipse</span><span class="p">(</span><span class="n">GenericShape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This layer attribute renders an ellipse using the layer&#39;s size and offset</span>
 <span class="sd">    to define the outlining bounding box.</span>
 
 <span class="sd">    .. md-tab-set::</span>
@@ -522,11 +564,11 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - ellipse:</span>
 <span class="sd">                      border:</span>
 <span class="sd">                        width: 50</span>
-<span class="sd">                        color: &quot;red&quot;</span>
+<span class="sd">                        color: red</span>
 <span class="sd">                    size: { width: 500, height: 300 }</span>
 <span class="sd">                    offset: { x: 350, y: 165 }</span>
 
@@ -537,9 +579,9 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - ellipse:</span>
-<span class="sd">                      color: &quot;green&quot;</span>
+<span class="sd">                      color: green</span>
 <span class="sd">                    size: { width: 300, height: 500 }</span>
 <span class="sd">                    offset: { x: 450, y: 65 }</span>
 
@@ -550,25 +592,54 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - ellipse:</span>
 <span class="sd">                      border:</span>
 <span class="sd">                        width: 50</span>
-<span class="sd">                        color: &quot;red&quot;</span>
-<span class="sd">                      color: &quot;green&quot;</span>
+<span class="sd">                        color: red</span>
+<span class="sd">                      color: green</span>
 <span class="sd">                    size: { width: 400, height: 400 }</span>
 <span class="sd">                    offset: { x: 400, y: 115 }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">border</span><span class="p">:</span> <span class="n">Border</span> <span class="o">=</span> <span class="n">Border</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The shape&#39;s outlining `border &lt;Border&gt;` specification.&quot;&quot;&quot;</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The shape&#39;s fill color.&quot;&quot;&quot;</span></div>
+    <span class="c1">#: The specification for drawing only an `arc &lt;Arc&gt;` of an ellipse.</span>
+    <span class="n">arc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Arc</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">border_to_origin</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This switch controls the rendering of the border when :attr:`arc` is specified.</span>
+<span class="sd">    If the :attr:`arc` attribute is not specified, then this switch has no effect.</span>
+
+<span class="sd">    By default (:yaml:`false`), the border is not drawn between the arc endpoints and</span>
+<span class="sd">    the angle&#39;s origin -- meaning only the arc itself has a border. Set this to</span>
+<span class="sd">    :yaml:`true` to render the border between arc endpoints.</span>
+
+<span class="sd">    .. jinja::</span>
+
+<span class="sd">        .. md-tab-set::</span>
+
+<span class="sd">            {% for switch in [&#39;on&#39;, &#39;off&#39;] %}</span>
+
+<span class="sd">            .. md-tab-item:: :yaml:`border_to_origin: {{ switch }}`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - ellipse:</span>
+<span class="sd">                          border_to_origin: {{ switch }} {% if switch == &#39;off&#39; -%}</span>
+<span class="sd">                          # this is the default if not specified{% endif %}</span>
+<span class="sd">                          arc: { end: 135 }</span>
+<span class="sd">                          color: red</span>
+<span class="sd">                          border: { width: 25, color: green }</span>
+<span class="sd">                        size: { width: 500, height: 300 }</span>
+<span class="sd">                        offset: { x: 350, y: 165 }</span>
+<span class="sd">            {% endfor %}</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../../layouts/shapes/rectangle.html#sphinx_social_cards.validators.layers.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">Ellipse</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to how the `ellipse &lt;Ellipse&gt;` attribute works, This layer</span>
-<span class="sd">    attribute provides a way of drawing rectangles with rounded corners.</span>
+<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../../layouts/shapes/rectangle.html#sphinx_social_cards.validators.layers.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">(</span><span class="n">GenericShape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This layer attribute provides a way of drawing rectangles with rounded corners.</span>
 
 <span class="sd">    .. md-tab-set::</span>
 
@@ -579,12 +650,12 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - rectangle:</span>
 <span class="sd">                      radius: 50</span>
 <span class="sd">                      border:</span>
 <span class="sd">                        width: 30</span>
-<span class="sd">                        color: &quot;red&quot;</span>
+<span class="sd">                        color: red</span>
 <span class="sd">                    size: { width: 500, height: 300 }</span>
 <span class="sd">                    offset: { x: 350, y: 165 }</span>
 
@@ -595,10 +666,10 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - rectangle:</span>
 <span class="sd">                      radius: 50</span>
-<span class="sd">                      color: &quot;green&quot;</span>
+<span class="sd">                      color: green</span>
 <span class="sd">                    size: { width: 300, height: 500 }</span>
 <span class="sd">                    offset: { x: 450, y: 65 }</span>
 
@@ -609,13 +680,13 @@
 <span class="sd">                :hide-conf:</span>
 
 <span class="sd">                layers:</span>
-<span class="sd">                  - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">                  - rectangle:</span>
 <span class="sd">                      radius: 50</span>
 <span class="sd">                      border:</span>
 <span class="sd">                        width: 30</span>
-<span class="sd">                        color: &quot;red&quot;</span>
-<span class="sd">                      color: &quot;green&quot;</span>
+<span class="sd">                        color: red</span>
+<span class="sd">                      color: green</span>
 <span class="sd">                    size: { width: 400, height: 400 }</span>
 <span class="sd">                    offset: { x: 400, y: 115 }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -638,10 +709,10 @@
 
 <span class="sd">    .. list-table::</span>
 
-<span class="sd">        * - :si-icon:`material/arrow-top-left` ``&quot;top left&quot;``</span>
-<span class="sd">          - :si-icon:`material/arrow-top-right` ``&quot;top right&quot;``</span>
-<span class="sd">        * - :si-icon:`material/arrow-bottom-left` ``&quot;bottom left&quot;``</span>
-<span class="sd">          - :si-icon:`material/arrow-bottom-right` ``&quot;bottom right&quot;``</span>
+<span class="sd">        * - :si-icon:`material/arrow-top-left` ``&#39;top left&#39;``</span>
+<span class="sd">          - :si-icon:`material/arrow-top-right` ``&#39;top right&#39;``</span>
+<span class="sd">        * - :si-icon:`material/arrow-bottom-left` ``&#39;bottom left&#39;``</span>
+<span class="sd">          - :si-icon:`material/arrow-bottom-right` ``&#39;bottom right&#39;``</span>
 <span class="sd">    .. warning::</span>
 <span class="sd">        The `radius` must always be less than half the rectangle&#39;s minimum</span>
 <span class="sd">        `width &lt;Size.width&gt;` or `height &lt;Size.height&gt;`. Otherwise, ``pillow`` will fail</span>
@@ -650,20 +721,206 @@
 <span class="sd">        :dry-run:</span>
 
 <span class="sd">        layers:</span>
-<span class="sd">          - background: { color: &quot;#4051B2&quot; }</span>
+<span class="sd">          - background: { color: &#39;#4051B2&#39; }</span>
 <span class="sd">          - size: { width: 100, height: 400 }</span>
 <span class="sd">            offset: { x: 225, y: 115 }</span>
 <span class="sd">            rectangle:</span>
 <span class="sd">              radius: 49.9  # cannot be 50 because width is 100</span>
-<span class="sd">              corners: [&quot;top left&quot;, &quot;bottom left&quot;]</span>
-<span class="sd">              color: &quot;red&quot;</span>
+<span class="sd">              corners: [&#39;top left&#39;, &#39;bottom left&#39;]</span>
+<span class="sd">              color: red</span>
 <span class="sd">          - size: { width: 600, height: 400 }</span>
 <span class="sd">            offset: { x: 375, y: 115 }</span>
 <span class="sd">            rectangle:</span>
 <span class="sd">              radius: 199.9  # cannot be 200 because height is 400</span>
-<span class="sd">              corners: [&quot;top right&quot;, &quot;bottom right&quot;]</span>
-<span class="sd">              color: &quot;green&quot;</span>
+<span class="sd">              corners: [&#39;top right&#39;, &#39;bottom right&#39;]</span>
+<span class="sd">              color: green</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Polygon"><a class="viewcode-back" href="../../../layouts/shapes/polygon.html#sphinx_social_cards.validators.layers.Polygon">[docs]</a><span class="k">class</span> <span class="nc">Polygon</span><span class="p">(</span><span class="n">GenericShape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This layer attribute provides a way of drawing polygons with varying number of</span>
+<span class="sd">    `sides`.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The position of the polygon may not always be centered as it depends on the</span>
+<span class="sd">        specification of `sides`.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        The size of the rendered polygon is constrained by how the `sides` are</span>
+<span class="sd">        specified. Please review the 2 distinct ways to specify a polygon&#39;s `sides`.</span>
+
+<span class="sd">    .. md-tab-set::</span>
+
+<span class="sd">        .. md-tab-item:: Proof of regular polygon&#39;s occupied area</span>
+
+<span class="sd">            .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                :hide-conf:</span>
+<span class="sd">                :dry-run:</span>
+<span class="sd">                :layout-caption: The area of a regular polygon will never be larger than</span>
+<span class="sd">                    the area of a circle within the layer.</span>
+
+<span class="sd">                layers:</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                  - size: { width: 400, height: 400 } # size forms a perfect square</span>
+<span class="sd">                    offset: { x: 400, y: 115 }</span>
+<span class="sd">                    ellipse: # an ellipse to prove the maximum size of the polygon</span>
+<span class="sd">                      border: { color: white, width: 4 }</span>
+<span class="sd">                    polygon:</span>
+<span class="sd">                      border: { width: 20, color: red }</span>
+<span class="sd">                      color: green</span>
+
+<span class="sd">        .. md-tab-item:: A rectangular layer size for a regular polygon</span>
+
+<span class="sd">            .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                :hide-conf:</span>
+<span class="sd">                :dry-run:</span>
+<span class="sd">                :layout-caption: The area of the regular polygon is determined by the</span>
+<span class="sd">                    smallest value for the layer&#39;s width or height (if not equal).</span>
+
+<span class="sd">                layers:</span>
+<span class="sd">                  - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                  - size: { width: 600, height: 400 } # size is not a perfect square</span>
+<span class="sd">                    offset: { x: 300, y: 115 }</span>
+<span class="sd">                    polygon:</span>
+<span class="sd">                      sides: 6</span>
+<span class="sd">                      border: { width: 20, color: red }</span>
+<span class="sd">                      color: green</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sides</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PositiveInt</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Offset</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. |offset-list| replace:: a YAML list of `offset &lt;Offset&gt;`\ s</span>
+
+<span class="sd">    The specification of the polygon&#39;s sides. This can be an integer or</span>
+<span class="sd">    |offset-list|.</span>
+
+
+<span class="sd">    :Using an Integer (regular polygon):</span>
+<span class="sd">        The number of sides that defines the edge of the polygon. This cannot be less</span>
+<span class="sd">        than :yaml:`3` if specified as an integer.</span>
+
+<span class="sd">        .. important::</span>
+<span class="sd">            :title: Area of polygons are *restricted*</span>
+
+<span class="sd">            If `sides` is an integer, then the rendered polygon *is* limited to the area</span>
+<span class="sd">            of a circle within the layer. In this case, the layer&#39;s `size &lt;Size&gt;`</span>
+<span class="sd">            determines the size of the polygon, but the layer `size &lt;Size&gt;` should form</span>
+<span class="sd">            a perfect square to maximize the area that the polygon occupies. If the</span>
+<span class="sd">            `size.width &lt;Size.width&gt;` and `size.height &lt;Size.height&gt;` are not equal,</span>
+<span class="sd">            then the smaller of the two is used to limit the size of the polygon.</span>
+
+<span class="sd">    :Using a YAML list of offsets (custom polygon):</span>
+<span class="sd">        This can also be |offset-list| in which each specified `offset &lt;Offset&gt;` is a</span>
+<span class="sd">        point relative to the top-left corner of the layer.</span>
+
+<span class="sd">        .. important::</span>
+<span class="sd">            :title: Area of polygons are *truncated*</span>
+
+<span class="sd">            While there is no restriction on the position of the `offset &lt;Offset&gt;`\ s,</span>
+<span class="sd">            the rendered polygon *will* be truncated by the layer&#39;s `size &lt;Size&gt;`.</span>
+
+<span class="sd">    .. jinja::</span>
+
+<span class="sd">        .. md-tab-set::</span>
+
+<span class="sd">        {% for sides in [3, 5, 7] %}</span>
+
+<span class="sd">            .. md-tab-item:: :yaml:`sides: {{ sides }}`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - polygon:</span>
+<span class="sd">                          sides: {{ sides }} {% if sides == 3 -%}</span>
+<span class="sd">                          # this is the default if not specified{% endif %}</span>
+<span class="sd">                          color: green</span>
+<span class="sd">                          border:</span>
+<span class="sd">                            width: 30</span>
+<span class="sd">                            color: red</span>
+<span class="sd">                        size: { width: 400, height: 400 }</span>
+<span class="sd">                        offset: { x: 400, y: 115 }</span>
+<span class="sd">        {% endfor %}</span>
+<span class="sd">            .. md-tab-item:: :yaml:`sides: [offset, offset, offset]`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - polygon:</span>
+<span class="sd">                          sides:</span>
+<span class="sd">                            - { y: 400 } # bottom left</span>
+<span class="sd">                            - { x: 200 } # top center</span>
+<span class="sd">                            - { x: 400, y: 400 } # bottom right</span>
+<span class="sd">                          color: green</span>
+<span class="sd">                          border:</span>
+<span class="sd">                            width: 30</span>
+<span class="sd">                            color: red</span>
+<span class="sd">                        size: { width: 400, height: 400 }</span>
+<span class="sd">                        offset: { x: 400, y: 115 }</span>
+
+<span class="sd">            .. md-tab-item:: :yaml:`sides: [jinja generated points]`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - polygon:</span>
+<span class="sd">                          # {{ &#39;{%&#39; }} set x_points = range(20, 400, 120) %}</span>
+<span class="sd">                          sides: # {{ &#39;{%&#39; }} for x in x_points %}</span>
+<span class="sd">                            # {{ &#39;{%&#39; }} for y in x_points|reverse %}</span>
+<span class="sd">                            - { x: {{ &#39;{{&#39; }} x }}, y: {{ &#39;{{&#39; }} y }} }</span>
+<span class="sd">                            # {{ &#39;{%&#39; }} endfor %}{{ &#39;{%&#39; }} endfor %}</span>
+<span class="sd">                          color: green</span>
+<span class="sd">                          border:</span>
+<span class="sd">                            width: 8</span>
+<span class="sd">                            color: red</span>
+<span class="sd">                        size: { width: 400, height: 400 }</span>
+<span class="sd">                        offset: { x: 400, y: 115 }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rotation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The angles (in degrees) of arbitrary rotation (increasing counter-clockwise).</span>
+
+<span class="sd">    .. error::</span>
+<span class="sd">        If the `sides` attribute specifies |offset-list|, then any specified</span>
+<span class="sd">        `rotation` is ignored (treated as :yaml:`0`).</span>
+<span class="sd">    .. jinja::</span>
+
+<span class="sd">        .. md-tab-set::</span>
+
+<span class="sd">           {% for rotation in [0, 90, 180, 270, -45] %}</span>
+
+<span class="sd">            .. md-tab-item:: :yaml:`rotation: {{ rotation }}`</span>
+
+<span class="sd">                .. social-card:: { &quot;debug&quot;: true }</span>
+<span class="sd">                    :dry-run:</span>
+<span class="sd">                    :hide-conf:</span>
+
+<span class="sd">                    layers:</span>
+<span class="sd">                      - background: { color: &#39;#4051B2&#39; }</span>
+<span class="sd">                      - polygon:</span>
+<span class="sd">                          rotation: {{ rotation }} {% if not rotation -%}</span>
+<span class="sd">                          # this is the default if not specified{% endif %}</span>
+<span class="sd">                          color: green</span>
+<span class="sd">                        size: { width: 400, height: 400 }</span>
+<span class="sd">                        offset: { x: 400, y: 115 }</span>
+<span class="sd">           {% endfor %}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;sides&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">assert_sides</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PositiveInt</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Offset</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">PositiveInt</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Offset</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;List of offsets must have at least 2 items: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
 
 
 <span class="k">class</span> <span class="nc">LayerImage</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
@@ -854,6 +1111,7 @@
 <span class="sd">                          line:</span>
 <span class="sd">                            amount: 3</span>
 <span class="sd">                            height: {{ height }}</span>
+<span class="sd">                          border: { width: 3, color: red }</span>
 <span class="sd">        {% endfor %}</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
@@ -1028,6 +1286,9 @@
 
 <span class="sd">    .. seealso:: Please review :ref:`choosing-a-font` section.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">border</span><span class="p">:</span> <span class="n">Border</span> <span class="o">=</span> <span class="n">Border</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `border &lt;Border&gt;` specification defines the behavior of rendering an outline</span>
+<span class="sd">    around each character.&quot;&quot;&quot;</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;align&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_conform_center_align</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

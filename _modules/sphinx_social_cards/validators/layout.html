@@ -425,7 +425,7 @@
   
     <li class="md-nav__item">
       <a href="../../../plugins/index.html" class="md-nav__link">
-        <span class="md-ellipsis">Plugins</span>
+        <span class="md-ellipsis">sphinx-<wbr>social-<wbr>cards Plugins</span>
       </a>
     </li>
   
@@ -493,8 +493,16 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="kn">from</span> <span class="nn">.base_model</span> <span class="kn">import</span> <span class="n">CustomBaseModel</span>
-<span class="kn">from</span> <span class="nn">.layers</span> <span class="kn">import</span> <span class="n">Background</span><span class="p">,</span> <span class="n">Icon</span><span class="p">,</span> <span class="n">Typography</span><span class="p">,</span> <span class="n">Ellipse</span><span class="p">,</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">PositiveInt</span>
+<span class="kn">from</span> <span class="nn">.base_model</span> <span class="kn">import</span> <span class="n">CustomBaseModel</span><span class="p">,</span> <span class="n">Offset</span>
+<span class="kn">from</span> <span class="nn">.layers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Background</span><span class="p">,</span>
+    <span class="n">Icon</span><span class="p">,</span>
+    <span class="n">Typography</span><span class="p">,</span>
+    <span class="n">Ellipse</span><span class="p">,</span>
+    <span class="n">Rectangle</span><span class="p">,</span>
+    <span class="n">Polygon</span><span class="p">,</span>
+    <span class="n">PositiveInt</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Size"><a class="viewcode-back" href="../../../layouts/index.html#sphinx_social_cards.validators.layout.Size">[docs]</a><span class="k">class</span> <span class="nc">Size</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
@@ -506,17 +514,6 @@
     <span class="n">height</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">630</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The height of the layer (relative to the `offset &lt;Offset&gt;`).</span>
 <span class="sd">    Defaults to 630 pixels height.&quot;&quot;&quot;</span></div>
-
-
-<div class="viewcode-block" id="Offset"><a class="viewcode-back" href="../../../layouts/index.html#sphinx_social_cards.validators.layout.Offset">[docs]</a><span class="k">class</span> <span class="nc">Offset</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An attribute to describe a layer&#39;s positional offset.&quot;&quot;&quot;</span>
-
-    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The offset on the X axis (relative to the top-left corner of the card). Defaults</span>
-<span class="sd">    to 0.&quot;&quot;&quot;</span>
-    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The offset on the Y axis (relative to the top-left corner of the card). Defaults</span>
-<span class="sd">    to 0.&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../layouts/layers.html#sphinx_social_cards.validators.layout.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">CustomBaseModel</span><span class="p">):</span>
@@ -531,6 +528,7 @@
 
 <span class="sd">    1. :attr:`background`</span>
 <span class="sd">    #. :attr:`ellipse`</span>
+<span class="sd">    #. :attr:`polygon`</span>
 <span class="sd">    #. :attr:`rectangle`</span>
 <span class="sd">    #. :attr:`icon`</span>
 <span class="sd">    #. :attr:`typography`</span>
@@ -581,6 +579,8 @@
     <span class="n">rectangle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Rectangle</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: An optional :doc:`shapes/ellipse`.</span>
     <span class="n">ellipse</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Ellipse</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: An optional :doc:`shapes/polygon`.</span>
+    <span class="n">polygon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Polygon</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: An optional :doc:`icon`.</span>
     <span class="n">icon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Icon</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Size</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>

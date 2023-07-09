@@ -666,7 +666,7 @@
   
     <li class="md-nav__item">
       <a href="../plugins/index.html" class="md-nav__link">
-        <span class="md-ellipsis">Plugins</span>
+        <span class="md-ellipsis">sphinx-<wbr>social-<wbr>cards Plugins</span>
       </a>
     </li>
   
@@ -1236,7 +1236,7 @@ property, and the offset is defined by <a class="reference internal" href="#sphi
 <p>The layer outline and grid are visible because we enabled <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.debug" title="sphinx_social_cards.validators.Social_Cards.debug (Python attribute) — A field to specify layout debugging helpers. See Debugging Layouts for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">debug</span></code></a> in the
 <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards" title="sphinx_social_cards.validators.Social_Cards (Python class) — A dict of configurations related to generating social media cards. Each attribute equates to a supported configuration option."><code class="xref any py py-class docutils literal notranslate"><span class="pre">social_cards</span></code></a> configuration. The rest of the image is transparent because there
 are no layers with any actual content specified (like <a class="reference internal" href="background.html#sphinx_social_cards.validators.layers.Background" title="sphinx_social_cards.validators.layers.Background (Python class) — When combining these attributes, the image is tinted with the color."><code class="xref any py py-class docutils literal notranslate"><span class="pre">background</span></code></a>, <a class="reference internal" href="icon.html#sphinx_social_cards.validators.layers.Icon" title="sphinx_social_cards.validators.layers.Icon (Python class) — When combining these attributes, the image is colorized by the specified color."><code class="xref any py py-class docutils literal notranslate"><span class="pre">icon</span></code></a> or
-<a class="reference internal" href="typography.html#sphinx_social_cards.validators.layers.Typography" title="sphinx_social_cards.validators.layers.Typography (Python class) — The text to be displayed. This can be a Jinja syntax that has access to the card's jinja contexts."><code class="xref any py py-class docutils literal notranslate"><span class="pre">typography</span></code></a>).</p>
+<a class="reference internal" href="typography.html#sphinx_social_cards.validators.layers.Typography" title="sphinx_social_cards.validators.layers.Typography (Python class) — The border specification defines the behavior of rendering an outline around each character."><code class="xref any py py-class docutils literal notranslate"><span class="pre">typography</span></code></a>).</p>
 <p>Upon closer inspection you’ll notice that</p>
 <ul class="simple">
 <li><p>layer <code class="code highlight yaml docutils literal highlight-yaml"><span class="l l-Scalar l-Scalar-Plain">0</span></code> uses the layout’s <a class="reference internal" href="#sphinx_social_cards.validators.layout.Size" title="sphinx_social_cards.validators.layout.Size (Python class) — An attribute to describe a layer's or layout's size."><code class="xref any py py-class docutils literal notranslate"><span class="pre">size</span></code></a> and the default <a class="reference internal" href="#sphinx_social_cards.validators.layout.Offset" title="sphinx_social_cards.validators.layout.Offset (Python class) — An attribute to describe a layer's positional offset."><code class="xref any py py-class docutils literal notranslate"><span class="pre">offset</span></code></a></p></li>
@@ -1264,7 +1264,7 @@ Defaults to 630 pixels height.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.layout.Offset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Offset</span></span><a class="reference internal" href="../_modules/sphinx_social_cards/validators/layout.html#Offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sphinx_social_cards.validators.layout.Offset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Offset</span></span><a class="reference internal" href="../_modules/sphinx_social_cards/validators/base_model.html#Offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sphinx_social_cards.validators.layout.Offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>An attribute to describe a layer’s positional offset.</p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.layout.Offset.x">
