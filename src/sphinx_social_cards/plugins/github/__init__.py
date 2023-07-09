@@ -1,9 +1,7 @@
 """
 This plugin demonstrates how to add custom context and layouts. The purpose here is
-to get VCS (Version Control System) information (eg stars, forks, etc) and use it in a
+to get information from GitHub (eg stars, forks, etc) and use it in a
 new pre-designed layout.
-
-This plugin currently only supports GitHub via REST API endpoint(s).
 
 Enabling
 ********
