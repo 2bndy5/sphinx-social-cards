@@ -164,25 +164,6 @@ jobs:
           - 'sphinx5'
           - 'sphinx6'
           - 'sphinx7'
-        include:
-          - python-version: '3.7'
-            sphinx-version: 'sphinx4'
-            os: 'ubuntu-latest'
-          - python-version: '3.7'
-            sphinx-version: 'sphinx5'
-            os: 'ubuntu-latest'
-          - python-version: '3.7'
-            sphinx-version: 'sphinx4'
-            os: 'windows-latest'
-          - python-version: '3.7'
-            sphinx-version: 'sphinx5'
-            os: 'windows-latest'
-          - python-version: '3.7'
-            sphinx-version: 'sphinx4'
-            os: 'macos-latest'
-          - python-version: '3.7'
-            sphinx-version: 'sphinx5'
-            os: 'macos-latest'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3

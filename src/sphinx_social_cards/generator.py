@@ -398,10 +398,7 @@ class CardGenerator:
         args["radius"] = min(  # type: ignore[type-var]
             *[int(r - (r % 2)) for r in (max_radius, set_radius)]
         )
-        try:
-            brush.rounded_rectangle(**args, corners=tuple(corners))
-        except ValueError as exc:
-            LOGGER.warning("%s:\n%r\nfrom\n%r", str(exc), args, shape_config.dict())
+        brush.rounded_rectangle(**args, corners=tuple(corners))
 
     def render_debugging(self, layer: Layer, index: int, color: ColorAttr):
         offset = (layer.offset.x, layer.offset.y)
@@ -416,12 +413,7 @@ class CardGenerator:
             str(Path(__file__).parent / ".fonts" / "Roboto normal (latin 400).ttf"), 10
         )
         brush = ImageDraw.Draw(self._canvas)
-        try:
-            brush.rectangle((offset, size), outline=ImageColor.getrgb(color.fill))
-        except ValueError as exc:
-            LOGGER.warning(
-                "%s\nUnable to draw rectangle for debugging layer:\n%r", str(exc), layer
-            )
+        brush.rectangle((offset, size), outline=ImageColor.getrgb(color.fill))
 
         def draw_label(
             label: str,
