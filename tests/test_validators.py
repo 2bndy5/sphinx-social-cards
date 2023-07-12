@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Dict, Union, Optional
 
+from importlib.metadata import version as get_version
 import pytest
 from sphinx.testing.util import SphinxTestApp
 from sphinx_social_cards.validators import (
@@ -8,11 +9,9 @@ from sphinx_social_cards.validators import (
     assert_path_exists,
     _validate_color,
 )
+from sphinx_social_cards.validators.layout import Size
+from sphinx_social_cards.validators.contexts import Config, today_default
 
-try:
-    from importlib.metadata import version as get_version
-except ImportError:
-    from importlib_metadata import version as get_version  # type: ignore
 
 need_sphinx_immaterial_and_pydantic_v2 = pytest.mark.skipif(
     tuple([int(x) for x in get_version("sphinx-immaterial").split(".")[:3]])
@@ -36,6 +35,55 @@ def test_bad_path() -> None:
 @pytest.mark.parametrize("color", ["invalid", None])
 def test_bad_color(color: Optional[str]):
     assert _validate_color(color) == (color, False)
+
+
+@pytest.mark.parametrize(
+    "size1,size2,gt,lt,eq",
+    (
+        [Size(width=150, height=50), Size(width=100, height=50), True, False, False],
+        [Size(width=50, height=50), Size(width=100, height=50), False, True, False],
+        [Size(width=100, height=50), Size(width=100, height=50), False, False, True],
+    ),
+    ids=["gt", "lt", "eq"],
+)
+def test_size_comparison(size1: Size, size2: Size, gt: bool, lt: bool, eq: bool):
+    assert (size1 > size2) is gt
+    assert (size1 < size2) is lt
+    assert (size1 == size2) is eq
+    assert (size1 <= size2) is (lt or eq)
+    assert (size1 >= size2) is (gt or eq)
+    assert (size1 != size2) is not eq
+
+
+@pytest.mark.xfail
+@pytest.mark.parametrize("op", [">", "<", ">=", "<=", "==", "!="])
+def test_bad_comparison(op: str):
+    if op == ">":
+        assert Size(width=100, height=50) > 0  # type: ignore[operator]
+    if op == "<":
+        assert Size(width=100, height=50) < 0  # type: ignore[operator]
+    if op == ">=":
+        assert Size(width=100, height=50) >= 0  # type: ignore[operator]
+    if op == "<=":
+        assert Size(width=100, height=50) <= 0  # type: ignore[operator]
+    if op == "==":
+        assert Size(width=100, height=50) == 0  # type: ignore[operator]
+    if op == "!=":
+        assert Size(width=100, height=50) != 0  # type: ignore[operator]
+
+
+@pytest.mark.parametrize(
+    "code,expected",
+    (["en", "English"], ["es", "Spanish"], ["xx", "xx"], [None, "English"]),
+    ids=["English", "Spanish", "unknown", "None"],
+)
+def test_ctx_lang_code(code: Optional[str], expected: Optional[str]):
+    assert Config(site_url="", language=code).language == expected
+
+
+@pytest.mark.parametrize("val", ["today", None], ids=["str", "None"])
+def test_ctx_today(val: Optional[str]):
+    assert Config(site_url="", today=val).today == val or today_default
 
 
 @need_sphinx_immaterial_and_pydantic_v2

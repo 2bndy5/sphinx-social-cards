@@ -8,7 +8,7 @@ description = "Generate social media cards for documentation pages with Sphinx"
 readme = "README.rst"
 keywords = ["sphinx", "social", "cards", "previews"]
 license = {text = "MIT"}
-requires-python = ">3.7"
+requires-python = ">=3.8"
 dynamic = ["version", "dependencies", "optional-dependencies"]
 authors = [
     { name = "Brendan Doherty", email = "2bndy5@gmail.com" }
@@ -29,12 +29,8 @@ classifiers = [
 ]
 
 [project.urls]
-home =  "https://2bndy5.github.io/sphinx-social-cards"
-download = "http://github.com/2bndy5/sphinx-social-cards"
-
-[tool.setuptools]
-zip-safe = false
-include-package-data = true
+Documentation =  "https://2bndy5.github.io/sphinx-social-cards"
+Source = "http://github.com/2bndy5/sphinx-social-cards"
 
 [tool.setuptools.packages.find]
 where = ["src"]

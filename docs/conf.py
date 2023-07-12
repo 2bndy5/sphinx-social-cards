@@ -5,6 +5,7 @@ import typing
 import time
 
 import docutils.nodes
+from importlib.metadata import metadata as get_metadata
 import sphinx
 import sphinx.addnodes
 from sphinx.application import Sphinx
@@ -34,20 +35,31 @@ if "CI" not in os.environ or (
         "NOTE: GitHub REST API will be used (if info cache not found or outdated)"
     )
 
+
+pkg_meta = get_metadata("sphinx-social-cards").json
+assert "version" in pkg_meta
+assert "name" in pkg_meta
+assert "author_email" in pkg_meta
+assert "summary" in pkg_meta
+assert "project_url" in pkg_meta
+urls = {}
+for url_str in pkg_meta["project_url"]:
+    name, url = url_str.split(", ")
+    urls[name] = url
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "sphinx-social-cards"
-copyright = "2023, Brendan Doherty"
-author = "Brendan Doherty"
-release = "0.1.0"
+project = pkg_meta["name"]
+author = typing.cast(str, pkg_meta["author_email"]).rsplit(" ", 1)[0]
+copyright = f"2023, {author}"
+release = pkg_meta["version"]
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
     "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
     "sphinx_jinja",
@@ -67,6 +79,12 @@ default_role = "any"
 time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
 today = time.strftime(time_fmt, time.localtime())
 # END manually setting date
+
+# -- Options for sphinx_social_cards ------------------------------------------
+social_cards = {
+    "description": pkg_meta["summary"],
+    "site_url": urls["Documentation"],
+}
 
 # -- Options for autodoc -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
@@ -124,7 +142,7 @@ html_theme_options = {
         "edit": "material/file-edit-outline",
         "logo": "material/comment-text-multiple",
     },
-    "repo_url": "https://github.com/2bndy5/sphinx-social-cards",
+    "repo_url": urls["Source"],
     "repo_name": "Sphinx-Social-Cards",
     "edit_uri": "blob/main/docs",
     "features": [
@@ -215,13 +233,6 @@ sphinx_immaterial_custom_admonitions = [
 custom_checkbox = True
 
 sphinx_immaterial_icon_path = ["../src/sphinx_social_cards/.icons"]
-
-# -- Options for sphinx_social_cards ------------------------------------------
-social_cards = {
-    "description": "Generate social media cards for documentation pages via Sphinx.",
-    "site_url": "https://2bndy5.github.io/sphinx-social-cards",
-}
-# END Options for sphinx_social_cards
 
 rst_prolog = """
 .. role:: python(code)

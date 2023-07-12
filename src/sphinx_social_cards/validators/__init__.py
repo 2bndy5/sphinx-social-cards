@@ -107,11 +107,11 @@ class Social_Cards(CustomBaseModel):
     Some options use another data class to validate its values, so be mindful of the
     documented attributes' datatype.
 
-    .. literalinclude:: conf.py
+    .. literalinclude:: ../tests/conftest.py
         :language: python
         :caption: A minimal/required configuration in conf.py
         :start-after: # -- Options for sphinx_social_cards
-        :end-before: # END Options for sphinx_social_cards
+        :end-at: }
     """
 
     site_url: str

@@ -2,5 +2,4 @@ pytest
 coverage[toml]
 furo
 sphinx-immaterial
-importlib-metadata; python_version < '3.8'
 -r ../requirements-github.txt
