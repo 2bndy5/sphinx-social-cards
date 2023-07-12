@@ -24,6 +24,41 @@ class Size(CustomBaseModel):
     """The height of the layer (relative to the `offset <Offset>`).
     Defaults to 630 pixels height."""
 
+    def __gt__(self, other: "Size") -> bool:
+        if not isinstance(other, Size):
+            raise NotImplementedError(
+                f"Cannot compare a Size object with {type(other)}"
+            )
+        return any([self.width > other.width, self.height > other.height])
+
+    def __lt__(self, other: "Size") -> bool:
+        if not isinstance(other, Size):
+            raise NotImplementedError(
+                f"Cannot compare a Size object with {type(other)}"
+            )
+        return any([self.width < other.width, self.height < other.height])
+
+    def __eq__(self, other: "Size") -> bool:  # type: ignore[override]
+        if not isinstance(other, Size):
+            raise NotImplementedError(
+                f"Cannot compare a Size object with {type(other)}"
+            )
+        return (self.width == other.width) and (self.height == other.height)
+
+    def __ge__(self, other: "Size") -> bool:
+        if not isinstance(other, Size):
+            raise NotImplementedError(
+                f"Cannot compare a Size object with {type(other)}"
+            )
+        return self > other or self == other
+
+    def __le__(self, other: "Size") -> bool:
+        if not isinstance(other, Size):
+            raise NotImplementedError(
+                f"Cannot compare a Size object with {type(other)}"
+            )
+        return (self < other) or (self == other)
+
 
 class Layer(CustomBaseModel):
     """Each layer can have different attributes. A typical layer has :attr:`size` and

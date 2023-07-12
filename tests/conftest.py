@@ -18,6 +18,7 @@ def sphinx_make_app(
 author = "Brendan Doherty"
 extensions = ["sphinx_social_cards"]
 html_logo = "images/message.png"
+# -- Options for sphinx_social_cards
 social_cards = {
     "site_url": "https://github.com/2bndy5/sphinx-social-cards",
     "description": "Generate social media preview cards for your sphinx documentation.",

@@ -122,21 +122,22 @@ def convert_svg(
     # NOTE: Workaround clipping of converted small images when Inkscape is not
     # installed by telling ImageMagick to use an input canvas of enlarged -size
     # with -density applied.
-    enlarged = Size(
-        width=svg_size.width + (48 * (svg_size.width < 48)),
-        height=svg_size.height + (48 * (svg_size.height < 48)),
-    )
+    def _add_48(max_size: Size) -> Size:
+        """add 48 to dimensions if any dimension is smaller than 48"""
+        if max_size.width < 48 or max_size.height < 48:
+            return Size(width=max_size.width + 48, height=max_size.height + 48)
+        return max_size
+
+    enlarged = _add_48(svg_size)
+    enlarged = enlarged if enlarged > size else size
     new_dpi = svg_dpi
-    if size.width > svg_size.width or size.height > svg_size.height:
+    if svg_size < enlarged:
         # resize SVG <path> elements using density of DPI based on original size
-        if size.height < size.width:
-            new_dpi = round(svg_dpi * (size.height / svg_size.height))
+        if svg_size.height < svg_size.width:
+            new_dpi = round(svg_dpi * (enlarged.height / svg_size.height))
         else:
-            new_dpi = round(svg_dpi * (size.width / svg_size.width))
-    elif svg_size.width < enlarged.width:
-        # still need to set density as part of workaround noted above
-        new_dpi = round(svg_dpi * (enlarged.width * svg_size.width))
-    # LOGGER.info("new DPI: %s", new_dpi)
+            new_dpi = round(svg_dpi * (enlarged.width / svg_size.width))
+    # LOGGER.info("new DPI: %s for %r (%s)", new_dpi, enlarged, out_name)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     magick_exe = get_magick_cmd("magick" if imagemagick_version >= (7,) else "convert")
@@ -149,6 +150,8 @@ def convert_svg(
         str(new_dpi),
         "-size",
         f"{enlarged.width}x{enlarged.height}",
+        "-resize",
+        f"{size.width}x{size.height}",
         img_in,
         img_out,
     ]

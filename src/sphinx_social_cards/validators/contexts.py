@@ -1,10 +1,13 @@
 """This module holds the data classes used to populate the jinja contexts."""
+from importlib import import_module
 from pathlib import Path
 import platform
 import time
-from typing import Union, Dict, Optional, Any
+from typing import Union, Dict, Optional, Any, cast
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, Field
+from sphinx.search import languages, SearchLanguage
+from typing_extensions import Annotated
 from .base_model import CustomBaseModel
 from .layers import Icon, Font
 
@@ -170,7 +173,7 @@ class Config(BaseModel):
     #: The :confval:`author` value.
     author: Optional[str] = None
     #: The full language name that corresponds to the :confval:`language` value
-    language: Optional[str] = None
+    language: Annotated[Optional[str], Field(validate_default=True)] = None
     today: Optional[str] = today_default
     """The :confval:`today` value. Defaults to current date using
     :python:`"\<month> \<day> \<year>"` format."""
@@ -180,6 +183,19 @@ class Config(BaseModel):
         if not val:
             return today_default
         return val
+
+    @field_validator("language")
+    def _get_lang_name(cls, val: Optional[str]) -> Optional[str]:
+        if val is None:
+            val = "en"
+        lang_class = languages.get(val)
+        if lang_class is None:
+            return val
+        if isinstance(lang_class, type(SearchLanguage)):
+            return lang_class.language_name
+        assert isinstance(lang_class, str)
+        module, attr = lang_class.rsplit(".", 1)
+        return cast(SearchLanguage, getattr(import_module(module), attr)).language_name
 
 
 class Page(CustomBaseModel):

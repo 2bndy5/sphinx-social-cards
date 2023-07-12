@@ -59,7 +59,6 @@ a specific page. Lastly, :doc:`plugins/index` can be used to easily share custom
 between documentation projects.
 """
 import hashlib
-from importlib import import_module
 import json
 from pathlib import Path
 import re
@@ -73,7 +72,6 @@ from docutils.parsers.rst.directives.images import Image
 import pydantic
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
-from sphinx.search import languages, SearchLanguage
 from sphinx.directives.code import container_wrapper
 from sphinx.environment import BuildEnvironment
 from sphinx.transforms import SphinxTransform
@@ -94,17 +92,6 @@ from .images import get_magick_cmd
 
 LOGGER = getLogger(__name__)
 _CARD_IMG_CHECK = re.compile(r"(?:property=og|name=twitter):image")
-
-
-def _get_lang_name(config: Config) -> Optional[str]:
-    lang = cast(str, getattr(config, "language", "en"))
-    lang_class = (
-        "sphinx.search.en.SearchEnglish" if lang == "en" else languages.get(lang)
-    )
-    if not isinstance(lang_class, str):
-        return lang
-    module, attr = lang_class.rsplit(".", 1)
-    return cast(SearchLanguage, getattr(import_module(module), attr)).language_name
 
 
 def _load_config(app: Sphinx, config: Config):
@@ -211,11 +198,11 @@ class SocialCardTransform(SphinxTransform):
         card_contexts = JinjaContexts(
             layout=conf.cards_layout_options,
             config=ConfigCtx(
-                docstitle=getattr(self.config, "html_title", None),
+                docstitle=getattr(self.config, "project", ""),
                 theme=getattr(self.config, "html_theme_options", {}),
                 site_url=ctx_url,
                 author=getattr(self.config, "author", ""),
-                language=_get_lang_name(self.config),
+                language=cast(str, getattr(self.config, "language", "en")),
                 today=getattr(self.config, "today", None),
                 site_description=conf.description,
             ),
@@ -364,19 +351,19 @@ class SocialCardDirective(SphinxDirective):
                 site_description=conf.description,
                 site_url=ctx_url,
                 docstitle=getattr(
-                    self.config, "html_title", "An example name for a project"
+                    self.config, "project", "An example name for a project"
                 ),
                 author=getattr(self.config, "author", ""),
-                language=_get_lang_name(self.config),
+                language=cast(str, getattr(self.config, "language", "en")),
                 today=getattr(self.config, "today", None),
             ),
             plugin=getattr(self.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {}),
         )
 
-        factory = CardGenerator(context=contexts, config=conf)
-
         # set defaults after creating nodes to render config & meta_data
         conf.set_defaults(self.env.app.srcdir, self.config)
+
+        factory = CardGenerator(context=contexts, config=conf)
 
         # render layout overrides (if any)
         layout_src: Optional[str] = None

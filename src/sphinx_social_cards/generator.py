@@ -1,7 +1,8 @@
 import re
 from pathlib import Path
 from typing import Optional, Tuple, List, Union, Dict, Any, cast
-from jinja2 import FileSystemLoader, Environment, TemplateNotFound, Template
+from jinja2 import TemplateNotFound, FileSystemLoader, Template
+from jinja2.sandbox import SandboxedEnvironment
 import yaml
 from yaml.composer import ComposerError
 
@@ -57,7 +58,7 @@ class CardGenerator:
         self.context = context
         self.config = config
         self._canvas: Image.Image = Image.new(mode="RGBA", size=(10, 10))
-        self._jinja_env = Environment(
+        self._jinja_env = SandboxedEnvironment(
             loader=FileSystemLoader(
                 [
                     str(
@@ -68,7 +69,7 @@ class CardGenerator:
                     for fp in config.cards_layout_dir
                 ]
                 + [str(_DEFAULT_LAYOUT_DIR)]
-            )
+            ),
         )
 
     def parse_layout(self, content: Optional[str] = None):
@@ -101,7 +102,7 @@ class CardGenerator:
     def get_color(self, spec: Optional[str]) -> Optional[str]:
         color, is_pil_color = _validate_color(spec)
         if not is_pil_color and color:
-            raise ValueError("Invalid color specified: '%s'", color)
+            raise ValueError(f"Invalid color specified: '{color}'")
         if color in MD_COLORS:
             return MD_COLORS[color].fill
         if not color:
