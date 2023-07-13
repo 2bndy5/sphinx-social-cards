@@ -74,12 +74,13 @@ or using the ``sphinx-social-cards`` package's optional dependency:
            OS used:
 
            - On Windows:
-             ``%LOCALAPPDATA%\\2bndy5\\sphinx-social-cards\\Cache\\<month> <day>
-             <year>``
-           - On Linux: ``/home/$(whoami)/.cache/sphinx-social-cards/<month> <day>
-             <year>``
-           - On MacOS: ``/Users/$(id -un)/Library/Caches/sphinx-social-cards/<month>
+             ``%LOCALAPPDATA%\\2bndy5\\sphinx_social_cards.plugins.github\\Cache\\<month>
              <day> <year>``
+           - On Linux:
+             ``/home/$(whoami)/.cache/sphinx_social_cards.plugins.github/<month> <day> <year>``
+           - On MacOS:
+             ``/Users/$(id -un)/Library/Caches/sphinx_social_cards.plugins.github/<month> <day>
+             <year>``
 """
 from pathlib import Path
 from typing import Tuple

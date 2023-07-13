@@ -196,11 +196,14 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         LOGGER.info("Fetching info for github context about repo: %s/%s", owner, repo)
         res_json = try_request(f"https://api.github.com/repos/{owner}/{repo}").json()
         res_json = cast(Dict[str, Any], res_json)
+        license_name = ""
+        if isinstance(res_json.get("license", None), dict):
+            license_name = res_json.get("license", {}).get("name", "")
         gh_ctx.repo = Repo(
             stars=reduce_big_number(res_json.get("stargazers_count", 0)),
             watchers=reduce_big_number(res_json.get("watchers_count", 0)),
             forks=reduce_big_number(res_json.get("forks", 0)),
-            license=res_json.get("license", {}).get("name", ""),
+            license=license_name,
             open_issues=reduce_big_number(res_json.get("open_issues_count", 0)),
             topics=res_json.get("topics", []),
             name=res_json.get("name", ""),
