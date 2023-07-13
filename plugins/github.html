@@ -1474,7 +1474,7 @@ the cache is purged).</p>
     <span class="n">today</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_fmt</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
     <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
         <span class="n">user_cache_dir</span><span class="p">(</span>
-            <span class="s2">&quot;sphinx_social_cards.plugins.vcs&quot;</span><span class="p">,</span> <span class="s2">&quot;2bndy5&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">today</span>  <span class="c1"># (1)!</span>
+            <span class="s2">&quot;sphinx_social_cards.plugins.github&quot;</span><span class="p">,</span> <span class="s2">&quot;2bndy5&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">today</span>  <span class="c1"># (1)!</span>
         <span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">cache_dir</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cache_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -1486,12 +1486,13 @@ the cache is purged).</p>
 OS used:</p>
 <ul class="simple">
 <li><p>On Windows:
-<code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%\2bndy5\sphinx-social-cards\Cache\&lt;month&gt;</span> <span class="pre">&lt;day&gt;</span>
-<span class="pre">&lt;year&gt;</span></code></p></li>
-<li><p>On Linux: <code class="docutils literal notranslate"><span class="pre">/home/$(whoami)/.cache/sphinx-social-cards/&lt;month&gt;</span> <span class="pre">&lt;day&gt;</span>
-<span class="pre">&lt;year&gt;</span></code></p></li>
-<li><p>On MacOS: <code class="docutils literal notranslate"><span class="pre">/Users/$(id</span> <span class="pre">-un)/Library/Caches/sphinx-social-cards/&lt;month&gt;</span>
+<code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%\2bndy5\sphinx_social_cards.plugins.github\Cache\&lt;month&gt;</span>
 <span class="pre">&lt;day&gt;</span> <span class="pre">&lt;year&gt;</span></code></p></li>
+<li><p>On Linux:
+<code class="docutils literal notranslate"><span class="pre">/home/$(whoami)/.cache/sphinx_social_cards.plugins.github/&lt;month&gt;</span> <span class="pre">&lt;day&gt;</span> <span class="pre">&lt;year&gt;</span></code></p></li>
+<li><p>On MacOS:
+<code class="docutils literal notranslate"><span class="pre">/Users/$(id</span> <span class="pre">-un)/Library/Caches/sphinx_social_cards.plugins.github/&lt;month&gt;</span> <span class="pre">&lt;day&gt;</span>
+<span class="pre">&lt;year&gt;</span></code></p></li>
 </ul>
 </li>
 </ol>
