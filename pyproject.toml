@@ -49,6 +49,10 @@ version_scheme= "no-guess-dev"
 local_scheme = "no-local-version"
 fallback_version = "0.0.0"
 
+[tool.ruff]
+# Decrease the maximum line length to 100 characters. (mostly for unbreakable docstrings)
+line-length = 100
+
 [tool.mypy]
 show_error_codes = true
 show_column_numbers = true
