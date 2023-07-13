@@ -47,6 +47,10 @@ for url_str in pkg_meta["project_url"]:
     name, url = url_str.split(", ")
     urls[name] = url
 
+html_baseurl = os.environ.get(
+    "READTHEDOCS_CANONICAL_URL", "https://2bndy5.github.io/sphinx-social-cards/"
+)
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -83,7 +87,7 @@ today = time.strftime(time_fmt, time.localtime())
 # -- Options for sphinx_social_cards ------------------------------------------
 social_cards = {
     "description": pkg_meta["summary"],
-    "site_url": urls["Documentation"],
+    "site_url": html_baseurl,
 }
 
 # -- Options for autodoc -----------------------------------------------------
@@ -144,6 +148,7 @@ html_theme_options = {
     },
     "repo_url": urls["Source"],
     "repo_name": "Sphinx-Social-Cards",
+    "site_url": html_baseurl,
     "edit_uri": "blob/main/docs",
     "features": [
         "navigation.expand",
