@@ -94,7 +94,9 @@ social_cards = {
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
 autodoc_member_order = "bysource"
-autodoc_default_options = {"exclude-members": "__init__, __new__"}
+autodoc_default_options = {
+    "exclude-members": "__init__, __new__, model_fields, model_config"
+}
 autodoc_class_signature = "separated"
 add_module_names = False
 
