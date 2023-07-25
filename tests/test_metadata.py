@@ -13,7 +13,6 @@ from sphinx.testing.util import SphinxTestApp
 )
 def test_title(sphinx_make_app, title: str):
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'""",
         files={
             "index.rst": f"""
 {title}
@@ -33,7 +32,6 @@ Test Title
 
 def test_meta_directive(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'""",
         files={
             "index.rst": """
 .. meta::
@@ -58,7 +56,7 @@ Test Title
 @pytest.mark.xfail
 def test_before_title(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'
+        extra_conf="""
 social_cards["enable"] = False
 """,
         files={

@@ -20,7 +20,7 @@ def test_transform(
 ):
     caplog.set_level(10, "sphinx.sphinx_social_cards")
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf=f"""html_theme = 'furo'
+        extra_conf=f"""
 social_cards["cards_include"] = {include}
 social_cards["cards_exclude"] = {exclude}
 social_cards["enable"] = {enable}
@@ -67,7 +67,6 @@ def test_directive(
     dir_arg = '{ "description": "A unit test of the extension" }'
     caplog.set_level(10, "sphinx.sphinx_social_cards")
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'""",
         files={
             "index.rst": f"""
 
@@ -97,7 +96,6 @@ def test_builder_check(
 ):
     caplog.set_level(10, "sphinx.sphinx_social_cards")
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'""",
         buildername="latex",
         files={
             "index.rst": f"""
@@ -118,7 +116,6 @@ Test Title
 def test_flush_cache(sphinx_make_app, caplog: pytest.LogCaptureFixture, tmp_path: Path):
     caplog.set_level(10, "sphinx.sphinx_social_cards")
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'""",
         files={
             "index.rst": """
 Test Title

@@ -46,7 +46,7 @@ def test_plugin_github(sphinx_make_app, url_key: str, url: str):
         )
     try:
         app: SphinxTestApp = sphinx_make_app(
-            extra_conf=f"""html_theme = "furo"
+            extra_conf=f"""
 extensions.append("sphinx_social_cards.plugins.github")
 social_cards["cards_layout"] = "github/default"
 {url_key}="{url}"
@@ -73,7 +73,7 @@ Test Title
 
 def test_add_images(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme="furo"
+        extra_conf="""
 social_cards["enable"] = False
 """,
         files={

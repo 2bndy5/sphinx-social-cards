@@ -14,7 +14,7 @@ from sphinx_social_cards.fonts import FontSourceManager
 @pytest.mark.parametrize("family", ["Roboto", "Noto Sans"])
 def test_font(sphinx_make_app, family: str, style: str, weight: int, subset: str):
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf=f"""html_theme = 'furo'
+        extra_conf=f"""
 social_cards["cards_layout_options"] = {{
     "font": {{
         "family": '{family}',

@@ -109,7 +109,7 @@ social_cards["cards_layout_options"] = {{"background_color ": "#00F"}}
 @need_sphinx_immaterial_and_pydantic_v2
 def test_default_colors(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'
+        extra_conf="""
 social_cards["cards_layout_options"] = { "background_color ": "#00F" }
 """,
         files={"index.rst": "\nTest Title\n=========="},
@@ -170,7 +170,7 @@ html_logo = {repr(logo)}
 @pytest.mark.xfail
 def test_custom_img_path(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'
+        extra_conf="""
 social_cards["image_paths"] = ["non-existent"]
 """,
         files={"index.rst": "\nTest Title\n=========="},
@@ -183,7 +183,7 @@ social_cards["image_paths"] = ["non-existent"]
 
 def test_debugging_helpers(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="""html_theme = 'furo'
+        extra_conf="""
 social_cards["debug"] = True
 """,
         files={"index.rst": "\nTest Title\n=========="},

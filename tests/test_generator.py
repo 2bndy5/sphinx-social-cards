@@ -18,7 +18,7 @@ TEST_LAYOUT = str(Path(__file__).parent / "layouts").replace("\\", "\\\\")
 )
 def test_parse_layout(sphinx_make_app, name: str, layout: str):
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf=f"""html_theme = 'furo'
+        extra_conf=f"""
 social_cards["debug"] = {{
     "enable": True,
     "color": "#0FF1CE",
@@ -43,7 +43,6 @@ Test Title
 @pytest.mark.parametrize("radius", [315, 600])
 def test_rectangle(sphinx_make_app, radius: int):
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'",
         files={
             "index.rst": f"""
 Test Title
@@ -67,7 +66,6 @@ Test Title
 
 def test_ellipse(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'",
         files={
             "index.rst": """
 Test Title
@@ -92,7 +90,6 @@ Test Title
 @pytest.mark.parametrize("overflow", ["on", "off"], ids=["overflow_on", "overflow_off"])
 def test_typography(sphinx_make_app, overflow: str, border_color: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'",
         files={
             "index.rst": f"""
 Test Title
@@ -136,7 +133,7 @@ TEST_AREA = "{ width: 100, height: 100 }"
 def test_mask(sphinx_make_app, size: str, offset: str):
     inverted = size == TEST_AREA and offset == "{}"  # enable for "same" test case
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        extra_conf="social_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title
@@ -173,7 +170,7 @@ Test Title
 )
 def test_image(sphinx_make_app, layer_attr: str, image: str, color: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        extra_conf="social_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title
@@ -195,7 +192,7 @@ Test Title
 @pytest.mark.parametrize("border_to_origin", ["on", "off"])
 def test_ellipse_arc(sphinx_make_app, border_to_origin: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        extra_conf="social_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title
@@ -230,7 +227,7 @@ Test Title
 )
 def test_polygon(sphinx_make_app, sides: Union[int, str]) -> None:
     app: SphinxTestApp = sphinx_make_app(
-        extra_conf="html_theme = 'furo'\nsocial_cards['enable']=False",
+        extra_conf="social_cards['enable']=False",
         files={
             "index.rst": f"""
 Test Title

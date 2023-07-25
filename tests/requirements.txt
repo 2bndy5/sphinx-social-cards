@@ -1,5 +1,4 @@
 pytest
 coverage[toml]
-furo
 sphinx-immaterial
 -r ../requirements-github.txt
