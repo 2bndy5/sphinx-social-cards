@@ -50,6 +50,10 @@ jobs:
           - '16.x'
     runs-on: ${{ matrix.os }}
     steps:
+      - if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v3
         with:
           # Need full history to determine version number.
@@ -106,6 +110,10 @@ jobs:
     permissions:
       contents: write
     steps:
+      - if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -166,6 +174,10 @@ jobs:
           - 'sphinx7'
     runs-on: ${{ matrix.os }}
     steps:
+      - if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v3
       - name: Setup python
         uses: actions/setup-python@v4

@@ -12,7 +12,15 @@ build:
     python: "3.11"
     nodejs: "16"
   apt_packages:
-    - imagemagick
+    - libgl1-mesa-dev
+    - libxkbcommon-x11-0
+  # setting a public env var from RTD config is not yet implemented.
+  # See https://github.com/readthedocs/readthedocs.org/issues/6311
+  # Instead, use the RTD project's  settings page (admin/environment variables) to
+  # set QT_QPA_PLATFORM=offscreen
+  # jobs:
+  #   pre_build:
+  #     - QT_QPA_PLATFORM=offscreen
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
