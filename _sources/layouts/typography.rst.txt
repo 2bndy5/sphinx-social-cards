@@ -3,7 +3,7 @@ Layer Typography Attribute
 
 .. autoclass:: sphinx_social_cards.validators.layers.Typography
     :members:
-    :exclude-members: border
+    :exclude-members: border, model_fields, model_config
 
     .. autoattribute:: sphinx_social_cards.validators.layers.Typography.border
 
