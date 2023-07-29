@@ -4,13 +4,10 @@ from typing import List, Dict, Union, Optional
 from importlib.metadata import version as get_version
 import pytest
 from sphinx.testing.util import SphinxTestApp
-from sphinx_social_cards.validators import (
-    try_request,
-    assert_path_exists,
-    _validate_color,
-)
-from sphinx_social_cards.validators.layout import Size
+from sphinx_social_cards.validators import try_request
+from sphinx_social_cards.validators.common import Radial_Gradient, Offset
 from sphinx_social_cards.validators.contexts import Config, today_default
+from sphinx_social_cards.validators.layout import Size
 
 
 need_sphinx_immaterial_and_pydantic_v2 = pytest.mark.skipif(
@@ -25,16 +22,6 @@ PALETTE = {"primary": "green", "accent": "light-green"}
 @pytest.mark.xfail
 def test_bad_url():
     try_request("")  # should throw an error
-
-
-@pytest.mark.xfail
-def test_bad_path() -> None:
-    assert_path_exists(Path("non-existent"))
-
-
-@pytest.mark.parametrize("color", ["invalid", None])
-def test_bad_color(color: Optional[str]):
-    assert _validate_color(color) == (color, False)
 
 
 @pytest.mark.parametrize(
@@ -97,7 +84,7 @@ extensions.append("sphinx_immaterial")
 html_theme_options = {{
     "palette": {palette},
 }}
-social_cards["cards_layout_options"] = {{"background_color ": "#00F"}}
+social_cards["cards_layout_options"] = {{"background_color": "#00F"}}
 """,
         files={"index.rst": "\nTest Title\n=========="},
     )
@@ -192,3 +179,68 @@ social_cards["debug"] = True
     app.build()
     assert not app._warning.getvalue()
     # print(app._status.getvalue())
+
+
+@pytest.mark.parametrize(
+    "preset",
+    [
+        84,
+        "WideMatrix",
+        pytest.param(200, marks=pytest.mark.xfail(strict=True)),
+        pytest.param("my preset", marks=pytest.mark.xfail(strict=True)),
+    ],
+    ids=["valid_int", "valid_str", "invalid_int", "invalid_str"],
+)
+@pytest.mark.parametrize(
+    "colors",
+    [
+        {0.5: "red", 1.0: "green"},
+        pytest.param({2.0: "blue"}, marks=pytest.mark.xfail(strict=True)),
+    ],
+    ids=["valid_colors", "invalid_pos"],
+)
+def test_gradient_colors(
+    sphinx_make_app, preset: Union[int, str], colors: Dict[float, str]
+):
+    app: SphinxTestApp = sphinx_make_app(
+        extra_conf=f"""
+social_cards["cards_layout_options"] = {{
+    "background_color": {{
+        "preset": {repr(preset)},
+        "center": {{ "x": 0, "y": 30 }},
+        "angle": -27.5,
+        "colors": {repr(colors)},
+    }}
+}}
+""",
+        files={"index.rst": "\nTest Title\n==========\n\n.. image-generator::"},
+    )
+
+    app.build()
+    assert not app._warning.getvalue()
+    # print(app._status.getvalue())
+
+
+@pytest.mark.xfail
+@pytest.mark.parametrize(
+    "point", [Offset(x=500, y=500), None], ids=["focal_offset", "center"]
+)
+@pytest.mark.parametrize("radius", [500])
+def test_bad_focal_radius(point: Optional[Offset], radius: float):
+    args = dict(center=Offset(x=1200, y=630), radius=500, focal_radius=radius)
+    if point is not None:
+        args["focal_point"] = point
+    Radial_Gradient(**args)
+
+
+@pytest.mark.xfail
+def test_bad_path(sphinx_make_app):
+    # Path must be absolute for this test to fail expectedly
+    invalid = Path(__file__).parent / "invalid"
+    assert invalid.is_absolute()
+    sphinx_make_app(
+        extra_conf=f"""
+social_cards["cards_layout_dir"] = [{repr(str(invalid))}]
+""",
+        files={"index.rst": "\nTest Title\n==========\n\n.. image-generator::"},
+    )

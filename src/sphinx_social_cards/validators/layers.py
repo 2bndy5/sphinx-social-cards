@@ -1,28 +1,43 @@
 """This module contains validating dataclasses for a layout's layers."""
 from typing import Optional, Union, List
 
-from typing_extensions import Literal
-from pydantic import field_validator, Field
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Literal
+from pydantic import field_validator, Field, AliasChoices, field_serializer
 
-from .base_model import CustomBaseModel, Offset
+from .common import CustomBaseModel, Offset, ColorType, PositiveFloat, serialize_color
 
 PositiveInt = Annotated[int, Field(gt=0)]
-PositiveFloat = Annotated[float, Field(gt=0)]
+color_aliases = AliasChoices(
+    "linear_gradient", "radial_gradient", "conical_gradient", "color"
+)
 
 
 class Border(CustomBaseModel):
     #: The border's width in pixels. Defaults to :yaml:`0`.
-    width: Annotated[int, Field(ge=0)] = 0
-    #: The border's color.
-    color: Optional[str] = None
+    width: Annotated[float, Field(ge=0)] = 0
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    """The border's color.
+
+    .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
+    """
+
+    @field_serializer("color")
+    def serialize_border_color(self, val: Optional[ColorType]):
+        return serialize_color(val)
 
 
 class GenericShape(CustomBaseModel):
     #:The shape's outlining `border <Border>` specification.
     border: Border = Border()
-    #: The shape's fill color.
-    color: Optional[str] = None
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    """The shape's fill color.
+
+    .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
+    """
+
+    @field_serializer("color")
+    def serialize_shape_color(self, val: Optional[ColorType]):
+        return serialize_color(val)
 
 
 class Arc(CustomBaseModel):
@@ -39,7 +54,7 @@ class Arc(CustomBaseModel):
 
             .. md-tab-item:: :yaml:`arc: { start: {{ start }}, end: {{ end }} }`
 
-                .. social-card:: { "debug": true }
+                .. social-card:: { "debug": {"enable": true, "grid": false} }
                     :dry-run:
                     :hide-conf:
 
@@ -68,7 +83,7 @@ class Ellipse(GenericShape):
 
         .. md-tab-item:: only border
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -83,7 +98,7 @@ class Ellipse(GenericShape):
 
         .. md-tab-item:: only fill
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -96,7 +111,7 @@ class Ellipse(GenericShape):
 
         .. md-tab-item:: border and fill
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -129,7 +144,7 @@ class Ellipse(GenericShape):
 
             .. md-tab-item:: :yaml:`border_to_origin: {{ switch }}`
 
-                .. social-card:: { "debug": true }
+                .. social-card:: { "debug": {"enable": true, "grid": false} }
                     :dry-run:
                     :hide-conf:
 
@@ -145,6 +160,7 @@ class Ellipse(GenericShape):
                         offset: { x: 350, y: 165 }
             {% endfor %}
     """
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
 
 
 class Rectangle(GenericShape):
@@ -154,7 +170,7 @@ class Rectangle(GenericShape):
 
         .. md-tab-item:: only border
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -170,7 +186,7 @@ class Rectangle(GenericShape):
 
         .. md-tab-item:: only fill
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -184,7 +200,7 @@ class Rectangle(GenericShape):
 
         .. md-tab-item:: border and fill
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :dry-run:
                 :hide-conf:
 
@@ -204,8 +220,13 @@ class Rectangle(GenericShape):
     """The radius of the rounded corner in pixels. Defaults to 0 (no rounding).
 
     .. tip::
-        If the `radius` is smaller than the `border.width <Border.width>`, then the
-        border's inner `corners` will not be rounded.
+        If the `radius` is smaller than the half the `border.width <Border.width>`, then
+        the border's inner `corners` will not be rounded.
+
+    .. error::
+        If the `radius` is more than half the of the rectangle's minimum width or height
+        and not all `corners` are rounded, then there *will* be visible artifacts from
+        rendering each corner individually.
     """
     corners: List[Literal["top left", "top right", "bottom right", "bottom left"]] = [
         "top left",
@@ -222,10 +243,7 @@ class Rectangle(GenericShape):
           - :si-icon:`material/arrow-top-right` ``'top right'``
         * - :si-icon:`material/arrow-bottom-left` ``'bottom left'``
           - :si-icon:`material/arrow-bottom-right` ``'bottom right'``
-    .. warning::
-        The `radius` must always be less than half the rectangle's minimum
-        `width <Size.width>` or `height <Size.height>`. Otherwise, ``pillow`` will fail
-        to render the rounded arc for the `corners`.
+
     .. social-card::
         :dry-run:
 
@@ -234,16 +252,17 @@ class Rectangle(GenericShape):
           - size: { width: 100, height: 400 }
             offset: { x: 225, y: 115 }
             rectangle:
-              radius: 49.9  # cannot be 50 because width is 100
+              radius: 50
               corners: ['top left', 'bottom left']
               color: red
           - size: { width: 600, height: 400 }
             offset: { x: 375, y: 115 }
             rectangle:
-              radius: 199.9  # cannot be 200 because height is 400
+              radius: 200
               corners: ['top right', 'bottom right']
               color: green
     """
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
 
 
 class Polygon(GenericShape):
@@ -262,7 +281,7 @@ class Polygon(GenericShape):
 
         .. md-tab-item:: Proof of regular polygon's occupied area
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :hide-conf:
                 :dry-run:
                 :layout-caption: The area of a regular polygon will never be larger than
@@ -280,7 +299,7 @@ class Polygon(GenericShape):
 
         .. md-tab-item:: A rectangular layer size for a regular polygon
 
-            .. social-card:: { "debug": true }
+            .. social-card:: { "debug": {"enable": true, "grid": false} }
                 :hide-conf:
                 :dry-run:
                 :layout-caption: The area of the regular polygon is determined by the
@@ -302,7 +321,6 @@ class Polygon(GenericShape):
     The specification of the polygon's sides. This can be an integer or
     |offset-list|.
 
-
     :Using an Integer (regular polygon):
         The number of sides that defines the edge of the polygon. This cannot be less
         than :yaml:`3` if specified as an integer.
@@ -322,20 +340,22 @@ class Polygon(GenericShape):
         point relative to the top-left corner of the layer.
 
         .. important::
-            :title: Area of polygons are *truncated*
+            :title: Area of polygons are *clamped*
 
-            While there is no restriction on the position of the `offset <Offset>`\ s,
-            the rendered polygon *will* be truncated by the layer's `size <Size>`.
+            If any of the specified `offset <Offset>`\ s are located outside the
+            layer's `size <Size>`, then the `offset <Offset>` will be moved to within
+            the layer's `size <Size>`. This stipulation has a noticeable effect on
+            polygons draw with a `border <Border>`.
 
     .. jinja::
 
         .. md-tab-set::
 
-        {% for sides in [3, 5, 7] %}
+        {% for sides in [3, 6, 9] %}
 
             .. md-tab-item:: :yaml:`sides: {{ sides }}`
 
-                .. social-card:: { "debug": true }
+                .. social-card:: { "debug": {"enable": true, "grid": false} }
                     :dry-run:
                     :hide-conf:
 
@@ -351,9 +371,15 @@ class Polygon(GenericShape):
                         size: { width: 400, height: 400 }
                         offset: { x: 400, y: 115 }
         {% endfor %}
-            .. md-tab-item:: :yaml:`sides: [offset, offset, offset]`
+        {% for i in range(2) %}
+        {% if not i %}
+        {% set desc = 'with border' %}
+        {% else %}
+        {% set desc = 'without border' %}
+        {% endif %}
+            .. md-tab-item:: :yaml:`sides: [offset]` {{ desc }}
 
-                .. social-card:: { "debug": true }
+                .. social-card:: { "debug": {"enable": true, "grid": false} }
                     :dry-run:
                     :hide-conf:
 
@@ -365,34 +391,16 @@ class Polygon(GenericShape):
                             - { x: 200 } # top center
                             - { x: 400, y: 400 } # bottom right
                           color: green
+                          {% if not i -%}
                           border:
                             width: 30
                             color: red
+                          {%- endif %}
                         size: { width: 400, height: 400 }
                         offset: { x: 400, y: 115 }
-
-            .. md-tab-item:: :yaml:`sides: [jinja generated points]`
-
-                .. social-card:: { "debug": true }
-                    :dry-run:
-                    :hide-conf:
-
-                    layers:
-                      - background: { color: '#4051B2' }
-                      - polygon:
-                          # {{ '{%' }} set x_points = range(20, 400, 120) %}
-                          sides: # {{ '{%' }} for x in x_points %}
-                            # {{ '{%' }} for y in x_points|reverse %}
-                            - { x: {{ '{{' }} x }}, y: {{ '{{' }} y }} }
-                            # {{ '{%' }} endfor %}{{ '{%' }} endfor %}
-                          color: green
-                          border:
-                            width: 8
-                            color: red
-                        size: { width: 400, height: 400 }
-                        offset: { x: 400, y: 115 }
+        {% endfor %}
     """
-    rotation: int = 0
+    rotation: float = 0
     """The angles (in degrees) of arbitrary rotation (increasing counter-clockwise).
 
     .. error::
@@ -406,7 +414,7 @@ class Polygon(GenericShape):
 
             .. md-tab-item:: :yaml:`rotation: {{ rotation }}`
 
-                .. social-card:: { "debug": true }
+                .. social-card:: { "debug": {"enable": true, "grid": false} }
                     :dry-run:
                     :hide-conf:
 
@@ -420,6 +428,7 @@ class Polygon(GenericShape):
                         offset: { x: 400, y: 115 }
            {% endfor %}
     """
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
 
     @field_validator("sides")
     def assert_sides(
@@ -434,7 +443,7 @@ class Polygon(GenericShape):
 
 class LayerImage(CustomBaseModel):
     image: Optional[str] = None
-    color: Optional[str] = None
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
     preserve_aspect: Union[bool, Literal["width", "height"]] = True
     """If an image is used that doesn't match the layer's `size <Size>`, then the image
     will be resized accordingly. This option can be used to control which horizontal
@@ -445,6 +454,10 @@ class LayerImage(CustomBaseModel):
     If the image has to be resized then it is centered on the layer for which it is
     used.
     """
+
+    @field_serializer("color")
+    def serialize__border_color(self, val: Optional[ColorType]):
+        return serialize_color(val)
 
 
 class Background(LayerImage):
@@ -482,13 +495,13 @@ class Background(LayerImage):
           - background:
               image: images/rainbow.png
     """
-    color: Optional[str] = None
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
     """The color used as the background fill color. This color will overlay the entire
-    `Background.image` (if specified). So be sure to add transparency (an alpha
-    color value) when using both a background image and color.
+    `background.image <Background.image>` (if specified). So be sure to add transparency
+    (an alpha color value) when using both a background image and color.
 
-    .. seealso:: Supported color options and syntax is determined by
-        `pillow's supported color input`_.
+    .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
+
     .. social-card::
         :dry-run:
 
@@ -540,13 +553,11 @@ class Icon(LayerImage):
             icon:
               image: sphinx_logo.svg
     """
-    color: Optional[str] = None
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
     """The color used as the fill color. The actual image color is not used when
     specifying this, rather the non-transparent data is used as a mask for this value.
 
-    .. seealso::
-        Supported color options and syntax is determined by
-        `pillow's supported color input`_.
+    .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
 
     .. hint::
         If an alpha transparency is included with the specified `color`, then the
@@ -576,7 +587,7 @@ class Line(CustomBaseModel):
     between lines because each layer has an absolute maximum `size <Size>`.
 
     .. |height0.75| replace:: 75% of the appropriately available line
-        height. Text will be smaller but the space between lines will be bigger.
+        height. Text will be smaller, but the layer's height will not be fully used.
 
     .. |height1| replace:: the full appropriately available line
         height. Text will be large enough to fit within of the appropriately available
@@ -591,8 +602,7 @@ class Line(CustomBaseModel):
         adjusted accordingly.
 
     .. |height0.5| replace:: 50% of the appropriately available line
-        height. Notice the spacing between lines is always equally proportionate to the
-        line height.
+        height. Notice the line height is directly related to height of the layer.
 
     .. jinja::
 
@@ -603,7 +613,7 @@ class Line(CustomBaseModel):
 
                 :yaml:`{{ height }}` means each line can have |height{{ height }}|
 
-                .. social-card:: {"debug": true}
+                .. social-card:: {"debug": {"enable": true, "grid": false }}
                     :dry-run:
                     :hide-layout:
                     :hide-conf:
@@ -620,7 +630,7 @@ class Line(CustomBaseModel):
                           line:
                             amount: 3
                             height: {{ height }}
-                          border: { width: 3, color: red }
+                          border: { width: {{ height * 1.5 }}, color: red }
         {% endfor %}
     """
 
@@ -670,21 +680,21 @@ class Font(CustomBaseModel):
 
 class Typography(CustomBaseModel):
     content: str
-    """The text to be displayed. This can be a `Jinja syntax`_ that has access to the
+    """The text to be displayed. This can be a |Jinja syntax| that has access to the
     card's `jinja contexts <jinja-ctx>`.
 
-    The text content is pre-processed (after parsed from `Jinja syntax`_) to allow
+    The text content is pre-processed (after parsed from |Jinja syntax|) to allow
     comprehensive wrapping of words. This is beneficial for long winded programmatic
     names.
 
     .. caution::
-        Beware that trailing whitespace is stripped from each line.
+        Beware that leading and trailing whitespace is stripped from each line.
 
     .. md-tab-set::
 
         .. md-tab-item:: Long words
 
-            .. social-card:: {"debug": true}
+            .. social-card:: {"debug": {"enable": true, "grid": false }}
                 :dry-run:
                 :hide-conf:
                 :hide-layout:
@@ -695,7 +705,7 @@ class Typography(CustomBaseModel):
 
                 layers:
                   - background: { color: '#4051B2' }
-                  - size: { width: 920, height: 360 }
+                  - size: { width: 1080, height: 360 }
                     offset: { x: 60, y: 150 }
                     typography:
                       content: '{{ page.meta.title }}'
@@ -706,14 +716,14 @@ class Typography(CustomBaseModel):
 
             .. note:: Line breaks are not supported when using :ref:`metadata-fields`.
 
-            .. social-card:: {"debug": true}
+            .. social-card:: {"debug": {"enable": true, "grid": false }}
                 :dry-run:
                 :layout-caption: Using a line break between words
                 :hide-conf:
 
                 layers:
                   - background: { color: '#4051B2' }
-                  - size: { width: 920, height: 360 }
+                  - size: { width: 1080, height: 360 }
                     offset: { x: 60, y: 150 }
                     typography:
                       content: |
@@ -749,10 +759,12 @@ class Typography(CustomBaseModel):
           * :si-icon:`material/arrow-down` ``center bottom``
           * :si-icon:`material/arrow-bottom-right` ``end bottom``
     """
-    color: Optional[str] = None
+    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
     """The color to be used for the displayed text. If not specified, then this defaults
-    to `cards_layout_options.color <Cards_Layout_Options.color>` (in most
-    `pre-designed layouts <pre-designed-layouts>`)."""
+    to `cards_layout_options.color <Cards_Layout_Options.color>`.
+
+    .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
+    """
     line: Line = Line()
     """The `line <Line>` specification which sets the `amount <Line.amount>` of lines
     and the `height <Line.height>` of each line. This is used to calculate the font's
@@ -769,7 +781,7 @@ class Typography(CustomBaseModel):
         {% for desc in ["off", "on"] %}
             .. md-tab-item:: :yaml:`overflow: {{ desc }}`
 
-                .. social-card:: {"debug": true }
+                .. social-card:: {"debug": {"enable": true, "grid": false }}
                     :dry-run:
                     :hide-layout:
                     :hide-conf:

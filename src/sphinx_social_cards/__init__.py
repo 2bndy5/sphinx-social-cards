@@ -17,25 +17,7 @@ Dependencies
 The following dependencies are required:
 
 - `pillow (v10+) <https://pillow.readthedocs.io/en/stable/index.html>`_
-- `ImageMagick <https://imagemagick.org/script/download.php>`_ for converting SVG images
-  into a PNG that ``pillow`` can use.
-
-  .. important::
-      :title: Inkscape may be required for certain SVG files
-
-      Internally, ImageMagick prefers to delegate SVG handling to `Inkscape
-      <https://inkscape.org/download>`_. Thus, installing Inkscape may be required to
-      properly convert SVG files. Without Inkscape installed, ImageMagick will use its
-      own internal SVG handling, but this is known to produce erroneous output for some
-      SVG images.
-
-      For example, the `tabler icon set <https://tabler-icons.io/>`_ is known to require
-      Inkscape installed. Otherwise, the tabler SVG files will render as a blank image.
-  .. tip::
-      ImageMagick v6 and v7 are explicitly supported at this time. It is also possible
-      to specify which installation of ImageMagick to use by setting an environment
-      variable ``MAGICK_HOME`` with the path to the directory containing the ImageMagick
-      binaries.
+- `PySide6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_
 
 Installing
 ----------
@@ -62,14 +44,13 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import subprocess
-from typing import List, cast, Union, Any, Dict, Set, Optional, Tuple
+from typing import List, cast, Union, Any, Dict, Set, Optional
 from urllib.parse import urlparse
 
 import docutils.nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.images import Image
-import pydantic
+from pydantic import TypeAdapter
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.directives.code import container_wrapper
@@ -79,7 +60,12 @@ from sphinx.config import Config
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.logging import getLogger
 from .validators import Social_Cards
-from .validators.contexts import JinjaContexts, Page, Config as ConfigCtx
+from .validators.contexts import (
+    JinjaContexts,
+    Page,
+    Config as ConfigCtx,
+    Cards_Layout_Options,
+)
 from .generator import CardGenerator
 from .metadata import (
     get_doc_meta_data,
@@ -88,37 +74,24 @@ from .metadata import (
     get_default_page_title,
 )
 from .plugins import SPHINX_SOCIAL_CARDS_CONFIG_KEY, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY
-from .images import get_magick_cmd
 
 LOGGER = getLogger(__name__)
 _CARD_IMG_CHECK = re.compile(r"(?:property=og|name=twitter):image")
 
+config_parser: TypeAdapter[Social_Cards] = TypeAdapter(Social_Cards)
+layout_ctx_parser: TypeAdapter[Cards_Layout_Options] = TypeAdapter(Cards_Layout_Options)
+
 
 def _load_config(app: Sphinx, config: Config):
-    card_config: Social_Cards = pydantic.TypeAdapter(Social_Cards).validate_python(
-        getattr(config, "social_cards", {})
-    )
+    assert hasattr(config, "social_cards"), f"config not found: {dir(config)}"
+    user_config: Dict[str, Any] = getattr(config, "social_cards")
+    # LOGGER.info("config loaded: %r", user_config)
+    card_config: Social_Cards = config_parser.validate_python(user_config)
+    # LOGGER.info("layout options: %r", card_config.cards_layout_options)
     card_config.set_defaults(app.srcdir, config)
+    # LOGGER.info("config parsed: %r", card_config)
     setattr(config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)
     CardGenerator.doc_src = app.srcdir
-
-    magick_exe = get_magick_cmd()  # ImageMagick v7
-    if magick_exe is None:
-        magick_exe = get_magick_cmd("identify")  # ImageMagick v6
-        if magick_exe is None:
-            raise OSError(
-                "ImageMagick executable not found (required by sphinx_social_cards)"
-            )
-    # verify ImageMagick is working & get version tuple
-    result = subprocess.run([magick_exe, "-version"], check=True, capture_output=True)
-    im_ver = re.match(
-        r"^Version: ImageMagick (\d+)\.(\d+)\.(\d+)\-",
-        result.stdout.decode(encoding="utf-8"),
-    )
-    assert im_ver is not None and len(im_ver.groups()) == 3
-    version = cast(Tuple[int, int, int], tuple([int(x) for x in im_ver.groups()[:3]]))
-    LOGGER.info("Detected ImageMagick v%d.%d.%d", *version)
-    CardGenerator.imagemagick_version = version
 
 
 def _assert_plugin_context(app: Sphinx):
@@ -217,7 +190,7 @@ class SocialCardTransform(SphinxTransform):
         factory = CardGenerator(config=conf, context=card_contexts)
         factory.parse_layout()
         card = factory.render_card()
-        file_hash = hashlib.sha256(card.tobytes()).hexdigest()[:16]
+        file_hash = hashlib.sha256(card.bits()).hexdigest()[:16]
 
         # add the updated meta_data
         img_uri, added_meta_data = complete_doc_meta_data(
@@ -234,7 +207,7 @@ class SocialCardTransform(SphinxTransform):
         # save the image (& meta_data)
         img_path = Path(self.app.outdir, conf.path, img_uri)
         img_path.parent.mkdir(parents=True, exist_ok=True)
-        card.save(img_path)
+        card.save(str(img_path))
         add_doc_meta_data(self.document, added_meta_data)
 
 
@@ -274,9 +247,7 @@ class SocialCardDirective(SphinxDirective):
             self.options["hide-conf"] = True
         else:
             conf_src.update(cast(dict, json.loads("".join(self.arguments))))
-        conf: Social_Cards = pydantic.TypeAdapter(Social_Cards).validate_python(
-            conf_src
-        )
+        conf: Social_Cards = config_parser.validate_python(conf_src)
 
         dry_run = "dry-run" in self.options
         valid_conf: Social_Cards = getattr(self.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
@@ -360,7 +331,7 @@ class SocialCardDirective(SphinxDirective):
             plugin=getattr(self.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {}),
         )
 
-        # set defaults after creating nodes to render config & meta_data
+        # set defaults after creating nodes to display config & meta_data
         conf.set_defaults(self.env.app.srcdir, self.config)
 
         factory = CardGenerator(context=contexts, config=conf)
@@ -384,7 +355,7 @@ class SocialCardDirective(SphinxDirective):
 
         # generate the image
         img = factory.render_card()
-        file_hash = hashlib.sha256(img.tobytes()).hexdigest()[:16]
+        file_hash = hashlib.sha256(img.bits()).hexdigest()[:16]
         img_name = f"{self.env.docname}-{file_hash}.png"
 
         # save image; path (& meta_data injection) depends on `dry-run` option
@@ -423,7 +394,7 @@ class SocialCardDirective(SphinxDirective):
             add_doc_meta_data(self.state.document, added_meta_data)
         img_path = Path(output_path, img_name)
         img_path.parent.mkdir(parents=True, exist_ok=True)
-        img.save(img_path)
+        img.save(str(img_path))
 
         self.set_source_info(container_node)
         self.add_name(container_node)

@@ -1,8 +1,8 @@
-# {% block color_vals %}
-bg_color: &bg_color "white"
-repo_name_color: &repo_name_color '#2f363d'
-watermark_color: &watermark_color '#8492af'
-stats_color: &stats_color '#6e7681'
+#% block color_vals %#
+bg_color: &bg_color white
+repo_name_color: &repo_name_color 'rgb(47, 54, 61)'
+watermark_color: &watermark_color 'rgb(132, 146, 175)'
+stats_color: &stats_color 'rgb(110, 118, 129)'
 stats_value_typo: &stats_value_typo
   color: *repo_name_color
   align: start center
@@ -12,7 +12,7 @@ stats_suffix_typo: &stats_suffix_typo
   align: start top
   font: { family: Schibsted Grotesk }
   line: { height: 0.87 }
-# {% endblock %}
+#% endblock %#
 stats_icon_size: &stats_icon_size
   size: { width: 38, height: 38 }
 stats_y0a: &stats_y0a 461
@@ -37,24 +37,27 @@ layers:
   - background: { color: *bg_color }
   - size: { width: 1200, height: 30 }
     offset: { x: 0, y: 600}
-    background: { color: '{{ layout.accent }}' }
+    background:
+      color: '{{ layout.accent | yaml }}'
   # the layer for the author's avatar
   - offset: { x: 950, y: 70 }
     <<: *avatar_size
     background:
-      image: '{{ plugin.github.owner.avatar }}'
+      image: "'{{ plugin.github.owner.avatar }}'"
     mask:
       <<: *avatar_size
       ellipse: { color: black }
   - offset: { x: 940, y: 60 }
     size: { width: 200, height: 200 }
     ellipse:
-      border: { width: 11, color: "{{ layout.accent }}"}
+      border:
+        width: 11
+        color: '{{ layout.accent | yaml }}'
   - size: { width: 870, height: 75 }
     offset: { x: 60, y: 60 }
     typography:
       overflow: on
-      content: '{{ plugin.github.owner.login }}/'
+      content: "'{{ plugin.github.owner.login }}'/"
       color: *repo_name_color
       align: start bottom
       line: { height: 0.85 }
@@ -65,7 +68,7 @@ layers:
     offset: { x: 60, y: 145 }
     typography:
       overflow: on
-      content: '{{ plugin.github.repo.name }}'
+      content: "'{{ plugin.github.repo.name }}'"
       color: *repo_name_color
       line: { amount: 2 }
       font:
@@ -74,7 +77,7 @@ layers:
   - size: { width: 1080, height: 115 }
     offset: { x: 60, y: 305 }
     typography:
-      content: '{{ plugin.github.repo.description }}'
+      content: "'{{ plugin.github.repo.description }}'"
       line:
         amount: 3
         height: 0.87
@@ -94,7 +97,7 @@ layers:
       width: *short_value_width
       height: *stats_value_height
     typography:
-      content: '{{ plugin.github.repo.stars }}'
+      content: "'{{ plugin.github.repo.stars }}'"
       <<: *stats_value_typo
   - offset: { x: *stats_x0b, y: *stats_y0c }
     size:
@@ -116,7 +119,7 @@ layers:
       width: *short_value_width
       height: *stats_value_height
     typography:
-      content: '{{ plugin.github.repo.forks }}'
+      content: "'{{ plugin.github.repo.forks }}'"
       <<: *stats_value_typo
   - offset: { x: *stats_x1b, y: *stats_y0c }
     size:
@@ -138,7 +141,7 @@ layers:
       width: *contrib_value_width
       height: *stats_value_height
     typography:
-      content: '{{ plugin.github.repo.contributors | length }}'
+      content: "'{{ plugin.github.repo.contributors | length }}'"
       <<: *stats_value_typo
   - offset: { x: *stats_x2b, y: *stats_y0c }
     size:
@@ -152,10 +155,10 @@ layers:
   - offset: { x: *stats_x3a, y: *stats_y0a }
     <<: *stats_icon_size
     icon:
-      image: >
-        {% if plugin.github.repo.language %}
+      image: >-
+        #% if plugin.github.repo.language -%#
         octicons/code-24
-        {% endif %}
+        #%- endif %#
       color: *stats_color
   # the layer for the language count
   - offset: { x: *stats_x3b, y: *stats_y0b }
@@ -163,22 +166,22 @@ layers:
       width: *lang_value_width
       height: *stats_value_height
     typography:
-      content: >
-        {% if plugin.github.repo.language -%}
-        {{ plugin.github.repo.language }}
-        {%- endif %}
+      content: >-
+        #% if plugin.github.repo.language -%#
+        '{{ plugin.github.repo.language }}'
+        #%- endif %#
       <<: *stats_value_typo
   - offset: { x: *stats_x3b, y: *stats_y0c }
     size:
       width: *lang_value_width
       height: *stats_value_height
     typography:
-      content: >
-        {% if plugin.github.repo.language -%}
-        {% if plugin.github.repo.languages | length -%}
-        {{ plugin.github.repo.languages[plugin.github.repo.language] }} %
-        {%- endif %}
-        {%- endif %}
+      content: >-
+        #% if plugin.github.repo.language -%#
+        #% if plugin.github.repo.languages | length -%#
+        '{{ plugin.github.repo.languages[plugin.github.repo.language] }}' %
+        #%- endif %#
+        #%- endif %#
       <<: *stats_suffix_typo
 
   # the layer for the watermark icon

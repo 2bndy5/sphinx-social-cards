@@ -2,7 +2,7 @@
 from typing import List, Optional
 
 from pydantic import BaseModel
-from .base_model import CustomBaseModel, Offset
+from .common import CustomBaseModel, Offset
 from .layers import (
     Background,
     Icon,
@@ -71,9 +71,9 @@ class Layer(CustomBaseModel):
     :attr:`size` and :attr:`offset`):
 
     1. :attr:`background`
+    #. :attr:`rectangle`
     #. :attr:`ellipse`
     #. :attr:`polygon`
-    #. :attr:`rectangle`
     #. :attr:`icon`
     #. :attr:`typography`
     #. :attr:`mask`
@@ -92,7 +92,7 @@ class Layer(CustomBaseModel):
               content: "S"
               align: center
             background: # the layer's background attribute
-              color: '{{ layout.background_color }}'
+              color: '{{ layout.background_color | yaml }}'
             icon: # the layer's icon attribute
               image: '{{ layout.logo.image }}'
 
@@ -109,7 +109,7 @@ class Layer(CustomBaseModel):
             layers:
               - background: { image: 'images/rainbow.png' }
                 # The `background` attribute is overwritten by next line
-                background: { color: "#ff000037" }
+                background: { color: '#ff000037' }
 
             # NOTE: The layer's background attribute is composed solely by
             # the last instance of the background attribute in the layer.
@@ -199,7 +199,7 @@ class Mask(Layer):
                       size: { width: 600, height: 315 }
                       offset: { x: 300, y: 158 }
                       rectangle:
-                        color: "#FFFFFF7F" # a transparent color
+                        color: '#FFFFFF3F' # a transparent color
                         radius: 100
                         border:
                           width: 50
@@ -211,11 +211,11 @@ class Mask(Layer):
                 :dry-run:
 
                 layers:
-                  - background: { color: "#4051B2" }
+                  - background: { color: '#4051B2' }
                   - size: { width: 600, height: 315 }
                     offset: { x: 300, y: 158 }
                     rectangle:
-                      color: "#FFFFFF7F" # a transparent color
+                      color: '#FFFFFF3F' # a transparent color
                       radius: 100
                       border:
                         width: 50
@@ -226,75 +226,50 @@ class Mask(Layer):
     """Use this `bool` attribute to cause the mask layer's transparency to become
     inverted. This is only useful if excluding pixels from the layer's image is desired.
 
-    .. md-tab-set::
+    .. jinja::
 
-        .. md-tab-item:: Excluding an image
+        .. md-tab-set::
 
-            .. social-card::
-                :dry-run:
+            .. md-tab-item:: Excluding an image
 
-                layers:
-                  - background: { color: "#4051B2" }
-                  # this red background is drawn to prove the transparency of the mask
-                  - background: { color: red }
-                    offset: { x: 600 }
-                  - size: { width: 200, height: 200 }
-                    offset: { x: 500, y: 215 }
-                    rectangle:
-                      color: green
-                      radius: 50
-                    mask:
-                      invert: true
-                      size: { width: 150, height: 150 }
-                      offset: { x: 25, y: 25 }
-                      icon: { image: "sphinx_logo" }
+                .. social-card::
+                    :dry-run:
 
-        .. md-tab-item:: Excluding with negative offset
+                    layers:
+                      - background: { color: '#4051B2' }
+                      # this red background is drawn to prove the transparency of the mask
+                      - background: { color: red }
+                        offset: { x: 600 }
+                      - size: { width: 200, height: 200 }
+                        offset: { x: 500, y: 215 }
+                        rectangle:
+                          color: green
+                          radius: 50
+                        mask:
+                          invert: true
+                          size: { width: 150, height: 150 }
+                          offset: { x: 25, y: 25 }
+                          icon: { image: 'sphinx_logo' }
 
-            .. social-card::
-                :dry-run:
+            {% for offset in ['negative', 'same', 'positive'] %}
+            .. md-tab-item:: Excluding with {{ offset }} offset
 
-                layers:
-                  - background: { color: "#4051B2" }
-                  - background: { color: white }
-                    offset: { x: 450, y: 150 }
-                    size: { width: 300, height: 300 }
-                    mask:
-                      invert: true
-                      size: { width: 300, height: 300 }
-                      offset: { x: -150 }
-                      ellipse: { color: '#0000007f' }
+                .. social-card::
+                    :dry-run:
 
-        .. md-tab-item:: Excluding with same offset
-
-            .. social-card::
-                :dry-run:
-
-                layers:
-                  - background: { color: "#4051B2" }
-                  - background: { color: white }
-                    offset: { x: 450, y: 150 }
-                    size: { width: 300, height: 300 }
-                    mask:
-                      invert: true
-                      size: { width: 300, height: 300 }
-                      ellipse: { color: '#0000007f' }
-
-        .. md-tab-item:: Excluding with positive offset
-
-            .. social-card::
-                :dry-run:
-
-                layers:
-                  - background: { color: "#4051B2" }
-                  - background: { color: white }
-                    offset: { x: 450, y: 150 }
-                    size: { width: 300, height: 300 }
-                    mask:
-                      invert: true
-                      size: { width: 300, height: 300 }
-                      offset: { x: 150 }
-                      ellipse: { color: '#0000007f' }
+                    layers:
+                      - background: { color: '#4051B2' }
+                      - background: { color: white }
+                        offset: { x: 450, y: 150 }
+                        size: { width: 300, height: 300 }
+                        mask:
+                          invert: true
+                          size: { width: 300, height: 300 }
+                          {% if offset != 'same' -%}
+                          offset: { x: {% if offset == 'negative' %}-{% endif %}150 }
+                          {%- endif %}
+                          ellipse: { color: '#0000003f' }
+            {% endfor %}
     """
 
 

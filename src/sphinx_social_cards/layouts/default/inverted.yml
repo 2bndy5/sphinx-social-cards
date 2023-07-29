@@ -1,5 +1,5 @@
-# {% extends "default.yml" %}
-# {% block color_vals %}
-bg_color: &bg_color '{{ layout.color }}'
-fg_color: &fg_color '{{ layout.background_color }}'
-# {% endblock %}
+#% extends "default.yml" %#
+#% block color_vals %#
+bg_color: &bg_color '{{ layout.color | yaml }}'
+fg_color: &fg_color '{{ layout.background_color | yaml }}'
+#% endblock %#

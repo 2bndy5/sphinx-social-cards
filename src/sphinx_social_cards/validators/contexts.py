@@ -1,14 +1,13 @@
 """This module holds the data classes used to populate the jinja contexts."""
 from importlib import import_module
-from pathlib import Path
 import platform
 import time
-from typing import Union, Dict, Optional, Any, cast
+from typing import Dict, Optional, Any, cast
 
-from pydantic import BaseModel, field_validator, Field
+from pydantic import BaseModel, field_validator, Field, ConfigDict, field_serializer
 from sphinx.search import languages, SearchLanguage
 from typing_extensions import Annotated
-from .base_model import CustomBaseModel
+from .common import CustomBaseModel, ColorType, PathType, serialize_color
 from .layers import Icon, Font
 
 time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
@@ -21,13 +20,15 @@ class Cards_Layout_Options(BaseModel):
     <Social_Cards.cards_layout_options>` and are added to the ``layout.*`` :ref:`jinja
     context <jinja-ctx>` (for customizable re-use in `layer <Layer>` attributes).
 
-    .. hint::
-        You can also add your own options in this `dict`. Doing so will allow an
-        alternative to :ref:`metadata fields <metadata-fields>` in custom layouts
-        and ensure they're only used for social card generation.
+    .. seealso::
+        This section heavily relies on knowledge about :ref:`using_jinja`
     """
 
-    background_image: Optional[Union[Path, str]] = None
+    model_config = ConfigDict(
+        validate_assignment=True, extra="allow", str_strip_whitespace=True
+    )
+
+    background_image: Optional[PathType] = None
     """The fallback value used for a layer's `background.image <Background.image>`
     attribute. Default is :python:`None`. This image will not be shown if the
     `background_color` has no alpha channel (transparency) value.
@@ -44,7 +45,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               image: '{{ layout.background_image }}'
     """
-    background_color: Optional[str] = None
+    background_color: Optional[ColorType] = None
     """The fallback value used for a layer's `background.color <Background.color>`
     attribute in most `pre-designed layouts <pre-designed-layouts>`. By default, this
     value is set to the :themeconf:`palette`\ [:themeconf:`primary`] color or
@@ -53,16 +54,16 @@ class Cards_Layout_Options(BaseModel):
     .. social-card::
         {
             "cards_layout_options": {
-                "background_color": "#4051B2"
+                "background_color": "rgb(90, 32, 166)"
             }
         }
         :dry-run:
 
         layers:
           - background:
-              color: '{{ layout.background_color }}'
+              color: '{{ layout.background_color | yaml }}'
     """
-    color: Optional[str] = None
+    color: Optional[ColorType] = None
     """The color used for the foreground text in most `pre-designed layouts
     <pre-designed-layouts>`. By default, this will be computed as :yaml:`"white"` or
     :yaml:`"black"` based on the `background_color`.
@@ -70,7 +71,7 @@ class Cards_Layout_Options(BaseModel):
     .. social-card::
         {
             "cards_layout_options": {
-                "color": "#4051B2"
+                "color": "#0FF1CE"
             }
         }
         :dry-run:
@@ -79,26 +80,27 @@ class Cards_Layout_Options(BaseModel):
         layers:
           - background: { color: black }
           - typography:
-              content: '{{ layout.color }}'
-              color: '{{ layout.color }}'
+              content: "'{{ layout.color }}'"
+              color: '{{ layout.color | yaml }}'
               align: center
+              line: { amount: 2 }
     """
-    accent: Optional[str] = None
+    accent: Optional[ColorType] = None
     """The color used as a foreground accentuating color. By default, this value is set
-    to the :themeconf:`palette`\ [:themeconf:`accent`] color or :yaml:`"#4EC5F1"` for
+    to the :themeconf:`palette`\ [:themeconf:`accent`] color or :yaml:`"#4051B2"` for
     themes other than sphinx-immaterial_.
 
     .. social-card::
         {
             "cards_layout_options": {
-                "accent": "#4EC5F1"
+                "accent": "hsl(35.7, 100%, 65.1%)"
             }
         }
         :dry-run:
 
         layers:
           - background:
-              color: '{{ layout.accent }}'
+              color: '{{ layout.accent| yaml }}'
     """
     font: Optional[Font] = None
     """The `font <Font>` specification to be used.
@@ -120,7 +122,7 @@ class Cards_Layout_Options(BaseModel):
         layers:
           - background: { color: black }
           - typography:
-              content: '{{ layout.font.family }} {{ layout.font.style }}'
+              content: '{{ layout.font.family }}' '{{ layout.font.style }}'
               line: { amount: 2 }
               align: center
     """
@@ -151,8 +153,20 @@ class Cards_Layout_Options(BaseModel):
           - background: { color: black }
           - icon:
               image: '{{ layout.logo.image }}'
-              color: '{{ layout.logo.color }}'
+              color: '{{ layout.logo.color | yaml }}'
     """
+
+    @field_serializer("background_color")
+    def serialize_bg_color(self, color: Optional[ColorType], _info):
+        return serialize_color(color)
+
+    @field_serializer("color")
+    def serialize_fg_color(self, color: Optional[ColorType], _info):
+        return serialize_color(color)
+
+    @field_serializer("accent")
+    def serialize_accent_color(self, color: Optional[ColorType], _info):
+        return serialize_color(color)
 
 
 class Config(BaseModel):

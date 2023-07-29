@@ -131,6 +131,7 @@ dmypy.json
 
 # vscode settings
 .vscode/
+.vs/
 
 # pkg data fetched at build time
 src/sphinx_social_cards/.icons/*

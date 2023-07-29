@@ -1,30 +1,27 @@
-# {% block color_vals %}
-bg_color: &bg_color '{{ layout.background_color }}'
-fg_color: &fg_color '{{ layout.color }}'
-# {% endblock %}
+#% block color_vals %#
+bg_color: &bg_color '{{ layout.background_color | yaml }}'
+fg_color: &fg_color '{{ layout.color | yaml }}'
+#% endblock %#
 
 layers:
   # the base layer for the background
   - background:
       color: *bg_color
-      image: >
-        {% if layout.background_image %}
-        {{ layout.background_image }}
-        {% endif %}
+      image: >-
+        #% if layout.background_image -%#
+        '{{ layout.background_image }}'
+        #%- endif %#
   # the layer for the logo image
   - size: { width: 150, height: 150 }
     offset: { x: 990, y: 60 }
     icon:
-      image: >
-        {% if page.meta.icon %}
-        {{ page.meta.icon }}
-        {% elif layout.logo.image %}
-        {{ layout.logo.image }}
-        {% endif %}
-      color: >
-        {% if layout.logo.color %}
-        {{ layout.logo.color }}
-        {% endif %}
+      image: >-
+        #% if page.meta.icon -%#
+        '{{ page.meta.icon }}'
+        #%- elif layout.logo.image -%#
+        '{{ layout.logo.image }}'
+        #%- endif %#
+      color: '{{ layout.logo.color | yaml }}'
   # the layer for the site's name
   - offset: { x: 60, y: 60 }
     size: { width: 920, height: 60 }
@@ -36,12 +33,12 @@ layers:
   - size: { width: 920, height: 300 }
     offset: { x: 60, y: 150 }
     typography:
-      content: >
-        {% if page.meta.title %}
-        {{ page.meta.title }}
-        {% elif page.title %}
-        {{ page.title }}
-        {% endif %}
+      content: >-
+        #% if page.meta.title -%#
+        '{{ page.meta.title }}'
+        #%- elif page.title -%#
+        '{{ page.title }}'
+        #%- endif %#
       line:
         # height: 0.85
         amount: 3
@@ -52,12 +49,12 @@ layers:
   - offset: { x: 60, y: 480 }
     size: { width: 1080, height: 90 }
     typography:
-      content: >
-        {% if page.meta and page.meta.description %}
-        {{ page.meta.description }}
-        {% else %}
-        {{ config.site_description }}
-        {% endif %}
+      content: >-
+        #% if page.meta and page.meta.description -%#
+        '{{ page.meta.description }}'
+        #%- else -%#
+        '{{ config.site_description }}'
+        #%- endif %#
       line:
         height: 0.87
         amount: 2

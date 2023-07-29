@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 import pytest
 from sphinx.testing.util import SphinxTestApp
 
@@ -40,8 +40,16 @@ Test Title
     assert not app._warning.getvalue()
 
 
-@pytest.mark.parametrize("radius", [315, 600])
-def test_rectangle(sphinx_make_app, radius: int):
+@pytest.mark.parametrize("radius", [0, 315, 600])
+@pytest.mark.parametrize(
+    "corners",
+    (
+        ["top left", "top right", "bottom left", "bottom right"],
+        ["top right", "bottom left"],
+    ),
+    ids=["all", "2"],
+)
+def test_rectangle(sphinx_make_app, radius: int, corners: List[str]):
     app: SphinxTestApp = sphinx_make_app(
         files={
             "index.rst": f"""
@@ -57,6 +65,7 @@ Test Title
           border:
             width: 25
             color: white
+          corners: [{', '.join(corners)}]
 """,
         },
     )
@@ -74,11 +83,26 @@ Test Title
 .. image-generator::
 
     layers:
+      - background:
+          linear_gradient:
+            preset: MorpheusDen # 22
+            start: { y: 315 }
+            end: { x: 1200, y: 315 }
       - ellipse:
-          color: '#FFFFFF7F'
+          radial_gradient:
+            preset: 85 # OctoberSilence
+            center: { x: 600, y: 315 }
+            radius: 730
+            spread: reflect
+            focal_point: { x: 650, y: 200 }
+            focal_radius: 2
           border:
             width: 25
-            color: white
+            conical_gradient:
+              preset: NightParty
+              center: { x: 600, y: 315 }
+              angle: 387
+              colors: { 0.5: yellow }
 """,
         },
     )
@@ -86,9 +110,8 @@ Test Title
     assert not app._warning.getvalue()
 
 
-@pytest.mark.parametrize("border_color", ["null", "red"], ids=["inherent_color", "red"])
-@pytest.mark.parametrize("overflow", ["on", "off"], ids=["overflow_on", "overflow_off"])
-def test_typography(sphinx_make_app, overflow: str, border_color: str) -> None:
+@pytest.mark.parametrize("overflow", ["on", "off"], ids=["on", "off"])
+def test_typography_overflow(sphinx_make_app, overflow: str) -> None:
     app: SphinxTestApp = sphinx_make_app(
         files={
             "index.rst": f"""
@@ -106,8 +129,42 @@ Test Title
             Symbols
             PictogramsTypographyGlyphs
           overflow: {overflow}
+          line: {{ amount: 3 }}
+          align: center
           border:
-            color: {border_color}
+            color: {'red' if overflow == 'on' else 'null'}
+            width: 1
+""",
+        },
+    )
+    app.build()
+    assert not app._warning.getvalue()
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        """|
+            line 1
+
+            supercalifragilisticexpialidocious""",
+        "A really long sentence that occupies multiple lines",
+    ],
+    ids=["blank_line+long_word", "long_sentence"],
+)
+def test_typography_content(sphinx_make_app, content: str) -> None:
+    app: SphinxTestApp = sphinx_make_app(
+        files={
+            "index.rst": f"""
+Test Title
+==========
+
+.. social-card:: {{ "debug": true }}
+
+    size: {{ width: 900, height: 330 }}
+    layers:
+      - typography:
+          content: {content}
           line: {{ amount: 3 }}
           align: center
 """,
@@ -203,10 +260,10 @@ Test Title
     size: {{ width: 900, height: 330 }}
     layers:
       - ellipse:
-          color: red
+          color: {'red' if border_to_origin == 'off' else 'null'}
           arc: {{ end: -90 }}
           border:
-            color: green
+            color: {'green' if border_to_origin == 'on' else 'null'}
             width: 45
           border_to_origin: {border_to_origin}
 """,
@@ -221,7 +278,7 @@ Test Title
     [
         2,
         pytest.param("[{ x: 100 }]", marks=pytest.mark.xfail),
-        "[{ x: 100 }, { y: 100 }]",
+        "[{ x: 100, y: -100 }, { x: 1230, y: 100 }, { x: 25, y: 25 }]",
     ],
     ids=["regular", "invalid_custom", "custom"],
 )
@@ -240,6 +297,9 @@ Test Title
       - polygon:
           color: green
           sides: {sides}
+          border:
+            width: 2
+            color: blue
 """,
         },
     )
