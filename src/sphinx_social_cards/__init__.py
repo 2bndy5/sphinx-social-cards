@@ -16,7 +16,6 @@ Dependencies
 
 The following dependencies are required:
 
-- `pillow (v10+) <https://pillow.readthedocs.io/en/stable/index.html>`_
 - `PySide6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_
 
 Installing
