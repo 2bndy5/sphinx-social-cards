@@ -59,9 +59,9 @@
       
         <meta  name="twitter:description"  content="Generate social media cards for documentation pages with Sphinx" >
       
-        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/index-4d1e2f1d12f9dd73.png" >
+        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/index-d33dd684eb47496f.png" >
       
-        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/index-4d1e2f1d12f9dd73.png" >
+        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/index-d33dd684eb47496f.png" >
       
         <meta  title="Customized Layouts" >
       
@@ -387,7 +387,7 @@
         
           <li class="md-nav__item">
   <a href="#sphinx_social_cards.validators.Cards_Layout_Options.accent" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Cards_Layout_Options.accent (Python attribute) — The color used as a foreground accentuating color. By default, this value is set to the palette[accent] color or &#34;#4EC5F1&#34; for themes other than sphinx-immaterial." class="md-ellipsis">accent</span>
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Cards_Layout_Options.accent (Python attribute) — The color used as a foreground accentuating color. By default, this value is set to the palette[accent] color or &#34;#4051B2&#34; for themes other than sphinx-immaterial." class="md-ellipsis">accent</span>
   </a>
   
 </li>
@@ -622,6 +622,21 @@
 
             
           
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gradients/index.html" class="md-nav__link">
+        <span class="md-ellipsis">Gradient Colors</span>
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -757,7 +772,7 @@
         
           <li class="md-nav__item">
   <a href="#sphinx_social_cards.validators.Cards_Layout_Options.accent" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Cards_Layout_Options.accent (Python attribute) — The color used as a foreground accentuating color. By default, this value is set to the palette[accent] color or &#34;#4EC5F1&#34; for themes other than sphinx-immaterial." class="md-ellipsis">accent</span>
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="sphinx_social_cards.validators.Cards_Layout_Options.accent (Python attribute) — The color used as a foreground accentuating color. By default, this value is set to the palette[accent] color or &#34;#4051B2&#34; for themes other than sphinx-immaterial." class="md-ellipsis">accent</span>
   </a>
   
 </li>
@@ -961,15 +976,13 @@ directive argument</label></div>
 <dd><p>There are some options that are used as default values for the layout’s
 subsequent layers. These values are set with <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="sphinx_social_cards.validators.Social_Cards.cards_layout_options (Python attribute) — A set (dict) of options that can be accessed via the layout.* jinja context. See cards_layout_options for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_options</span></code></a> and are added to the <code class="docutils literal notranslate"><span class="pre">layout.*</span></code> <a class="reference internal" href="layers.html#jinja-ctx"><span class="std std-ref">jinja
 context</span></a> (for customizable re-use in <a class="reference internal" href="layers.html#sphinx_social_cards.validators.layout.Layer" title="sphinx_social_cards.validators.layout.Layer (Python class) — Each layer can have different attributes. A typical layer has size and offset attributes with 1 additional attribute detailing a background or icon or typography or rectangle or ellipse. However, these attributes may combined as needed."><code class="xref any py py-class docutils literal notranslate"><span class="pre">layer</span></code></a> attributes).</p>
-<div class="hint admonition">
-<p class="admonition-title">Hint</p>
-<p>You can also add your own options in this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a>. Doing so will allow an
-alternative to <a class="reference internal" href="../config.html#metadata-fields"><span class="std std-ref">metadata fields</span></a> in custom layouts
-and ensure they’re only used for social card generation.</p>
+<div class="seealso admonition">
+<p class="admonition-title">Seealso</p>
+<p>This section heavily relies on knowledge about <a class="reference internal" href="layers.html#using-jinja"><span class="std std-ref">Using Jinja Syntax within the Layout</span></a></p>
 </div>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Cards_Layout_Options.background_image">
-<span class="sig-name descname"><span class="pre">background_image</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_image" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">background_image</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fallback value used for a layer’s <a class="reference internal" href="background.html#sphinx_social_cards.validators.layers.Background.image" title="sphinx_social_cards.validators.layers.Background.image (Python attribute) — The path to an image used as the card's background. This path can be absolute or relative to one of the paths specified in social_cards.image_paths."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background.image</span></code></a>
 attribute. Default is <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>. This image will not be shown if the
 <a class="reference internal" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_color" title="sphinx_social_cards.validators.Cards_Layout_Options.background_color (Python attribute) — The fallback value used for a layer's background.color attribute in most pre-designed layouts. By default, this value is set to the palette[primary] color or &quot;#4051B2&quot; for themes other than sphinx-immaterial."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background_color</span></code></a> has no alpha channel (transparency) value.</p>
@@ -996,14 +1009,14 @@ attribute. Default is <code class="code highlight python docutils literal highli
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-bd4ddf7687561e3e.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-bd4ddf7687561e3e.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-2191b9e921b82671.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-2191b9e921b82671.png" /></a></p>
 </div>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Cards_Layout_Options.background_color">
-<span class="sig-name descname"><span class="pre">background_color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_color" title="Permalink to this definition">¶</a></dt>
-<dd><p>The fallback value used for a layer’s <a class="reference internal" href="background.html#sphinx_social_cards.validators.layers.Background.color" title="sphinx_social_cards.validators.layers.Background.color (Python attribute) — The color used as the background fill color. This color will overlay the entire Background.image (if specified). So be sure to add transparency (an alpha color value) when using both a background image and color."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background.color</span></code></a>
+<dt class="sig sig-object highlight sig-wrap py" id="sphinx_social_cards.validators.Cards_Layout_Options.background_color">
+<span class="sig-name descname"><span class="pre">background_color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="../config.html#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/linear.html#sphinx_social_cards.validators.common.Linear_Gradient" title="sphinx_social_cards.validators.common.Linear_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Linear_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/radial.html#sphinx_social_cards.validators.common.Radial_Gradient" title="sphinx_social_cards.validators.common.Radial_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Radial_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/conical.html#sphinx_social_cards.validators.common.Conical_Gradient" title="sphinx_social_cards.validators.common.Conical_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Conical_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fallback value used for a layer’s <a class="reference internal" href="background.html#sphinx_social_cards.validators.layers.Background.color" title="sphinx_social_cards.validators.layers.Background.color (Python attribute) — The color used as the background fill color. This color will overlay the entire background.image (if specified). So be sure to add transparency (an alpha color value) when using both a background image and color."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background.color</span></code></a>
 attribute in most <a class="reference internal" href="../config.html#pre-designed-layouts"><span class="std std-ref">pre-designed layouts</span></a>. By default, this
 value is set to the <a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-palette" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">palette</span></code></a>[<a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-primary" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">primary</span></code></a>] color or
 <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&quot;#4051B2&quot;</span></code> for themes other than <a class="reference external" href="https://jbms.github.io/sphinx-immaterial">sphinx-immaterial</a>.</p>
@@ -1015,7 +1028,7 @@ value is set to the <a class="reference external" href="https://sphinx-immateria
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages with Sphinx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards/&quot;</span><span class="p">,</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;#4051B2&quot;</span>
+        <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(90, 32, 166)&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1026,17 +1039,17 @@ value is set to the <a class="reference external" href="https://sphinx-immateria
 </span>my-layout.yml<a class="headerlink" href="#id5" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-859e95ce0447b458.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-859e95ce0447b458.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-25e2991c9056e846.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-25e2991c9056e846.png" /></a></p>
 </div>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Cards_Layout_Options.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.color" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object highlight sig-wrap py" id="sphinx_social_cards.validators.Cards_Layout_Options.color">
+<span class="sig-name descname"><span class="pre">color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="../config.html#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/linear.html#sphinx_social_cards.validators.common.Linear_Gradient" title="sphinx_social_cards.validators.common.Linear_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Linear_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/radial.html#sphinx_social_cards.validators.common.Radial_Gradient" title="sphinx_social_cards.validators.common.Radial_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Radial_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/conical.html#sphinx_social_cards.validators.common.Conical_Gradient" title="sphinx_social_cards.validators.common.Conical_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Conical_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.color" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color used for the foreground text in most <a class="reference internal" href="../config.html#pre-designed-layouts"><span class="std std-ref">pre-designed layouts</span></a>. By default, this will be computed as <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&quot;white&quot;</span></code> or
 <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&quot;black&quot;</span></code> based on the <a class="reference internal" href="#sphinx_social_cards.validators.Cards_Layout_Options.background_color" title="sphinx_social_cards.validators.Cards_Layout_Options.background_color (Python attribute) — The fallback value used for a layer's background.color attribute in most pre-designed layouts. By default, this value is set to the palette[primary] color or &quot;#4051B2&quot; for themes other than sphinx-immaterial."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background_color</span></code></a>.</p>
 <div class="results docutils container">
@@ -1047,7 +1060,7 @@ value is set to the <a class="reference external" href="https://sphinx-immateria
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages with Sphinx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards/&quot;</span><span class="p">,</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#4051B2&quot;</span>
+        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#0FF1CE&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1060,21 +1073,22 @@ value is set to the <a class="reference external" href="https://sphinx-immateria
 <span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">black</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;&quot;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
 <span class="w">      </span><span class="nt">align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span>
+<span class="w">      </span><span class="nt">line</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-72763b0c97089739.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-72763b0c97089739.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-c04296d1ced9af9f.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-c04296d1ced9af9f.png" /></a></p>
 </div>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Cards_Layout_Options.accent">
-<span class="sig-name descname"><span class="pre">accent</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.accent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object highlight sig-wrap py" id="sphinx_social_cards.validators.Cards_Layout_Options.accent">
+<span class="sig-name descname"><span class="pre">accent</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="../config.html#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/linear.html#sphinx_social_cards.validators.common.Linear_Gradient" title="sphinx_social_cards.validators.common.Linear_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Linear_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/radial.html#sphinx_social_cards.validators.common.Radial_Gradient" title="sphinx_social_cards.validators.common.Radial_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Radial_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="gradients/conical.html#sphinx_social_cards.validators.common.Conical_Gradient" title="sphinx_social_cards.validators.common.Conical_Gradient (Python class) — A specification for linear gradients of colors."><span class="pre">Conical_Gradient</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Cards_Layout_Options.accent" title="Permalink to this definition">¶</a></dt>
 <dd><p>The color used as a foreground accentuating color. By default, this value is set
-to the <a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-palette" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">palette</span></code></a>[<a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-accent" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">accent</span></code></a>] color or <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&quot;#4EC5F1&quot;</span></code> for
+to the <a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-palette" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">palette</span></code></a>[<a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-accent" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">accent</span></code></a>] color or <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&quot;#4051B2&quot;</span></code> for
 themes other than <a class="reference external" href="https://jbms.github.io/sphinx-immaterial">sphinx-immaterial</a>.</p>
 <div class="results docutils container">
 <div class="literal-block-wrapper docutils container" id="id8">
@@ -1084,7 +1098,7 @@ themes other than <a class="reference external" href="https://jbms.github.io/sph
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generate social media cards for documentation pages with Sphinx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://2bndy5.github.io/sphinx-social-cards/&quot;</span><span class="p">,</span>
     <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;accent&quot;</span><span class="p">:</span> <span class="s2">&quot;#4EC5F1&quot;</span>
+        <span class="s2">&quot;accent&quot;</span><span class="p">:</span> <span class="s2">&quot;hsl(35.7, 100%, 65.1%)&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1095,11 +1109,11 @@ themes other than <a class="reference external" href="https://jbms.github.io/sph
 </span>my-layout.yml<a class="headerlink" href="#id9" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.accent</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.accent|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-fb451d9f9012bcb9.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-fb451d9f9012bcb9.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-d887927bb84ad4d6.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-d887927bb84ad4d6.png" /></a></p>
 </div>
 </dd></dl>
 
@@ -1135,13 +1149,13 @@ themes other than <a class="reference external" href="https://jbms.github.io/sph
 <span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">black</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.font.family</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">layout.font.style</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.font.family</span><span class="nv"> </span><span class="s">}}&#39;</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.font.style</span><span class="nv"> </span><span class="s">}}&#39;</span>
 <span class="w">      </span><span class="nt">line</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> amount</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">      </span><span class="nt">align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-bf28376680cdcd52.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-bf28376680cdcd52.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-d961aee61ee5f1ec.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-d961aee61ee5f1ec.png" /></a></p>
 </div>
 </dd></dl>
 
@@ -1179,11 +1193,11 @@ metadata field to overridden the <a class="reference internal" href="icon.html#s
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="nv">black</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">icon</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.logo.image</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.logo.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.logo.color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-11a9c178b9494a49.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-11a9c178b9494a49.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-d53760337bea8e4b.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-d53760337bea8e4b.png" /></a></p>
 </div>
 </dd></dl>
 
@@ -1231,7 +1245,7 @@ property, and the offset is defined by <a class="reference internal" href="#sphi
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/index-74d92dfd17343ef7.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-74d92dfd17343ef7.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/index-73c83dceefa3335e.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/index-73c83dceefa3335e.png" /></a></p>
 </div>
 <p>The layer outline and grid are visible because we enabled <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.debug" title="sphinx_social_cards.validators.Social_Cards.debug (Python attribute) — A field to specify layout debugging helpers. See Debugging Layouts for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">debug</span></code></a> in the
 <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards" title="sphinx_social_cards.validators.Social_Cards (Python class) — A dict of configurations related to generating social media cards. Each attribute equates to a supported configuration option."><code class="xref any py py-class docutils literal notranslate"><span class="pre">social_cards</span></code></a> configuration. The rest of the image is transparent because there
@@ -1356,7 +1370,7 @@ to 0.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.1.0.
+    7.1.1.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

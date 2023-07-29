@@ -46,7 +46,7 @@ The :rst:dir:`image-generator` directive is a derivative to inject generated ima
                 layers:
                   - ellipse:
                       color: green
-                      border: { width: 15, color: light-blue }
+                      border: { width: 15, color: blue }
                   - typography: { content: SSC, align: center, color: red }
                     size: { width: 350, height: 150 }
                     offset: { x: 25, y: 25 }
@@ -166,7 +166,7 @@ The :rst:dir:`image-generator` directive is a derivative to inject generated ima
                   - rectangle:
                       radius: 50
                       color: green
-                      border: { width: 15, color: light-blue }
+                      border: { width: 15, color: blue }
                   - typography: { content: SSC, align: center, color: red }
                     size: { width: 350, height: 150 }
                     offset: { x: 25, y: 25 }

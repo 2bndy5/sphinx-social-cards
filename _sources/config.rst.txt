@@ -123,6 +123,145 @@ font from `Fontsource`_ which comes with CJK characters.
 
         {% endfor %}
 
+.. _choosing_a_color:
+
+Choosing a color
+----------------
+
+All color fields related to this extension (via `cards_layout_options` or in `layer <Layer>`
+attributes) can be specified as a `solid_color` or a `gradient_color`.
+
+.. _solid_color:
+
+Solid color syntax
+~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: pydantic_extra_types.color.Color
+
+    A solid color can be specified in the following string forms:
+
+
+    - `name <http://www.w3.org/TR/SVG11/types.html#ColorKeywords>`_
+
+      .. md-tab-set::
+
+          .. md-tab-item:: in conf.py
+
+              .. code-block:: python
+
+                  social_cards = {
+                      "cards_layout_options": {
+                          "color": "Black",
+                          # NOTE case insensitivity
+                          "background_color": "azure",
+                       }
+                  }
+
+          .. md-tab-item:: in a layout
+
+              .. code-block:: yaml
+
+                  layers:
+                    - background:
+                        color: Black
+                      # NOTE case insensitivity
+                    - ellipse:
+                        color: azure
+    - `hexadecimal value <https://en.wikipedia.org/wiki/Web_colors#Hex_triplet>`_
+
+      .. md-tab-set::
+
+          .. md-tab-item:: in conf.py
+
+              .. code-block:: python
+
+                  social_cards = {
+                      "cards_layout_options": {
+                          "color": "#FFFFFF",
+                          # NOTE case insensitivity
+                          "background_color": "#FFffFF80",  # 50% transparent
+                       }
+                  }
+
+          .. md-tab-item:: in a layout
+
+              .. code-block:: yaml
+
+                  layers:
+                    - background:
+                        color: '#FFFFFF'
+                      # NOTE case insensitivity
+                    - ellipse:
+                        color: '#FFffFF80' # 50% transparent
+    - `RGB/RGBA strings <https://developer.mozilla.org/en-US/docs/Web/CSS/color_value>`_
+
+      .. md-tab-set::
+
+          .. md-tab-item:: in conf.py
+
+              .. code-block:: python
+
+                  social_cards = {
+                      "cards_layout_options": {
+                          "color": "rgb(255, 255, 255)",
+                          "background_color": "rgba(255, 255, 255, 0.5)" # 50% transparent,
+                       }
+                  }
+
+          .. md-tab-item:: in a layout
+
+              .. code-block:: yaml
+
+                  layers:
+                    - background:
+                        color: 'rgb(255, 255, 255)'
+                    - ellipse:
+                        color: 'rgba(255, 255, 255, 0.5)' # 50% transparent
+    - `HSL strings <https://developer.mozilla.org/en-US/docs/Web/CSS/color_value>`_
+
+      .. md-tab-set::
+
+          .. md-tab-item:: in conf.py
+
+              .. code-block:: python
+
+                  social_cards = {
+                      "cards_layout_options": {
+                          "color": "hsl(270, 60%, 70%)",
+                          "background_color": "hsl(270, 60%, 70%, .5)" # 50% transparent,
+                       }
+                  }
+
+          .. md-tab-item:: in a layout
+
+              .. code-block:: yaml
+
+                  layers:
+                    - background:
+                        color: 'hsl(270, 60%, 70%)'
+                    - ellipse:
+                        color: 'hsl(270, 60%, 70%, .5)' # 50% transparent
+
+    .. note::
+        The alpha value (transparency) is ignored for `social_cards.debug.color <Debug.color>`
+
+.. _gradient_color:
+
+Gradient color specification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Being powered by Qt for Python, this extension supports rendering gradients of colors.
+
+Complete details about using :doc:`layouts/gradients/index` is described separately for
+each supported gradient orientation:
+
+- :doc:`layouts/gradients/linear`
+- :doc:`layouts/gradients/radial`
+- :doc:`layouts/gradients/conical`
+
+Be sure to also check out the :doc:`layouts/gradients/presets` for a complete list of conveniently
+pre-defined list of ``colors`` (with generated examples).
+
 .. _metadata-fields:
 
 Metadata
@@ -287,3 +426,4 @@ Debugging Layouts
 
 .. autoclass:: sphinx_social_cards.validators.Debug
     :members:
+    :exclude-members: model_post_init, model_fields, model_config

@@ -59,9 +59,9 @@
       
         <meta  name="twitter:description"  content="Generate social media cards for documentation pages with Sphinx" >
       
-        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/layers-40d4b8a4188ae156.png" >
+        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/layers-bed834f9ab17c4c0.png" >
       
-        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/layers-40d4b8a4188ae156.png" >
+        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/layouts/layers-bed834f9ab17c4c0.png" >
       
         <meta  title="Layer of a Layout" >
       
@@ -448,6 +448,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#escaping-jinja-syntax" class="md-nav__link">
+    <span class="md-ellipsis">Escaping Jinja Syntax</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#layouts-are-jinja-templates" class="md-nav__link">
     <span class="md-ellipsis">Layouts are Jinja Templates</span>
   </a>
@@ -458,6 +465,39 @@
   <a href="#inheriting-layouts" class="md-nav__link">
     <span class="md-ellipsis">Inheriting Layouts</span>
   </a>
+  
+    <nav class="md-nav" aria-label="Inheriting Layouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inheritance-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">Inheritance Tutorial</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#referencing-jinja-contexts" class="md-nav__link">
+    <span class="md-ellipsis">Referencing Jinja Contexts</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Referencing Jinja Contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-yaml-jinja-filter-for-referencing-color-values" class="md-nav__link">
+    <span class="md-ellipsis">The yaml Jinja filter <wbr>(for referencing color values)</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -591,13 +631,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#referencing-jinja-contexts" class="md-nav__link">
-    <span class="md-ellipsis">Referencing Jinja Contexts</span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -681,6 +714,21 @@
     <li class="md-nav__item">
       <a href="shapes/index.html" class="md-nav__link">
         <span class="md-ellipsis">Basic Shapes</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gradients/index.html" class="md-nav__link">
+        <span class="md-ellipsis">Gradient Colors</span>
       </a>
     </li>
   
@@ -868,6 +916,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#escaping-jinja-syntax" class="md-nav__link">
+    <span class="md-ellipsis">Escaping Jinja Syntax</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#layouts-are-jinja-templates" class="md-nav__link">
     <span class="md-ellipsis">Layouts are Jinja Templates</span>
   </a>
@@ -878,6 +933,39 @@
   <a href="#inheriting-layouts" class="md-nav__link">
     <span class="md-ellipsis">Inheriting Layouts</span>
   </a>
+  
+    <nav class="md-nav" aria-label="Inheriting Layouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inheritance-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">Inheritance Tutorial</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#referencing-jinja-contexts" class="md-nav__link">
+    <span class="md-ellipsis">Referencing Jinja Contexts</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Referencing Jinja Contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-yaml-jinja-filter-for-referencing-color-values" class="md-nav__link">
+    <span class="md-ellipsis">The yaml Jinja filter <wbr>(for referencing color values)</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1011,13 +1099,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#referencing-jinja-contexts" class="md-nav__link">
-    <span class="md-ellipsis">Referencing Jinja Contexts</span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1043,7 +1124,24 @@
   </a>
 
 <h1 id="layer-of-a-layout">Layer of a Layout<a class="headerlink" href="#layer-of-a-layout" title="Permalink to this heading">¶</a></h1>
-<p>Each layer can be specified in layout’s YAML file as a YAML list under the <code class="docutils literal notranslate"><span class="pre">layers</span></code> property.</p>
+<p>Each layer can be specified in layout’s YAML file as a YAML list value for the <code class="docutils literal notranslate"><span class="pre">layers</span></code> mapping.</p>
+<div class="results docutils container">
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>A simple layout of 2 layers<a class="headerlink" href="#id3" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> width</span><span class="p">:</span><span class="w"> </span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="nt"> height</span><span class="p">:</span><span class="w"> </span><span class="nv">250</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="nt">layers</span><span class="p">:</span><span class="w">  </span><span class="c1"># each layer in this list is denoted with a dash (&#39;-&#39;)</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># layer 0</span>
+<span class="w">    </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orange</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># layer 1</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sphinx_logo</span>
+</code></pre></div>
+</div>
+</div>
+<p class="result"><a class="reference external" href="../_images/layers-5eb0c4195aff28ab.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-5eb0c4195aff28ab.png" /></a></p>
+</div>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.layout.Layer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Layer</span></span><a class="headerlink" href="#sphinx_social_cards.validators.layout.Layer" title="Permalink to this definition">¶</a></dt>
@@ -1056,9 +1154,9 @@ will render consistently. The priority order is as follows (excluding
 <a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.size" title="sphinx_social_cards.validators.layout.Layer.size (Python attribute) — The layer size. Defaults to values inherited from the layout.size."><code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code></a> and <a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.offset" title="sphinx_social_cards.validators.layout.Layer.offset (Python attribute) — The layer offset. Defaults to { x: 0, y: 0 }."><code class="xref py py-attr docutils literal notranslate"><span class="pre">offset</span></code></a>):</p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.background" title="sphinx_social_cards.validators.layout.Layer.background (Python attribute) — An optional background."><code class="xref py py-attr docutils literal notranslate"><span class="pre">background</span></code></a></p></li>
+<li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.rectangle" title="sphinx_social_cards.validators.layout.Layer.rectangle (Python attribute) — An optional shapes/rectangle."><code class="xref py py-attr docutils literal notranslate"><span class="pre">rectangle</span></code></a></p></li>
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.ellipse" title="sphinx_social_cards.validators.layout.Layer.ellipse (Python attribute) — An optional shapes/ellipse."><code class="xref py py-attr docutils literal notranslate"><span class="pre">ellipse</span></code></a></p></li>
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.polygon" title="sphinx_social_cards.validators.layout.Layer.polygon (Python attribute) — An optional shapes/polygon."><code class="xref py py-attr docutils literal notranslate"><span class="pre">polygon</span></code></a></p></li>
-<li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.rectangle" title="sphinx_social_cards.validators.layout.Layer.rectangle (Python attribute) — An optional shapes/rectangle."><code class="xref py py-attr docutils literal notranslate"><span class="pre">rectangle</span></code></a></p></li>
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.icon" title="sphinx_social_cards.validators.layout.Layer.icon (Python attribute) — An optional icon."><code class="xref py py-attr docutils literal notranslate"><span class="pre">icon</span></code></a></p></li>
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.typography" title="sphinx_social_cards.validators.layout.Layer.typography (Python attribute) — An optional typography."><code class="xref py py-attr docutils literal notranslate"><span class="pre">typography</span></code></a></p></li>
 <li><p><a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.mask" title="sphinx_social_cards.validators.layout.Layer.mask (Python attribute) — An optional mask."><code class="xref py py-attr docutils literal notranslate"><span class="pre">mask</span></code></a></p></li>
@@ -1067,16 +1165,16 @@ will render consistently. The priority order is as follows (excluding
 attributes. Additionally, any <a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.typography" title="sphinx_social_cards.validators.layout.Layer.typography (Python attribute) — An optional typography."><code class="xref py py-attr docutils literal notranslate"><span class="pre">typography</span></code></a> attribute is rendered after
 other attributes but before applying the <a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.mask" title="sphinx_social_cards.validators.layout.Layer.mask (Python attribute) — An optional mask."><code class="xref py py-attr docutils literal notranslate"><span class="pre">mask</span></code></a>.</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id1">
+<div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>A layout with a single layer that has multiple attributes<a class="headerlink" href="#id1" title="Permalink to this code">¶</a></span></div>
+</span>A layout with a single layer that has multiple attributes<a class="headerlink" href="#id4" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> width</span><span class="p">:</span><span class="w"> </span><span class="nv">200</span><span class="p p-Indicator">,</span><span class="nt"> height</span><span class="p">:</span><span class="w"> </span><span class="nv">200</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span><span class="w"> </span><span class="c1"># the layer&#39;s typography attribute</span>
 <span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;S&quot;</span>
 <span class="w">      </span><span class="nt">align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span>
 <span class="w">    </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="c1"># the layer&#39;s background attribute</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
 <span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="c1"># the layer&#39;s icon attribute</span>
 <span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.logo.image</span><span class="nv"> </span><span class="s">}}&#39;</span>
 
@@ -1084,28 +1182,28 @@ other attributes but before applying the <a class="reference internal" href="#sp
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/layers-124822314d68d915.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-124822314d68d915.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/layers-4389bfba5bbcdbf0.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-4389bfba5bbcdbf0.png" /></a></p>
 </div>
 <div class="error admonition">
 <p class="admonition-title">Error</p>
 <p>Each layer can only have 1 of each type of attribute. For example you cannot use
 2 <a class="reference internal" href="#sphinx_social_cards.validators.layout.Layer.background" title="sphinx_social_cards.validators.layout.Layer.background (Python attribute) — An optional background."><code class="xref py py-attr docutils literal notranslate"><span class="pre">background</span></code></a> attributes in a single layer:</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id2">
+<div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>my-layout.yml<a class="headerlink" href="#id2" title="Permalink to this code">¶</a></span></div>
+</span>my-layout.yml<a class="headerlink" href="#id5" title="Permalink to this code">¶</a></span></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> width</span><span class="p">:</span><span class="w"> </span><span class="nv">600</span><span class="p p-Indicator">,</span><span class="nt"> height</span><span class="p">:</span><span class="w"> </span><span class="nv">250</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> image</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;images/rainbow.png&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
 <span class="w">    </span><span class="c1"># The `background` attribute is overwritten by next line</span>
-<span class="w">    </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#ff000037&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#ff000037&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
 
 <span class="c1"># NOTE: The layer&#39;s background attribute is composed solely by</span>
 <span class="c1"># the last instance of the background attribute in the layer.</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/layers-bdfc020456e16e42.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-bdfc020456e16e42.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/layers-58566fed9aa78d0b.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-58566fed9aa78d0b.png" /></a></p>
 </div>
 </div>
 <dl class="py attribute objdesc">
@@ -1153,7 +1251,7 @@ other attributes but before applying the <a class="reference internal" href="#sp
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.layout.Layer.offset">
-<span class="sig-name descname"><span class="pre">offset</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="index.html#sphinx_social_cards.validators.layout.Offset" title="sphinx_social_cards.validators.base_model.Offset (Python class)"><span class="pre">Offset</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.layout.Layer.offset" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">offset</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="index.html#sphinx_social_cards.validators.layout.Offset" title="sphinx_social_cards.validators.common.Offset (Python class)"><span class="pre">Offset</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.layout.Layer.offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>The layer <a class="reference internal" href="index.html#sphinx_social_cards.validators.layout.Offset" title="sphinx_social_cards.validators.layout.Offset (Python class) — An attribute to describe a layer's positional offset."><code class="xref any py py-class docutils literal notranslate"><span class="pre">offset</span></code></a>. Defaults to <code class="code highlight yaml docutils literal highlight-yaml"><span class="p p-Indicator">{</span><span class="nt"> x</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nt"> y</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="w"> </span><span class="p p-Indicator">}</span></code>.</p>
 </dd></dl>
 
@@ -1165,44 +1263,87 @@ other attributes but before applying the <a class="reference internal" href="#sp
 
 </dd></dl>
 
-<h2 id="using-jinja-syntax-within-the-layout">Using Jinja Syntax within the Layout<a class="headerlink" href="#using-jinja-syntax-within-the-layout" title="Permalink to this heading">¶</a></h2>
+<h2 id="using-jinja-syntax-within-the-layout"><span id="using-jinja"></span>Using Jinja Syntax within the Layout<a class="headerlink" href="#using-jinja-syntax-within-the-layout" title="Permalink to this heading">¶</a></h2>
 <div class="seealso admonition">
 <p class="admonition-title">Seealso</p>
-<p>It is advised to read up on how to use <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#template-designer-documentation">Jinja syntax</a>.</p>
+<p>It is advised to read up on how to use <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/" title="(in Jinja v3.2.x)"><span class="xref std std-doc">Jinja syntax</span></a>.</p>
+</div>
+<p>Conventionally, <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/" title="(in Jinja v3.2.x)"><span class="xref std std-doc">Jinja syntax</span></a> uses characters that have actual meaning in YAML. To help
+streamline the combination of YAML and Jinja syntaxes, this extension uses a modified jinja
+syntax:</p>
+<table class="docutils data align-default" id="id6">
+<caption><span class="caption-text">differences between Jinja syntax</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>Conventional</p></th>
+<th class="head"><p>sphinx-social-cards</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#line-statements" title="(in Jinja v3.2.x)"><span>Line Statements</span></a></p></th>
+<td><p><code class="code highlight jinja docutils literal highlight-jinja"><span class="x">{% ... %}</span></code></p></td>
+<td><p><code class="code highlight yaml docutils literal highlight-yaml"><span class="c1">#% ... %#</span></code></p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p><a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#expressions" title="(in Jinja v3.2.x)"><span>Expressions</span></a></p></th>
+<td><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">...</span> <span class="pre">}}</span></code></p></td>
+<td><p><code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">...</span><span class="nv"> </span><span class="s">}}&#39;</span></code> <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#comments" title="(in Jinja v3.2.x)"><span>Comments</span></a></p></th>
+<td><p><code class="code highlight jinja docutils literal highlight-jinja"><span class="c">{# ... #}</span></code></p></td>
+<td><p><code class="code highlight yaml docutils literal highlight-yaml"><span class="c1">## ... ##</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>In the case of jinja expressions, the surrounding single quotes are removed by Jinja
+and are not passed on to the YAML parser. Meaning, <code class="code highlight yaml docutils literal highlight-yaml"><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">...</span><span class="nv"> </span><span class="s">}}&#39;</span></code> appears to the
+YAML parser like so: <code class="docutils literal notranslate"><span class="pre">...</span></code></p>
+</aside>
+</aside>
+<h3 id="escaping-jinja-syntax">Escaping Jinja Syntax<a class="headerlink" href="#escaping-jinja-syntax" title="Permalink to this heading">¶</a></h3>
+<p>Use <code class="code highlight jinja docutils literal highlight-jinja"><span class="x">&#39;</span><span class="cp">{{</span> <span class="s2">&quot;&#39;{{&quot;</span> <span class="cp">}}</span><span class="x">&#39;</span></code> to escape a Jinja reference.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;{{</span><span class="nv"> </span><span class="s">&quot;&#39;{{&quot;</span><span class="nv"> </span><span class="s">}}&#39;</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">page.title }}&quot;</span>
+<span class="w">      </span><span class="c1"># renders as: &quot;{{ page.title }}&quot;</span>
+</code></pre></div>
 </div>
 <h3 id="layouts-are-jinja-templates">Layouts are Jinja Templates<a class="headerlink" href="#layouts-are-jinja-templates" title="Permalink to this heading">¶</a></h3>
-<p>A layout file is basically a Jinja template. So, layers can be generated dynamically using <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#template-designer-documentation">Jinja
-syntax</a>.</p>
+<p>A layout file is basically a Jinja template. So, layers can be generated dynamically using
+<a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/" title="(in Jinja v3.2.x)"><span class="xref std std-doc">Jinja syntax</span></a>.</p>
 <div class="results docutils container">
-<div class="literal-block-wrapper docutils container" id="id3">
+<div class="literal-block-wrapper docutils container" id="id7">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Drawing 3 circles programmatically with Jinja<a class="headerlink" href="#id3" title="Permalink to this code">¶</a></span></div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#{% set diameter, width, height = (100, 600, 250) %}</span>
+</span>Drawing 3 circles programmatically with Jinja<a class="headerlink" href="#id7" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#% set diameter, width, height = (100, 600, 250) %#</span>
 <span class="nt">size</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">width</span><span class="w"> </span><span class="p p-Indicator">}}</span>
-<span class="w">  </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">height</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+<span class="w">  </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">width</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">  </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">height</span><span class="nv"> </span><span class="s">}}&#39;</span>
 <span class="nt">layers</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#0000007F&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">  </span><span class="c1">#{% for i in range(3) %}</span>
+<span class="w">  </span><span class="c1">#% for i in range(3) %#</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ellipse</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#{{</span><span class="nv"> </span><span class="s">(&#39;</span><span class="l l-Scalar l-Scalar-Plain">0&#39; * i) + &#39;F&#39; + (&#39;0&#39; * (2 - i)) }}&#39;</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#&#39;{{</span><span class="nv"> </span><span class="s">(&#39;0&#39;</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">i)</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">&#39;F&#39;</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">(&#39;0&#39;</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">(2</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">i))</span><span class="nv"> </span><span class="s">}}&#39;&quot;</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">diameter</span><span class="w"> </span><span class="p p-Indicator">}}</span>
-<span class="w">      </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">diameter</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+<span class="w">      </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">diameter</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">diameter</span><span class="nv"> </span><span class="s">}}&#39;</span>
 <span class="w">    </span><span class="nt">offset</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">width / 6 * (i * 2 + 1) - (diameter / 2)</span><span class="w"> </span><span class="p p-Indicator">}}</span>
-<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">(height - diameter) / 2</span><span class="w">  </span><span class="p p-Indicator">}}</span>
-<span class="w">  </span><span class="c1">#{% endfor %}</span>
+<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">width</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">6</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">(i</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">1)</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">(diameter</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">2)</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">(height</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">diameter)</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">2</span><span class="nv">  </span><span class="s">}}&#39;</span>
+<span class="w">  </span><span class="c1">#% endfor %#</span>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="../_images/layers-56b4de6cbcd889fb.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-56b4de6cbcd889fb.png" /></a></p>
+<p class="result"><a class="reference external" href="../_images/layers-edcbf9a82b2d5a01.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-edcbf9a82b2d5a01.png" /></a></p>
 </div>
 <h3 id="inheriting-layouts">Inheriting Layouts<a class="headerlink" href="#inheriting-layouts" title="Permalink to this heading">¶</a></h3>
-<p>Layouts can even inherit from other layouts! For more information on template inheritance, see
-the <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#template-inheritance">Jinja documentation</a>.
-For example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> layout is inherited by <code class="docutils literal notranslate"><span class="pre">default/accent</span></code> and <code class="docutils literal notranslate"><span class="pre">default/inverted</span></code>
-layouts. In those layouts, a Jinja block (<code class="code highlight jinja docutils literal highlight-jinja"><span class="cp">{%</span> <span class="k">block</span> <span class="nv">color_vals</span> <span class="cp">%}</span></code>) is used to override the
+<p>Layouts can even inherit from other layouts! The Jinja documentation has an excellent explanation
+on <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#template-inheritance" title="(in Jinja v3.2.x)"><span>Template Inheritance</span></a>. The rest of this section builds upon that useful
+information, so please read that first.</p>
+<p>As a quick example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> layout is inherited by <code class="docutils literal notranslate"><span class="pre">default/accent</span></code> and <code class="docutils literal notranslate"><span class="pre">default/inverted</span></code>
+layouts. In those layouts, a Jinja block (<code class="code highlight jinja docutils literal highlight-jinja"><span class="x">#% block color_vals %#</span></code>) is used to override the
 inherited color aliases.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3">
 <input checked type="radio" id="__tabbed_1_1" name="__tabbed_1"><input type="radio" id="__tabbed_1_2" name="__tabbed_1"><input type="radio" id="__tabbed_1_3" name="__tabbed_1"><div class="tabbed-labels docutils container">
@@ -1212,41 +1353,302 @@ default/accent</label><label class="tabbed-label" for="__tabbed_1_3">
 default/inverted</label></div>
 <div class="tabbed-content docutils container">
 <div class="tabbed-block docutils container">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># {% block color_vals %}</span>
-<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="c1"># {% endblock %}</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#% block color_vals %#</span>
+<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="c1">#% endblock %#</span>
 </code></pre></div>
 </div>
 </div>
 <div class="tabbed-block docutils container">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># {% extends &quot;default.yml&quot; %}</span>
-<span class="c1"># {% block color_vals %}</span>
-<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.accent</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="c1"># {% endblock %}</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#% extends &quot;default.yml&quot; %#</span>
+<span class="c1">#% block color_vals %#</span>
+<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.accent</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="c1">#% endblock %#</span>
 </code></pre></div>
 </div>
 </div>
 <div class="tabbed-block docutils container">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># {% extends &quot;default.yml&quot; %}</span>
-<span class="c1"># {% block color_vals %}</span>
-<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">}}&#39;</span>
-<span class="c1"># {% endblock %}</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#% extends &quot;default.yml&quot; %#</span>
+<span class="c1">#% block color_vals %#</span>
+<span class="nt">bg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;bg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="nt">fg_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;fg_color</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="c1">#% endblock %#</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 </div><div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>The Jinja <code class="code highlight jinja docutils literal highlight-jinja"><span class="cp">{%</span> <span class="k">extends</span> <span class="nv">layout-file</span> <span class="cp">%}</span></code> statement requires the layout file name to be in
+<p>The Jinja <code class="code highlight jinja docutils literal highlight-jinja"><span class="x">#% extends layout-file %#</span></code> statement requires the layout file name to be in
 quotes. Additionally, if inheriting from a layout in a sub-directory of layouts, then use the
 relative path to the layout.</p>
-<div class="literal-block-wrapper docutils container" id="id4">
+<div class="literal-block-wrapper docutils container" id="id8">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Inheriting from <code class="docutils literal notranslate"><span class="pre">default/variant</span></code> layout<a class="headerlink" href="#id4" title="Permalink to this code">¶</a></span></div>
-<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;default/variant.yml&quot;</span> <span class="cp">%}</span>
+</span>Inheriting from <code class="docutils literal notranslate"><span class="pre">default/variant</span></code> layout<a class="headerlink" href="#id8" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><code><span class="x">#% extends &quot;default/variant.yml&quot; %#</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="inheritance-tutorial">Inheritance Tutorial<a class="headerlink" href="#inheritance-tutorial" title="Permalink to this heading">¶</a></h4>
+<p>Let’s say you want to change the pre-designed <code class="docutils literal notranslate"><span class="pre">opengraph</span></code> layout into a dark themed version.
+This can easily be done by inheriting the <code class="docutils literal notranslate"><span class="pre">opengraph</span></code> layout in your new custom layout. Upon
+inspection, we will find 3 jinja blocks in the <code class="docutils literal notranslate"><span class="pre">opengraph</span></code> layout’s source:</p>
+<ol class="arabic">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">font_colors</span></code> block defines the colors used for fonts:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>opengraph.yml<a class="headerlink" href="#id9" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#% block font_colors %#</span>
+<span class="nt">project_desc_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;project_desc_color</span><span class="w"> </span><span class="s">&#39;rgb(88,</span><span class="nv"> </span><span class="s">94,</span><span class="nv"> </span><span class="s">99)&#39;</span>
+<span class="nt">title_url_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;title_url_color</span><span class="w"> </span><span class="s">&#39;rgb(47,</span><span class="nv"> </span><span class="s">54,</span><span class="nv"> </span><span class="s">61)&#39;</span>
+<span class="c1">#% endblock %#</span>
+</code></pre></div></td></tr></table></div>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Important</p>
+<p>We only need to change the actual color values.</p>
+<div class="error admonition">
+<p class="admonition-title">Error</p>
+<p>Changing the repeated tag names will break the layout.</p>
+</div>
+</div>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">background</span></code> block defines the layer that specifies the background:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>opengraph.yml<a class="headerlink" href="#id10" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">  </span><span class="c1">#% block background -%#</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">linear_gradient</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">preset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PremiumWhite</span>
+<span class="w">        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">        </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> x</span><span class="p">:</span><span class="w"> </span><span class="nv">400</span><span class="p p-Indicator">,</span><span class="nt"> y</span><span class="p">:</span><span class="w"> </span><span class="nv">210</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="nt">spread</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reflect</span>
+<span class="w">  </span><span class="c1">#%- endblock %#</span>
+</code></pre></div></td></tr></table></div>
+</div>
+</div>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">watermark_icon</span></code> block defines the layer that specifies the sphinx logo in the bottom
+corner:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>opengraph.yml<a class="headerlink" href="#id11" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">    </span><span class="c1">#% block watermark_icon -%#</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">        </span><span class="no">#% if page.meta.icon -%#</span>
+<span class="w">        </span><span class="no">&#39;{{ page.meta.icon }}&#39;</span>
+<span class="w">        </span><span class="no">#%- else -%#</span>
+<span class="w">        </span><span class="no">sphinx_logo</span>
+<span class="w">        </span><span class="no">#%- endif %#</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rgb(132, 146, 175)</span>
+<span class="w">    </span><span class="c1">#%- endblock %#</span>
+</code></pre></div></td></tr></table></div>
+</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>We could of course change this image via the <code class="xref std std-meta-field docutils literal notranslate"><span class="pre">cards-icon</span></code>. But, notice the color
+for the icon is hard-coded because the background color is also hard-coded.</p>
+</div>
+</li>
+</ol>
+<div class="question admonition">
+<p class="admonition-title">What about the other colors and stuff?</p>
+<p>The color and image of the logo is already optionally controlled via the
+<a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="sphinx_social_cards.validators.Social_Cards.cards_layout_options (Python attribute) — A set (dict) of options that can be accessed via the layout.* jinja context. See cards_layout_options for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_options</span></code></a>[<a class="reference internal" href="index.html#sphinx_social_cards.validators.Cards_Layout_Options.logo" title="sphinx_social_cards.validators.Cards_Layout_Options.logo (Python attribute) — The icon used for branding of the site. By default, this will be the html_logo (or the sphinx-immaterial theme's icon[logo])."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">logo</span></code></a>]. Additionally, the color of the bottom stripe can already be
+controlled via the <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="sphinx_social_cards.validators.Social_Cards.cards_layout_options (Python attribute) — A set (dict) of options that can be accessed via the layout.* jinja context. See cards_layout_options for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_options</span></code></a>[<a class="reference internal" href="index.html#sphinx_social_cards.validators.Cards_Layout_Options.accent" title="sphinx_social_cards.validators.Cards_Layout_Options.accent (Python attribute) — The color used as a foreground accentuating color. By default, this value is set to the palette[accent] color or &quot;#4051B2&quot; for themes other than sphinx-immaterial."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">accent</span></code></a>]. Any further changes would necessitate a
+completely new layout.</p>
+</div>
+<p>Now, we will create our custom layout file in the sphinx project’s source folder (adjacent to the
+conf.py file) - typically in a <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory. Remember to add the directory path of this new
+layout to <a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards" title="sphinx_social_cards.validators.Social_Cards (Python class) — A dict of configurations related to generating social media cards. Each attribute equates to a supported configuration option."><code class="xref any py py-class docutils literal notranslate"><span class="pre">social_cards</span></code></a>[<a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.cards_layout_dir" title="sphinx_social_cards.validators.Social_Cards.cards_layout_dir (Python attribute) — The list of paths (absolute or relative to conf.py) where the cards_layout is located. In the case of similarly named layout files, the order in this list takes precedence."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_dir</span></code></a>] and
+<a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards" title="sphinx_social_cards.validators.Social_Cards (Python class) — A dict of configurations related to generating social media cards. Each attribute equates to a supported configuration option."><code class="xref any py py-class docutils literal notranslate"><span class="pre">social_cards</span></code></a>[<a class="reference internal" href="../config.html#sphinx_social_cards.validators.Social_Cards.cards_layout" title="sphinx_social_cards.validators.Social_Cards.cards_layout (Python attribute) — The layout file's name used to generate the social cards. If using a custom-made layout (not a pre-made layout), then the layout file must be a YAML file. If the the cards_layout_dir is specified, then that path is searched for a matching layout before searching the default path of pre-made layouts."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout</span></code></a>] in the conf.py file. For this example, the new
+layout will be located in <code class="docutils literal notranslate"><span class="pre">docs/social_cards/opengraph-dark.yml</span></code>, so we add:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>conf.py<a class="headerlink" href="#id12" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;site_url&quot;</span><span class="p">:</span> <span class="n">html_base_url</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;a project-wide description&quot;</span><span class="p">,</span>
+<span class="hll">    <span class="s2">&quot;cards_layout_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;social_cards&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="s2">&quot;cards_layout&quot;</span><span class="p">:</span> <span class="s2">&quot;opengraph-dark&quot;</span><span class="p">,</span>
+</span><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<p>In the newly created <code class="docutils literal notranslate"><span class="pre">opengraph-dark.yml</span></code> file, we inherit the <code class="docutils literal notranslate"><span class="pre">opengraph</span></code> layout and make our
+customizations:</p>
+<div class="results docutils container">
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>opengraph-dark.yml<a class="headerlink" href="#id13" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="c1">#% extends &quot;opengraph.yml&quot; %#</span>
+<span class="c1">#% block font_colors %#</span>
+<span class="nt">project_desc_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;project_desc_color</span><span class="w"> </span><span class="s">&#39;rgb(239,</span><span class="nv"> </span><span class="s">240,</span><span class="nv"> </span><span class="s">241)&#39;</span>
+<span class="nt">title_url_color</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;title_url_color</span><span class="w"> </span><span class="s">&#39;rgb(222,</span><span class="nv"> </span><span class="s">230,</span><span class="nv"> </span><span class="s">237)&#39;</span>
+<span class="c1">#% endblock %#</span>
+
+<span class="c1"># We need to keep the same indent as the inherited source,</span>
+<span class="c1"># otherwise the YAML parser may get confused.</span>
+
+<span class="w">  </span><span class="c1">#% block background -%#</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">linear_gradient</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">        </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> x</span><span class="p">:</span><span class="w"> </span><span class="nv">400</span><span class="p p-Indicator">,</span><span class="nt"> y</span><span class="p">:</span><span class="w"> </span><span class="nv">210</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="nt">spread</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reflect</span>
+<span class="w">        </span><span class="nt">colors</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">0.0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rgb(23, 23, 23)</span>
+<span class="w">          </span><span class="nt">0.35</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rgb(18, 18, 18)</span>
+<span class="w">          </span><span class="nt">1.0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rgb(13, 13, 13)</span>
+<span class="w">  </span><span class="c1">#%- endblock %#</span>
+
+<span class="w">    </span><span class="c1">#% block watermark_icon -%#</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sphinx_logo</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rgb(116, 116, 83)</span>
+<span class="w">    </span><span class="c1">#%- endblock %#</span>
+</code></pre></div>
+</div>
+</div>
+<p class="result"><a class="reference external" href="../_images/layers-b85ca6af5465a3bf.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="../_images/layers-b85ca6af5465a3bf.png" /></a></p>
+</div>
+<h3 id="referencing-jinja-contexts">Referencing Jinja Contexts<a class="headerlink" href="#referencing-jinja-contexts" title="Permalink to this heading">¶</a></h3>
+<p>Items of <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja contexts</span></a> can be referenced in the layout as
+<a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#variables" title="(in Jinja v3.2.x)"><span class="xref std std-ref">Jinja variables</span></a>:</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>Getting the page title from the page context.<a class="headerlink" href="#id14" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="annotate highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">page.title</span><span class="nv"> </span><span class="s">}}&#39;</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">undefined</span><span class="nv"> </span><span class="s">}}&#39;</span><span class="w"> </span><span class="c1"># (2)!</span>
+</code></pre></div>
+<ol class="arabic simple">
+<li><p>A YAML string that begins with a letter does not require extra surrounding quotes. Here,
+the single quotes are required for Jinja expressions, but they are removed by Jinja before
+the YAML is parsed.</p></li>
+<li><p>Any reference to an undefined <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja context variable</span></a> is automatically
+converted to the YAML <code class="code highlight yaml docutils literal highlight-yaml"><span class="l l-Scalar l-Scalar-Plain">null</span></code> value. This can be useful for font colors because a
+<code class="code highlight yaml docutils literal highlight-yaml"><span class="l l-Scalar l-Scalar-Plain">null</span></code> value will fallback to using the value of <a class="reference internal" href="index.html#sphinx_social_cards.validators.Cards_Layout_Options.color" title="sphinx_social_cards.validators.Cards_Layout_Options.color (Python attribute) — The color used for the foreground text in most pre-designed layouts. By default, this will be computed as &quot;white&quot; or &quot;black&quot; based on the background_color."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">layout.color</span></code></a>.</p></li>
+</ol>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>Conditionally referencing context string values with a multi-line YAML string.<a class="headerlink" href="#id15" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="annotate highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="w">        </span><span class="no">#% if page.meta.icon %#</span>
+<span class="w">        </span><span class="no">&#39;{{ page.meta.icon }}&#39;</span>
+<span class="w">        </span><span class="no">#% else %#</span>
+<span class="w">        </span><span class="no">&#39;{{ layout.logo.image }}&#39;</span>
+<span class="w">        </span><span class="no">#% endif %#</span>
+</code></pre></div>
+<ol class="arabic simple">
+<li><p>Here <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> signifies that the following indented block is a single string, but line breaks
+are replaced with spaces. With <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;-</span></code> instructs the YAML parser to strip a trailing
+line break from the multi-line string.</p></li>
+</ol>
+</div>
+</div>
+<h4 id="the-yaml-jinja-filter-for-referencing-color-values">The <code class="docutils literal notranslate"><span class="pre">yaml</span></code> Jinja filter (for referencing color values)<a class="headerlink" href="#the-yaml-jinja-filter-for-referencing-color-values" title="Permalink to this heading">¶</a></h4>
+<div class="seealso admonition">
+<p class="admonition-title">Seealso</p>
+<p>Jinja comes with a bunch of documented <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#builtin-filters" title="(in Jinja v3.2.x)"><span class="xref std std-ref">builtin filters</span></a>.
+General usage is briefly described in the <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#filters" title="(in Jinja v3.2.x)"><span class="xref std std-ref">Jinja Filters section</span></a>.</p>
+</div>
+<p>Not all <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja contexts</span></a> hold a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a> value. For example, a color that was
+specified as a gradient will be in the form of a Python <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a>. If you want to support color
+gradients in the layout, then a custom filter (<code class="docutils literal notranslate"><span class="pre">yaml</span></code>) is added to the Jinja environment that
+parses the layout before the YAML parser reads the layout.</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>Referencing a color value from jinja context<a class="headerlink" href="#id16" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="annotate highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">layout.background_color</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">yaml</span><span class="nv"> </span><span class="s">}}&#39;</span><span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<ol class="arabic">
+<li><p>A <a class="reference internal" href="index.html#sphinx_social_cards.validators.Cards_Layout_Options.background_color" title="sphinx_social_cards.validators.Cards_Layout_Options.background_color (Python attribute) — The fallback value used for a layer's background.color attribute in most pre-designed layouts. By default, this value is set to the palette[primary] color or &quot;#4051B2&quot; for themes other than sphinx-immaterial."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">background_color</span></code></a> specified as a
+gradient like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">social_cards</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cards_layout_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="c1"># a linear gradient</span>
+            <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span>
+            <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">630</span><span class="p">},</span>
+            <span class="s2">&quot;preset&quot;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span>  <span class="c1"># aka &quot;PhoenixStart&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<p>will be converted to a proper YAML mapping with the <code class="docutils literal notranslate"><span class="pre">yaml</span></code> filter:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> start</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> x</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nt"> y</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="w"> </span><span class="p p-Indicator">},</span><span class="nt"> end</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> x</span><span class="p">:</span><span class="w"> </span><span class="nv">1200</span><span class="p p-Indicator">,</span><span class="nt"> y</span><span class="p">:</span><span class="w"> </span><span class="nv">630</span><span class="w"> </span><span class="p p-Indicator">},</span><span class="nt"> preset</span><span class="p">:</span><span class="w"> </span><span class="nv">84</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Solid colors do not need the <code class="docutils literal notranslate"><span class="pre">yaml</span></code> filter</p>
+<p>All <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja Contexts</span></a> that define a <a class="reference internal" href="../config.html#solid-color"><span class="std std-ref">solid color</span></a> are
+automatically translated to use the string form, <code class="docutils literal notranslate"><span class="pre">rgb(&lt;red&gt;,</span> <span class="pre">&lt;green&gt;,</span> <span class="pre">&lt;blue&gt;)</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">rgba(&lt;red&gt;,</span> <span class="pre">&lt;green&gt;,</span> <span class="pre">&lt;blue&gt;,</span> <span class="pre">&lt;alpha&gt;)</span></code> if an alpha value/transparency was included).</p>
+<p>Meaning, layout designers do not have to worry about colors specified with a beginning
+<code class="docutils literal notranslate"><span class="pre">#</span></code> which would be interpreted as a YAML comment (eg: <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;#0FF1CE&quot;</span></code> is translated
+to <code class="code highlight yaml docutils literal highlight-yaml"><span class="l l-Scalar l-Scalar-Plain">rgb(15, 241, 206)</span></code>).</p>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Warning</p>
+<p>Do not use a multi-line YAML string to reference colors from <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja contexts</span></a>.
+Doing so will result in a quoted YAML value:</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>Do not do this!<a class="headerlink" href="#id17" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">        </span><span class="no">#% if layout.logo.color %#</span>
+<span class="w">        </span><span class="no">&#39;{{ layout.logo.color | yaml }}&#39;</span>
+<span class="w">        </span><span class="no">#% else %#</span>
+<span class="w">        </span><span class="no">&#39;{{ layout.background_color | yaml }}&#39;</span>
+</code></pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
+</span>Do this instead<a class="headerlink" href="#id18" title="Permalink to this code">¶</a></span></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">background</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="c1">#% if layout.logo.color %#&#39;{{ layout.logo.color | yaml }}&#39;#% else %#&#39;{{ layout.background_color | yaml }}&#39;</span>
 </code></pre></div>
 </div>
 </div>
@@ -1350,44 +1752,6 @@ value.</p>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> whose items correspond to <a class="reference internal" href="../plugins/index.html"><span class="doc">compatible plugins</span></a>‘ contexts.</p>
 </dd></dl>
 
-<h3 id="referencing-jinja-contexts">Referencing Jinja Contexts<a class="headerlink" href="#referencing-jinja-contexts" title="Permalink to this heading">¶</a></h3>
-<p>Items of <a class="reference internal" href="#jinja-ctx"><span class="std std-ref">Jinja contexts</span></a> can be referenced in the layout as <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/templates/#variables">Jinja variables</a>:</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Getting the page title from the page context.<a class="headerlink" href="#id5" title="Permalink to this code">¶</a></span></div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">page.title</span><span class="nv"> </span><span class="s">}}&#39;</span>
-</code></pre></div>
-</div>
-</div>
-<p>Jinja syntax uses <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code> which have a reserved meaning in YAML syntax.
-For this reason, it is important to surround single-line YAML strings with quotes
-when the string value begins with <a class="reference external" href="https://jinja.palletsprojects.com/en/latest/templates/#template-designer-documentation">Jinja syntax</a>. This way the syntax conventions
-for jinja and YAML are simultaneously respected.</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
-</span>Surrounding quotes are not required for multi-line YAML strings.<a class="headerlink" href="#id6" title="Permalink to this code">¶</a></span></div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">icon</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="w">        </span><span class="no">{% if page.meta.icon %}</span>
-<span class="w">        </span><span class="no">{{ page.meta.icon }}</span>
-<span class="w">        </span><span class="no">{% else %}</span>
-<span class="w">        </span><span class="no">{{ layout.logo.image }}</span>
-<span class="w">        </span><span class="no">{% endif %}</span>
-</code></pre></div>
-</div>
-</div>
-<details class="hint admonition">
-<summary class="admonition-title">Escaping Jinja References</summary><p>Use <code class="code highlight jinja docutils literal highlight-jinja"><span class="cp">{{</span> <span class="s1">&#39;{{&#39;</span> <span class="cp">}}</span></code> to escape a Jinja reference.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">layers</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">typography</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">&#39;{{&#39;</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">page.title</span><span class="nv"> </span><span class="s">}}&quot;</span>
-<span class="w">      </span><span class="c1"># renders as: &quot;{{ page.title }}&quot;</span>
-</code></pre></div>
-</div>
-</details>
 
 
 
@@ -1462,7 +1826,7 @@ for jinja and YAML are simultaneously respected.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.1.0.
+    7.1.1.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

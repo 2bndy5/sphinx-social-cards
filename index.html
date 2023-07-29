@@ -59,9 +59,9 @@
       
         <meta  name="twitter:description"  content="Generate social media cards for documentation pages with Sphinx" >
       
-        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/index-53981ecd208c725b.png" >
+        <meta  property="og:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/index-476430c6f45f9ddf.png" >
       
-        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/index-53981ecd208c725b.png" >
+        <meta  name="twitter:image"  content="https://2bndy5.github.io/sphinx-social-cards/_static/social_cards/index-476430c6f45f9ddf.png" >
       
         <meta  description="Generate social media cards for documentation pages with Sphinx" >
       
@@ -412,6 +412,21 @@
 
             
           
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="layouts/gradients/index.html" class="md-nav__link">
+        <span class="md-ellipsis">Gradient Colors</span>
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -557,7 +572,7 @@
 <h1 id="module-sphinx_social_cards"><span id="social-cards"></span>Social Cards<a class="headerlink" href="#module-sphinx_social_cards" title="Permalink to this heading">¶</a></h1>
 <p>This extension enables the generation and embedding of social media cards (AKA “social
 media previews”).</p>
-<a class="reference external image-reference" href="_images/index-53981ecd208c725b.png"><img alt="_images/index-53981ecd208c725b.png" src="_images/index-53981ecd208c725b.png" /></a>
+<a class="reference external image-reference" href="_images/index-476430c6f45f9ddf.png"><img alt="_images/index-476430c6f45f9ddf.png" src="_images/index-476430c6f45f9ddf.png" /></a>
 <div class="note admonition">
 <p class="admonition-title">Note</p>
 <p>This extension is heavily influenced by the <a class="reference external" href="https://squidfunk.github.io/mkdocs-material/setup/setting-up-social-cards">mkdocs-material theme’s builtin social
@@ -567,27 +582,9 @@ extension are not supported in the mkdocs-material implementation and vice versa
 </div>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
 <p>The following dependencies are required:</p>
-<ul>
+<ul class="simple">
 <li><p><a class="reference external" href="https://pillow.readthedocs.io/en/stable/index.html">pillow (v10+)</a></p></li>
-<li><p><a class="reference external" href="https://imagemagick.org/script/download.php">ImageMagick</a> for converting SVG images
-into a PNG that <code class="docutils literal notranslate"><span class="pre">pillow</span></code> can use.</p>
-<div class="important admonition">
-<p class="admonition-title">Inkscape may be required for certain SVG files</p>
-<p>Internally, ImageMagick prefers to delegate SVG handling to <a class="reference external" href="https://inkscape.org/download">Inkscape</a>. Thus, installing Inkscape may be required to
-properly convert SVG files. Without Inkscape installed, ImageMagick will use its
-own internal SVG handling, but this is known to produce erroneous output for some
-SVG images.</p>
-<p>For example, the <a class="reference external" href="https://tabler-icons.io/">tabler icon set</a> is known to require
-Inkscape installed. Otherwise, the tabler SVG files will render as a blank image.</p>
-</div>
-<div class="tip success admonition">
-<p class="admonition-title">Tip</p>
-<p>ImageMagick v6 and v7 are explicitly supported at this time. It is also possible
-to specify which installation of ImageMagick to use by setting an environment
-variable <code class="docutils literal notranslate"><span class="pre">MAGICK_HOME</span></code> with the path to the directory containing the ImageMagick
-binaries.</p>
-</div>
-</li>
+<li><p><a class="reference external" href="https://doc.qt.io/qtforpython-6/quickstart.html">PySide6</a></p></li>
 </ul>
 <h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permalink to this heading">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -665,7 +662,7 @@ between documentation projects.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.1.0.
+    7.1.1.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
