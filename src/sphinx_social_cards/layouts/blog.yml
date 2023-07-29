@@ -1,5 +1,6 @@
-
-meta_color: &meta_color "#666666"
+#% block metadata_color %#
+meta_color: &meta_color 'rgb(102, 102, 102)'
+#% endblock %#
 icon_size: &icon_size
   size:
     width: 40
@@ -11,7 +12,7 @@ meta_info_size: &meta_info_size
 meta_info_lines: &meta_info_lines
   line:
     amount: 3
-    height: 1.15
+    height: 1.1
 avatar_size: &avatar_size
   size:
     width: 120
@@ -20,17 +21,23 @@ avatar_size: &avatar_size
 size: { width: 1200, height: 630 }
 layers:
   #  the layer for the background
-  - background: { color: white }
+  #% block background -%#
+  - background:
+      conical_gradient:
+        preset: AboveTheSky
+        center: { x: 600, y: 630 }
+        angle: -90
+  #%- endblock %#
   #  the layer for the bottom bar
   - size: { width: 1200, height: 30 }
     offset: { x: 0, y: 600 }
     background:
-      color: '{{ layout.accent }}'
+      color: '{{ layout.accent | yaml }}'
   #  the layer for the title's left border
   - size: { width: 40, height: 360 }
     offset: { x: 40, y: 40 }
     rectangle:
-      color: '{{ layout.accent }}'
+      color: '{{ layout.accent | yaml }}'
       radius: 19
       corners: ["top left", "bottom left"]
     mask:
@@ -41,12 +48,12 @@ layers:
     offset: { x: 80, y: 40 }
     typography:
       color: black
-      content: >
-        {% if page.meta.title %}
-        {{ page.meta.title }}
-        {% elif page.title %}
-        {{ page.title }}
-        {% endif %}
+      content: >-
+        #% if page.meta.title -%#
+        '{{ page.meta.title }}'
+        #%- elif page.title -%#
+        '{{ page.title }}'
+        #%- endif %#
       line:
         amount: 3
       font:
@@ -56,20 +63,20 @@ layers:
   - offset: { x: 80, y: 350 }
     <<: *icon_size
     icon:
-      image: >
-        {% if page.meta.tags %}
+      image: >-
+        #% if page.meta.tags -%#
         fontawesome/solid/tags
-        {% endif %}
+        #%- endif %#
       color: *meta_color
   # the layer for the list of hashtags
   - size: { width: 1030, height: 40 }
     offset: { x: 130, y: 350 }
     typography:
       color: *meta_color
-      content: >
-        {% if page.meta.tags %}
-        #{{ page.meta.tags.split(', ') | join(', #') }}
-        {% endif %}
+      content: >-
+        #% if page.meta.tags -%#
+        #'{{ page.meta.tags.split(', ') | join(', #') }}'
+        #%- endif %#
       line:
         amount: 1
         height: 0.9
@@ -78,73 +85,73 @@ layers:
   - offset: { x: 40, y: 450 }
     <<: *icon_size
     icon:
-      image: >
-        {% if page.meta['read-time'] %}
+      image: >-
+        #% if page.meta['read-time'] -%#
         fontawesome/solid/stopwatch
-        {% endif %}
+        #%- endif %#
       color: *meta_color
   # the layer for the read-time
   - offset: { x: 90, y: 450 }
     <<: *meta_info_size
     typography:
       color: *meta_color
-      content: >
-        {% if page.meta['read-time'] %}
-        {{ page.meta['read-time'] }}
-        {% endif %}
+      content: >-
+        #% if page.meta['read-time'] -%#
+        '{{ page.meta['read-time'] }}'
+        #%- endif %#
       <<: *meta_info_lines
   # the layer for the date's icon
   - offset: { x: 260, y: 450 }
     <<: *icon_size
     icon:
-      image: >
-        {% if page.meta.date or config.today %}
+      image: >-
+        #% if page.meta.date or config.today -%#
         fontawesome/solid/calendar
-        {% endif %}
+        #%- endif %#
       color: *meta_color
   # the layer for the date
   - offset: { x: 310, y: 450 }
     <<: *meta_info_size
     typography:
       color: *meta_color
-      content: >
-        {% if page.meta.date %}
-        {{ page.meta.date }}
-        {% elif config.today %}
-        {{ config.today }}
-        {% endif %}
+      content: >-
+        #% if page.meta.date -%#
+        '{{ page.meta.date }}'
+        #%- elif config.today -%#
+        '{{ config.today }}'
+        #%- endif %#
       <<: *meta_info_lines
   # the layer for the language icon
   - offset: { x: 480, y: 450 }
     <<: *icon_size
     icon:
-      image: >
-        {% if page.meta.language or config.language %}
+      image: >-
+        #% if page.meta.language or config.language -%#
         fontawesome/solid/language
-        {% endif %}
+        #%- endif %#
       color: *meta_color
   # the layer for the language
   - offset: { x: 530, y: 450 }
     <<: *meta_info_size
     typography:
       color: *meta_color
-      content: >
-        {% if page.meta.language %}
-        {{ page.meta.language | title }}
-        {% elif config.language %}
-        {{ config.language | title }}
-        {% endif %}
+      content: >-
+        #% if page.meta.language -%#
+        '{{ page.meta.language | title }}'
+        #%- elif config.language -%#
+        '{{ config.language | title }}'
+        #%- endif %#
       <<: *meta_info_lines
   # the layer for the author's name
   - offset: { x: 700, y: 450 }
     size: { width: 330, height: 120 }
     typography:
-      content: >
-        {% if page.meta.author %}
-        {{ page.meta.author }}
-        {% elif config.author %}
-        {{ config.author }}
-        {% endif %}
+      content: >-
+        #% if page.meta.author -%#
+        '{{ page.meta.author }}'
+        #%- elif config.author -%#
+        '{{ config.author }}'
+        #%- endif %#
       line:
         amount: 2
         height: 1.1
@@ -157,10 +164,10 @@ layers:
   - offset: { x: 1047, y: 457 }
     size: { width: 106, height: 106 }
     background:
-      image: >
-        {% if page.meta.avatar %}
-        {{ page.meta.avatar }}
-        {% endif %}
+      image: >-
+        #% if page.meta.avatar -%#
+        '{{ page.meta.avatar }}'
+        #%- endif %#
     mask:
       ellipse:
         color: black
@@ -171,7 +178,4 @@ layers:
     ellipse:
       border:
         width: 8
-        color: >
-          {% if page.meta.avatar %}
-          {{ layout.accent }}
-          {% endif %}
+        color: #% if page.meta.avatar %#'{{ layout.accent | yaml }}'#% else %#null#% endif %#

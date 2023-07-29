@@ -1,6 +1,7 @@
-sphinx
 pydantic>=2.0
+pydantic-extra-types
+PySide6
 pyyaml
-pillow>=10.0.0
 requests
+sphinx
 typing_extensions

@@ -2,9 +2,9 @@
 import json
 from urllib.parse import quote
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, NamedTuple
 
-from PIL import features
+from PySide6.QtGui import QGuiApplication
 from sphinx.util.logging import getLogger
 from .validators import try_request
 from .validators.layers import Font
@@ -12,9 +12,20 @@ from .validators.layers import Font
 _FONT_SOURCE_API = "https://api.fontsource.org/"
 LOGGER = getLogger(__name__)
 
+# to use fonts, we must instantiate a QGuiApplication obj to initialize the
+# font-hinting fallbacks.
+# NOTE: this package comes with its own cache of fonts, but they are not
+# expected to be installed on the system.
+if not QGuiApplication.instance():
+    Q_APP = QGuiApplication()
 
-if not features.check_module("freetype2"):  # pragma: no cover
-    raise OSError("pillow installation does not support ttf fonts on this system.")
+
+class QtAppFontInfo(NamedTuple):
+    """A collection of needed info for getting a font loaded into the QFontDatabase"""
+
+    id: int
+    family: str
+    style: str
 
 
 class FontSourceManager:

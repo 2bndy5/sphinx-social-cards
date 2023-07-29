@@ -26,7 +26,7 @@ Layer Typography Attribute
                 color: '#00000000' # a transparent color
                 align: center
                 border:
-                    width: 3
+                    width: 2
                     color: white
 
 Typography Line specification

@@ -6,6 +6,7 @@ import time
 
 import docutils.nodes
 from importlib.metadata import metadata as get_metadata
+from PySide6.QtGui import QGradient
 import sphinx
 import sphinx.addnodes
 from sphinx.application import Sphinx
@@ -107,7 +108,8 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "sphinx_doc": ("https://www.sphinx-doc.org/en/master", None),
     "sphinx_immaterial": ("https://sphinx-immaterial.readthedocs.io/en/latest", None),
-    # "jinja_docs": ("https://jinja.palletsprojects.com/en/latest", None),
+    "jinja_doc": ("https://jinja.palletsprojects.com/en/latest", None),
+    # "qt4py": ("https://doc.qt.io/qtforpython-6/", None),
 }
 
 # -- Options for extlinks ----------------------------------------------------
@@ -263,9 +265,8 @@ rst_prolog = """
    :class: highlight
 
 .. _sphinx-immaterial: https://jbms.github.io/sphinx-immaterial
-.. _pillow's supported color input: https://pillow.readthedocs.io/en/stable/reference/ImageColor.html#color-names
 .. _Fontsource: https://fontsource.org/
-.. _Jinja syntax: https://jinja.palletsprojects.com/en/latest/templates/#template-designer-documentation
+.. |Jinja syntax| replace:: :external:doc:`Jinja syntax <templates>`
 """
 
 pkg_root = Path(__file__).parent.parent / "src" / "sphinx_social_cards"
@@ -292,6 +293,11 @@ else:
 jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
+    "gradient_presets": {
+        "presets": {
+            p.value: p.name for p in list(QGradient.Preset) if p.name != "NumPresets"
+        }
+    },
 }
 
 

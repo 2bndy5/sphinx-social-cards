@@ -61,7 +61,8 @@ plugins = ["pydantic.mypy"]
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
-addopts = "--durations=0 --durations-min=1 -rs"
+xfail_strict = true
+addopts = "--durations=0 --durations-min=1 -rs --last-failed"
 
 [tool.coverage.run]
 source = ["src/sphinx_social_cards"]

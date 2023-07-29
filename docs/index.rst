@@ -18,6 +18,7 @@
     layouts/typography
     layouts/mask
     layouts/shapes/index
+    layouts/gradients/index
 
 .. toctree::
     :hidden:

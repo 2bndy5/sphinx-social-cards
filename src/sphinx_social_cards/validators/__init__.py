@@ -1,20 +1,19 @@
 """This module contains validating dataclasses for the configurations in python"""
 from pathlib import Path
-from typing import Union, List, Optional, Tuple, cast, Dict, Set
+from typing import Union, List, Optional, cast, Dict, Set
 
-from PIL import ImageColor
-import pydantic
+from pydantic import field_validator, PrivateAttr
+from pydantic_extra_types.color import Color
 import requests
 from sphinx.config import Config
 from sphinx.util import isurl
 from sphinx.util.logging import getLogger
-from typing_extensions import Annotated
 
-from .base_model import CustomBaseModel
+from .common import CustomBaseModel, PathType
 from .layers import Icon, Font
 from .layout import Layout
 from .contexts import Cards_Layout_Options
-from ..colors import MD_COLORS, auto_get_fg_color
+from ..colors import auto_get_fg_color, MD_COLORS
 
 LOGGER = getLogger(__name__)
 REQUEST_TIMEOUT = (5, 5)
@@ -25,24 +24,6 @@ def try_request(url, timeout=REQUEST_TIMEOUT, **kwargs) -> requests.Response:
     if response.status_code != 200:
         raise RuntimeError(f"requested {url} returned {response.status_code}")
     return response
-
-
-def _validate_color(value: Optional[str]) -> Tuple[Optional[str], bool]:
-    if value is None:
-        return None, False
-    if value in MD_COLORS:
-        return value, True
-    try:
-        ImageColor.getrgb(value)
-        return value, True
-    except ValueError:
-        # maybe its supposed to be a jinja context value
-        return value, False
-
-
-def assert_path_exists(prospect: Path):
-    if not prospect.exists():
-        raise FileNotFoundError(f"{prospect} does not exist")
 
 
 class Debug(CustomBaseModel):
@@ -64,8 +45,9 @@ class Debug(CustomBaseModel):
 
     #: If set to :python:`True`, then debugging outlines and labels are drawn.
     enable: bool = False
-    #: If set to :python:`True` (and `enable`\ d), then a grid of dots are drawn.
     grid: bool = True
+    """If set to :python:`True` (the default) and `enable`\ d, then a grid of dots are
+    drawn."""
     grid_step: int = 30
     """If `grid` is enabled, then this `int` specifies the distance (in pixels) between
     each dot in the grid. Defaults to :python:`30`.
@@ -73,31 +55,13 @@ class Debug(CustomBaseModel):
     .. social-card:: {"debug": {"enable": true, "grid_step": 15}}
         :dry-run:
     """
-    color: str = "grey"
+    color: Color = Color("grey")
     """The color used to draw the debugging outlines, labels, and grid. The color for
     the debugging text is automatically set based on this color value.
 
     .. social-card:: {"debug": {"enable": true, "color": "black"}}
         :dry-run:
     """
-
-    @pydantic.field_validator("color")
-    def validate_color(cls, val):
-        color, _ = _validate_color(val)
-        return color
-
-
-def _validate_path(val: Union[str, Path]) -> str:
-    val = Path(val)
-    if val.is_absolute():
-        assert_path_exists(val)
-    # relative paths must be resolved at runtime depending on conf.py location
-    return str(val)
-
-
-PathType = Annotated[
-    Union[str, Path], pydantic.functional_validators.AfterValidator(_validate_path)
-]
 
 
 class Social_Cards(CustomBaseModel):
@@ -237,7 +201,7 @@ class Social_Cards(CustomBaseModel):
     debug: Union[Debug, bool] = Debug()
     """A field to specify layout debugging helpers. See `Debugging Layouts`_ for more
     detail."""
-    _parsed_layout: Layout = pydantic.PrivateAttr(default=Layout())
+    _parsed_layout: Layout = PrivateAttr(default=Layout())
     path: str = "_static/social_cards"
     """This option specifies where the generated social card images will be written to.
     It's normally not necessary to change this option. Defaults to the documentation's
@@ -263,7 +227,7 @@ class Social_Cards(CustomBaseModel):
             !docs/social_cards_cache/fonts/*
     """
 
-    @pydantic.field_validator("debug")
+    @field_validator("debug")
     def validate_debug(cls, val: Union[bool, Debug]) -> Debug:
         if isinstance(val, bool):
             return Debug(enable=val)
@@ -340,35 +304,30 @@ class Social_Cards(CustomBaseModel):
     def _set_default_colors(self, theme_options: dict):
         color = self.cards_layout_options.background_color
         accent = self.cards_layout_options.accent
-        if color is None or accent is None:
+        if any([color is None, accent is None]):
             # try getting primary color from sphinx-immaterial theme's config
             palette = cast(
                 Union[List[Dict[str, str]], Dict[str, str]],
                 theme_options.get("palette"),
             )
             if isinstance(palette, list):  # using light/dark mode toggle
-                color = color or palette[0].get("primary", "indigo")
-                accent = accent or palette[0].get("accent", "#4EC5F1")
+                color = color or MD_COLORS.get(palette[0].get("primary", "indigo"))
+                accent = accent or MD_COLORS.get(palette[0].get("accent", "indigo"))
             elif isinstance(palette, dict):  # using a single palette
-                color = color or palette.get("primary", "indigo")
-                accent = accent or palette.get("accent", "#4EC5F1")
+                color = color or MD_COLORS.get(palette.get("primary", "indigo"))
+                accent = accent or MD_COLORS.get(palette.get("accent", "indigo"))
             else:  # using a sane default (for other themes)
-                color, accent = (color or "indigo", accent or "#4EC5F1")
+                color, accent = (color or "indigo", accent or "indigo")
         assert color is not None and accent is not None
         if self.cards_layout_options.background_color is None:
-            self.cards_layout_options.background_color = (
-                color if color not in MD_COLORS else MD_COLORS[color].fill
-            )
+            self.cards_layout_options.background_color = color
         if self.cards_layout_options.accent is None:
-            self.cards_layout_options.accent = (
-                accent if accent not in MD_COLORS else MD_COLORS[accent].fill
-            )
+            self.cards_layout_options.accent = accent
         if self.cards_layout_options.color is None:
             # compute fallback based on bg color
-            if color in MD_COLORS:
-                self.cards_layout_options.color = MD_COLORS[color].text
-            else:
-                self.cards_layout_options.color = auto_get_fg_color(color)
+            self.cards_layout_options.color = auto_get_fg_color(
+                self.cards_layout_options.background_color
+            )
 
     def _set_default_font(self, theme_options: dict):
         if self.cards_layout_options.font is not None:
