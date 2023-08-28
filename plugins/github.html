@@ -1425,25 +1425,25 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
   </a>
 
-<h1 id="module-sphinx_social_cards.plugins.github"><span id="sphinx-social-cards-plugins-github"></span><code class="docutils literal notranslate"><span class="pre">sphinx_social_cards.plugins.github</span></code><a class="headerlink" href="#module-sphinx_social_cards.plugins.github" title="Permalink to this heading">¶</a></h1>
+<h1 id="module-sphinx_social_cards.plugins.github"><span id="sphinx-social-cards-plugins-github"></span><code class="docutils literal notranslate"><span class="pre">sphinx_social_cards.plugins.github</span></code><a class="headerlink" href="#module-sphinx_social_cards.plugins.github" title="Link to this heading">¶</a></h1>
 <p>This plugin demonstrates how to add custom context and layouts. The purpose here is
 to get information from GitHub (eg stars, forks, etc) and use it in a
 new pre-designed layout.</p>
-<h2 id="enabling">Enabling<a class="headerlink" href="#enabling" title="Permalink to this heading">¶</a></h2>
-<p>To enable this plugin, add it to your list of sphinx <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions" title="(in Sphinx v7.2.0)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">extensions</span></code></a> in conf.py:</p>
+<h2 id="enabling">Enabling<a class="headerlink" href="#enabling" title="Link to this heading">¶</a></h2>
+<p>To enable this plugin, add it to your list of sphinx <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions" title="(in Sphinx v7.2.5)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">extensions</span></code></a> in conf.py:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;sphinx_social_cards&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sphinx_social_cards.plugins.github&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 </div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
 <p>This extension uses <a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#confval-html_theme_options" title="(in Sphinx-Immaterial)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">html_theme_options</span></code></a>[<a class="reference external" href="https://sphinx-immaterial.readthedocs.io/en/latest/customization.html#themeconf-repo_url" title="(in Sphinx-Immaterial)"><code class="xref std std-themeconf docutils literal notranslate"><span class="pre">repo_url</span></code></a>] from
 <a class="reference external" href="https://jbms.github.io/sphinx-immaterial">sphinx-immaterial</a> configuration value or its own <a class="reference internal" href="#confval-repo_url" title="repo_url (configuration value) — The repository's required identifying information (owner and repo) can also be parsed from the site_url if it uses a standard GitHub Pages address (https://&lt;owner&gt;.github.io/&lt;repo&gt;)."><code class="xref std std-confval docutils literal notranslate"><span class="pre">repo_url</span></code></a> configuration
 value to set the repository URL.</p>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-repo_url">
-<span class="sig-name descname"><span class="pre">repo_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;&#39;</span></code><a class="headerlink" href="#confval-repo_url" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">repo_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;&#39;</span></code><a class="headerlink" href="#confval-repo_url" title="Link to this definition">¶</a></dt>
 <dd><div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
 </span>conf.py<a class="headerlink" href="#id1" title="Permalink to this code">¶</a></span></div>
@@ -1464,7 +1464,7 @@ variable <code class="docutils literal notranslate"><span class="pre">GITHUB_RES
 useful when fetching information about private repositories or to avoid the REST API
 rate limit.</p>
 </div>
-<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h2>
 <p>To cache the owner/repository information, the <a class="reference external" href="https://github.com/ActiveState/appdirs">appdirs</a> dependency is needed. This
 can either be install directly:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>appdirs
@@ -1514,7 +1514,7 @@ OS used:</p>
 </div>
 </div>
 </details>
-<h2 id="added-layouts">Added Layouts<a class="headerlink" href="#added-layouts" title="Permalink to this heading">¶</a></h2>
+<h2 id="added-layouts">Added Layouts<a class="headerlink" href="#added-layouts" title="Link to this heading">¶</a></h2>
 <p>These are examples of the layouts added:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2">
 <input checked type="radio" id="__tabbed_1_1" name="__tabbed_1"><input type="radio" id="__tabbed_1_2" name="__tabbed_1"><div class="tabbed-labels docutils container">
@@ -1529,89 +1529,89 @@ github/default-dark</label></div>
 <a class="reference external image-reference" href="../_images/github-fe58d42dd91dddd5.png"><img alt="../_images/github-fe58d42dd91dddd5.png" src="../_images/github-fe58d42dd91dddd5.png" /></a>
 </div>
 </div>
-</div><h2 id="added-context">Added Context<a class="headerlink" href="#added-context" title="Permalink to this heading">¶</a></h2>
+</div><h2 id="added-context">Added Context<a class="headerlink" href="#added-context" title="Link to this heading">¶</a></h2>
 <p>This plugin adds the following members to the <code class="docutils literal notranslate"><span class="pre">plugin.*</span></code> <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a>:</p>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Github">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Github</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Github</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> that can be accessed via <code class="docutils literal notranslate"><span class="pre">plugin.vcs.github</span></code> <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a></p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Github.owner">
-<span class="sig-name descname"><span class="pre">owner</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Owner" title="sphinx_social_cards.plugins.github.context.Owner (Python class) — added-ctx plugin.vcs.github.owner jinja context"><span class="pre">Owner</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github.owner" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">owner</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Owner" title="sphinx_social_cards.plugins.github.context.Owner (Python class) — added-ctx plugin.vcs.github.owner jinja context"><span class="pre">Owner</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github.owner" title="Link to this definition">¶</a></dt>
 <dd><p>The github account <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Owner" title="sphinx_social_cards.plugins.github.context.Owner (Python class) — added-ctx plugin.vcs.github.owner jinja context"><code class="xref any py py-class docutils literal notranslate"><span class="pre">owner</span></code></a> information.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Github.repo">
-<span class="sig-name descname"><span class="pre">repo</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Repo" title="sphinx_social_cards.plugins.github.context.Repo (Python class) — added-ctx plugin.vcs.github.repo jinja context"><span class="pre">Repo</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github.repo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">repo</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Repo" title="sphinx_social_cards.plugins.github.context.Repo (Python class) — added-ctx plugin.vcs.github.repo jinja context"><span class="pre">Repo</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Github.repo" title="Link to this definition">¶</a></dt>
 <dd><p>The github account <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Repo" title="sphinx_social_cards.plugins.github.context.Repo (Python class) — added-ctx plugin.vcs.github.repo jinja context"><code class="xref any py py-class docutils literal notranslate"><span class="pre">repo</span></code></a> information.</p>
 </dd></dl>
 
 </dd></dl>
 
-<h3 id="repo-sub-context"><code class="docutils literal notranslate"><span class="pre">repo</span></code> Sub-Context<a class="headerlink" href="#repo-sub-context" title="Permalink to this heading">¶</a></h3>
+<h3 id="repo-sub-context"><code class="docutils literal notranslate"><span class="pre">repo</span></code> Sub-Context<a class="headerlink" href="#repo-sub-context" title="Link to this heading">¶</a></h3>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Repo</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Repo</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> that can be accessed via <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Github.repo" title="sphinx_social_cards.plugins.github.context.Github.repo (Python attribute) — The github account repo information."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">plugin.vcs.github.repo</span></code></a>
 <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a></p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.stars">
-<span class="sig-name descname"><span class="pre">stars</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.stars" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stars</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.stars" title="Link to this definition">¶</a></dt>
 <dd><p>The number of repository stars.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.watchers">
-<span class="sig-name descname"><span class="pre">watchers</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.watchers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">watchers</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.watchers" title="Link to this definition">¶</a></dt>
 <dd><p>The number of repository watchers.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.forks">
-<span class="sig-name descname"><span class="pre">forks</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.forks" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forks</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.forks" title="Link to this definition">¶</a></dt>
 <dd><p>The number of repository forks.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.license">
-<span class="sig-name descname"><span class="pre">license</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.license" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">license</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.license" title="Link to this definition">¶</a></dt>
 <dd><p>The name of the license(s).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.open_issues">
-<span class="sig-name descname"><span class="pre">open_issues</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.open_issues" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">open_issues</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.open_issues" title="Link to this definition">¶</a></dt>
 <dd><p>The number of open repository issues.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.topics">
-<span class="sig-name descname"><span class="pre">topics</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.topics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">topics</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.topics" title="Link to this definition">¶</a></dt>
 <dd><p>The <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a> of search topics designated for the repository.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.name">
-<span class="sig-name descname"><span class="pre">name</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.name" title="Link to this definition">¶</a></dt>
 <dd><p>The name of the repository.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.description">
-<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.description" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.description" title="Link to this definition">¶</a></dt>
 <dd><p>The repository description.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.language">
-<span class="sig-name descname"><span class="pre">language</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.language" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">language</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.language" title="Link to this definition">¶</a></dt>
 <dd><p>The primarily used program language in the repository.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.languages">
-<span class="sig-name descname"><span class="pre">languages</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.languages" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">languages</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.languages" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> of the used program languages in the repository. Each key is a
 language’s name (eg. “Python”), and each value is the corresponding language’s
 percent used (eg “97.8”).</p>
@@ -1619,155 +1619,155 @@ percent used (eg “97.8”).</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.homepage">
-<span class="sig-name descname"><span class="pre">homepage</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.homepage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">homepage</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.homepage" title="Link to this definition">¶</a></dt>
 <dd><p>The repository’s designated outreach website (with protocols like <code class="docutils literal notranslate"><span class="pre">https://</span></code> stripped).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.html_url">
-<span class="sig-name descname"><span class="pre">html_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.html_url" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">html_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.html_url" title="Link to this definition">¶</a></dt>
 <dd><p>The repository GitHub.com URI (with protocols like <code class="docutils literal notranslate"><span class="pre">https://</span></code> stripped).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.tags">
-<span class="sig-name descname"><span class="pre">tags</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.tags" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.tags" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>  of the repository’s tags (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a>). These values seem to be
 ordered in recent descending to oldest tagged commits.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Repo.contributors">
-<span class="sig-name descname"><span class="pre">contributors</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Contributor" title="sphinx_social_cards.plugins.github.context.Contributor (Python class) — added-ctx each item listed in the plugin.vcs.github.repo.contributors jinja context"><span class="pre">Contributor</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.contributors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">contributors</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Contributor" title="sphinx_social_cards.plugins.github.context.Contributor (Python class) — added-ctx each item listed in the plugin.vcs.github.repo.contributors jinja context"><span class="pre">Contributor</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Repo.contributors" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>  of the repository’s <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Contributor" title="sphinx_social_cards.plugins.github.context.Contributor (Python class) — added-ctx each item listed in the plugin.vcs.github.repo.contributors jinja context"><code class="xref any py py-class docutils literal notranslate"><span class="pre">contributor</span></code></a>s.</p>
 </dd></dl>
 
 </dd></dl>
 
-<h3 id="owner-sub-context"><code class="docutils literal notranslate"><span class="pre">owner</span></code> Sub-Context<a class="headerlink" href="#owner-sub-context" title="Permalink to this heading">¶</a></h3>
+<h3 id="owner-sub-context"><code class="docutils literal notranslate"><span class="pre">owner</span></code> Sub-Context<a class="headerlink" href="#owner-sub-context" title="Link to this heading">¶</a></h3>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Owner</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Owner</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> that can be accessed via <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Github.owner" title="sphinx_social_cards.plugins.github.context.Github.owner (Python attribute) — The github account owner information."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">plugin.vcs.github.owner</span></code></a>
 <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a></p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.login">
-<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.login" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.login" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s name.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.avatar">
-<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.avatar" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.avatar" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s avatar image’s URL.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.type">
-<span class="sig-name descname"><span class="pre">type</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.type" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.type" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s type (eg “User” or “Organization”).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.name">
-<span class="sig-name descname"><span class="pre">name</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.name" title="Link to this definition">¶</a></dt>
 <dd><p>The account user’s human name.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.followers">
-<span class="sig-name descname"><span class="pre">followers</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.followers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">followers</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.followers" title="Link to this definition">¶</a></dt>
 <dd><p>The number of users that the account is following.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.following">
-<span class="sig-name descname"><span class="pre">following</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.following" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">following</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.following" title="Link to this definition">¶</a></dt>
 <dd><p>The number of users that are following the account.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.bio">
-<span class="sig-name descname"><span class="pre">bio</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.bio" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">bio</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.bio" title="Link to this definition">¶</a></dt>
 <dd><p>The account profile’s brief description.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.blog">
-<span class="sig-name descname"><span class="pre">blog</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.blog" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">blog</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.blog" title="Link to this definition">¶</a></dt>
 <dd><p>A link to a blog site.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.hirable">
-<span class="sig-name descname"><span class="pre">hirable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.hirable" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hirable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.hirable" title="Link to this definition">¶</a></dt>
 <dd><p>A flag indicating the user is available for employment.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.email">
-<span class="sig-name descname"><span class="pre">email</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.email" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">email</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.email" title="Link to this definition">¶</a></dt>
 <dd><p>The publicly available email (if any).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.location">
-<span class="sig-name descname"><span class="pre">location</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.location" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">location</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.location" title="Link to this definition">¶</a></dt>
 <dd><p>The account profile’s location.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.public_repos">
-<span class="sig-name descname"><span class="pre">public_repos</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.public_repos" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">public_repos</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.public_repos" title="Link to this definition">¶</a></dt>
 <dd><p>The number of public repositories for the account.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.public_gists">
-<span class="sig-name descname"><span class="pre">public_gists</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.public_gists" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">public_gists</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.public_gists" title="Link to this definition">¶</a></dt>
 <dd><p>The number of public gists for the account.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.twitter_username">
-<span class="sig-name descname"><span class="pre">twitter_username</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.twitter_username" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">twitter_username</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.twitter_username" title="Link to this definition">¶</a></dt>
 <dd><p>The account user’s twitter username.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.html_url">
-<span class="sig-name descname"><span class="pre">html_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.html_url" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">html_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.html_url" title="Link to this definition">¶</a></dt>
 <dd><p>The URI to the GitHub.com site (with protocols like <code class="docutils literal notranslate"><span class="pre">https://</span></code> stripped).</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Owner.organizations">
-<span class="sig-name descname"><span class="pre">organizations</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Organization" title="sphinx_social_cards.plugins.github.context.Organization (Python class) — added-ctx each item listed in the plugin.vcs.github.owner.organizations jinja context"><span class="pre">Organization</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.organizations" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">organizations</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Organization" title="sphinx_social_cards.plugins.github.context.Organization (Python class) — added-ctx each item listed in the plugin.vcs.github.owner.organizations jinja context"><span class="pre">Organization</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Owner.organizations" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>  of the <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Organization" title="sphinx_social_cards.plugins.github.context.Organization (Python class) — added-ctx each item listed in the plugin.vcs.github.owner.organizations jinja context"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Organization</span></code></a>s to which the account belongs.</p>
 </dd></dl>
 
 </dd></dl>
 
-<h3 id="user-list-sub-contexts">User List Sub-Contexts<a class="headerlink" href="#user-list-sub-contexts" title="Permalink to this heading">¶</a></h3>
+<h3 id="user-list-sub-contexts">User List Sub-Contexts<a class="headerlink" href="#user-list-sub-contexts" title="Link to this heading">¶</a></h3>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Contributor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Contributor</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Contributor</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> that can be accessed via each item listed in the <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Repo.contributors" title="sphinx_social_cards.plugins.github.context.Repo.contributors (Python attribute) — A list  of the repository's contributors."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">plugin.vcs.github.repo.contributors</span></code></a> <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a></p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Contributor.contributions">
-<span class="sig-name descname"><span class="pre">contributions</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.contributions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">contributions</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.contributions" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s contributions count.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Contributor.login">
-<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.login" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.login" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s name.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Contributor.avatar">
-<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.avatar" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Contributor.avatar" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s avatar image’s URL.</p>
 </dd></dl>
 
@@ -1775,23 +1775,23 @@ ordered in recent descending to oldest tagged commits.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Organization">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Organization</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Organization</span></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> that can be accessed via each item listed in the <a class="reference internal" href="#sphinx_social_cards.plugins.github.context.Owner.organizations" title="sphinx_social_cards.plugins.github.context.Owner.organizations (Python attribute) — A list  of the Organizations to which the account belongs."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">plugin.vcs.github.owner.organizations</span></code></a> <a class="reference internal" href="../layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja context</span></a></p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Organization.description">
-<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.description" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.description" title="Link to this definition">¶</a></dt>
 <dd><p>The organization’s profile description</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Organization.login">
-<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.login" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">login</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.login" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s name.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.plugins.github.context.Organization.avatar">
-<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.avatar" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">avatar</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.plugins.github.context.Organization.avatar" title="Link to this definition">¶</a></dt>
 <dd><p>The account’s avatar image’s URL.</p>
 </dd></dl>
 
@@ -1856,7 +1856,7 @@ ordered in recent descending to oldest tagged commits.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.1.2.
+    7.2.4.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

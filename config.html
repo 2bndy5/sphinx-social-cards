@@ -1279,8 +1279,8 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
   </a>
 
-<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h1>
-<p>To use this extension, it must be added to your conf.py file’s <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions" title="(in Sphinx v7.2.0)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">extensions</span></code></a> option.</p>
+<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h1>
+<p>To use this extension, it must be added to your conf.py file’s <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions" title="(in Sphinx v7.2.5)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">extensions</span></code></a> option.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
 </span>Add this extension to your conf.py<a class="headerlink" href="#id2" title="Permalink to this code">¶</a></span></div>
@@ -1295,7 +1295,7 @@
 conf.py file as well. So, the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards" title="sphinx_social_cards.validators.Social_Cards (Python class) — A dict of configurations related to generating social media cards. Each attribute equates to a supported configuration option."><code class="xref any py py-class docutils literal notranslate"><span class="pre">social_cards</span></code></a> option also needs to be added to conf.py.</p>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Social_Cards</span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Social_Cards</span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a> of configurations related to generating social media cards.
 Each attribute equates to a supported configuration option.</p>
 <p>Some options use another data class to validate its values, so be mindful of the
@@ -1312,14 +1312,14 @@ documented attributes’ datatype.</p>
 </div>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.site_url">
-<span class="sig-name descname"><span class="pre">site_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.site_url" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">site_url</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.site_url" title="Link to this definition">¶</a></dt>
 <dd><p>This required option will be the base URL that social media platforms use to
 fetch the social card’s image.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.description">
-<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.description" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">description</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.description" title="Link to this definition">¶</a></dt>
 <dd><p>This option will be used as the description metadata for all generated
 pages. It can be overridden for individual pages using the <a class="reference internal" href="#meta-field-description" title="description (metadata field option) — A metadata field at the top of the document's source."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">description</span></code></a>
 metadata role.</p>
@@ -1327,7 +1327,7 @@ metadata role.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.enable" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.enable" title="Link to this definition">¶</a></dt>
 <dd><p>Set this option to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code> to disable automatic generation of social
 cards for each page. The <a class="reference internal" href="directive.html#directive-social-card" title="social-card directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">social-card</span></code></a> directive can be used to invoke or
 override social card generation for a specific page.</p>
@@ -1335,7 +1335,7 @@ override social card generation for a specific page.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cards_layout">
-<span class="sig-name descname"><span class="pre">cards_layout</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cards_layout</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout" title="Link to this definition">¶</a></dt>
 <dd><p>The layout file’s name used to generate the social cards. If using a custom-made
 layout (not a pre-made layout), then the layout file <strong>must</strong> be a YAML file. If the
 the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_dir" title="sphinx_social_cards.validators.Social_Cards.cards_layout_dir (Python attribute) — The list of paths (absolute or relative to conf.py) where the cards_layout is located. In the case of similarly named layout files, the order in this list takes precedence."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_dir</span></code></a> is specified, then that path is searched for a matching
@@ -1894,7 +1894,7 @@ blog</label></div>
 </code></pre></div>
 </div>
 </div>
-<p class="result"><a class="reference external" href="_images/config-d58be553bcad0e91.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="_images/config-d58be553bcad0e91.png" /></a></p>
+<p class="result"><a class="reference external" href="_images/config-8f17ddc1753758b5.png"><img alt="A image generated by sphinx-social-cards" class="align-center" src="_images/config-8f17ddc1753758b5.png" /></a></p>
 </div>
 </div>
 </div>
@@ -1902,7 +1902,7 @@ blog</label></div>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cards_layout_dir">
-<span class="sig-name descname"><span class="pre">cards_layout_dir</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_dir" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cards_layout_dir</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_dir" title="Link to this definition">¶</a></dt>
 <dd><p>The list of paths (absolute or relative to conf.py) where the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_layout" title="sphinx_social_cards.validators.Social_Cards.cards_layout (Python attribute) — The layout file's name used to generate the social cards. If using a custom-made layout (not a pre-made layout), then the layout file must be a YAML file. If the the cards_layout_dir is specified, then that path is searched for a matching layout before searching the default path of pre-made layouts."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout</span></code></a> is
 located. In the case of similarly named layout files, the order in this list takes
 precedence.</p>
@@ -1910,7 +1910,7 @@ precedence.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cards_layout_options">
-<span class="sig-name descname"><span class="pre">cards_layout_options</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="layouts/index.html#sphinx_social_cards.validators.Cards_Layout_Options" title="sphinx_social_cards.validators.contexts.Cards_Layout_Options (Python class)"><span class="pre">Cards_Layout_Options</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cards_layout_options</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="layouts/index.html#sphinx_social_cards.validators.Cards_Layout_Options" title="sphinx_social_cards.validators.contexts.Cards_Layout_Options (Python class)"><span class="pre">Cards_Layout_Options</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="Link to this definition">¶</a></dt>
 <dd><p>A set (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a>) of options that can be accessed via the <code class="docutils literal notranslate"><span class="pre">layout.*</span></code> <a class="reference internal" href="layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja
 context</span></a>. See <a class="reference internal" href="layouts/index.html#sphinx_social_cards.validators.Cards_Layout_Options" title="sphinx_social_cards.validators.Cards_Layout_Options (Python class) — There are some options that are used as default values for the layout's subsequent layers. These values are set with cards_layout_options and are added to the layout.* jinja context (for customizable re-use in layer attributes)."><code class="xref any py py-class docutils literal notranslate"><span class="pre">cards_layout_options</span></code></a> for more
 detail.</p>
@@ -1918,7 +1918,7 @@ detail.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cards_exclude">
-<span class="sig-name descname"><span class="pre">cards_exclude</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_exclude" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cards_exclude</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_exclude" title="Link to this definition">¶</a></dt>
 <dd><p>This <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a> can be used to exclude certain pages from generating social cards.
 Default is an empty <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>. Each item <strong>must</strong> be relative to the directory
 containing the conf.py file. <a class="reference external" href="https://docs.python.org/3/library/glob.html#module-glob" title="(in Python v3.11)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Glob</span> <span class="pre">patterns</span></code></a> are supported, and file
@@ -1947,7 +1947,7 @@ named <code class="docutils literal notranslate"><span class="pre">changelog</sp
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cards_include">
-<span class="sig-name descname"><span class="pre">cards_include</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_include" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cards_include</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cards_include" title="Link to this definition">¶</a></dt>
 <dd><p>This <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a> can be used to include certain pages from <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_exclude" title="sphinx_social_cards.validators.Social_Cards.cards_exclude (Python attribute) — This list can be used to exclude certain pages from generating social cards. Default is an empty list. clude-list"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_exclude</span></code></a> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>.
 Default is an empty <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">list</span></code></a>. Each item <strong>must</strong> be relative to the directory
 containing the conf.py file. <a class="reference external" href="https://docs.python.org/3/library/glob.html#module-glob" title="(in Python v3.11)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Glob</span> <span class="pre">patterns</span></code></a> are supported, and file
@@ -1967,7 +1967,7 @@ suffixes are only required when specifying an individual document source.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.image_paths">
-<span class="sig-name descname"><span class="pre">image_paths</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.image_paths" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">image_paths</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.image_paths" title="Link to this definition">¶</a></dt>
 <dd><p>A list of directories that contain images to be used in the creation of social
 cards. By default, the path to the directory containing the conf.py file is
 automatically added to this list. Each entry in this list can be an absolute path or
@@ -2010,14 +2010,14 @@ bundled icons are appended to this list automatically.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.validators.Debug" title="sphinx_social_cards.validators.Debug (Python class) — To ease creation of custom layouts, optional debugging glyphs can be enabled in the generated social card images."><span class="pre">Debug</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.debug" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#sphinx_social_cards.validators.Debug" title="sphinx_social_cards.validators.Debug (Python class) — To ease creation of custom layouts, optional debugging glyphs can be enabled in the generated social card images."><span class="pre">Debug</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.debug" title="Link to this definition">¶</a></dt>
 <dd><p>A field to specify layout debugging helpers. See <a class="reference internal" href="#debugging-layouts">Debugging Layouts</a> for more
 detail.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.path">
-<span class="sig-name descname"><span class="pre">path</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.path" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">path</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.path" title="Link to this definition">¶</a></dt>
 <dd><p>This option specifies where the generated social card images will be written to.
 It’s normally not necessary to change this option. Defaults to the documentation’s
 output in the subfolder ‘_static/social_cards’.</p>
@@ -2025,7 +2025,7 @@ output in the subfolder ‘_static/social_cards’.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Social_Cards.cache_dir">
-<span class="sig-name descname"><span class="pre">cache_dir</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cache_dir</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="Link to this definition">¶</a></dt>
 <dd><p>The directory (relative to the conf.py file) that is used to store cached data
 for generating the social cards. By default, this will create/use a directory named
 <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;social_cards_cache&quot;</span></code> located adjacent to the conf.py file.</p>
@@ -2049,7 +2049,7 @@ doc/social_cards_cache/**
 
 </dd></dl>
 
-<h2 id="choosing-the-font"><span id="choosing-a-font"></span>Choosing the font<a class="headerlink" href="#choosing-the-font" title="Permalink to this heading">¶</a></h2>
+<h2 id="choosing-the-font"><span id="choosing-a-font"></span>Choosing the font<a class="headerlink" href="#choosing-the-font" title="Link to this heading">¶</a></h2>
 <p>Fonts are fetched from <a class="reference external" href="https://fontsource.org/">Fontsource</a> and cached in the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &quot;social_cards_cache&quot; located adjacent to the conf.py file."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> folder. They can be specified in
 multiple places. The order of precedence is:</p>
 <ol class="arabic">
@@ -2091,7 +2091,7 @@ layer of text when using <a class="reference internal" href="layouts/index.html"
 <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cache_dir" title="sphinx_social_cards.validators.Social_Cards.cache_dir (Python attribute) — The directory (relative to the conf.py file) that is used to store cached data for generating the social cards. By default, this will create/use a directory named &quot;social_cards_cache&quot; located adjacent to the conf.py file."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cache_dir</span></code></a> or the distributed cache of Roboto font variants), then an exception will be
 raised.</p>
 </div>
-<h3 id="weights-over-styles">Weights over styles<a class="headerlink" href="#weights-over-styles" title="Permalink to this heading">¶</a></h3>
+<h3 id="weights-over-styles">Weights over styles<a class="headerlink" href="#weights-over-styles" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://fontsource.org/">Fontsource</a> does not offer <code class="docutils literal notranslate"><span class="pre">bold</span></code> or <code class="docutils literal notranslate"><span class="pre">thin</span></code> (AKA <code class="docutils literal notranslate"><span class="pre">narrow</span></code>) styles of fonts. Instead they
 offer a multitude of <a class="reference internal" href="layouts/typography.html#sphinx_social_cards.validators.layers.Font.weight" title="sphinx_social_cards.validators.layers.Font.weight (Python attribute) — The weight of the font used. If this doesn't match the weights available, then the first weight defined for the font is used and a warning is emitted. Default is 400."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">weight</span></code></a>s. The rule of thumb is to to use</p>
 <ul class="simple">
@@ -2112,9 +2112,9 @@ without CSS, would require using special string syntax in the yaml layout, and i
 doesn’t seem worth it.</p>
 <p>If someone is so inclined to add support for variable and icon fonts, then a <a class="reference external" href="https://github.com/2bndy5/sphinx-social-cards">Pull Request</a> would be welcome.</p>
 </details>
-<h3 id="non-english-languages">Non-English languages<a class="headerlink" href="#non-english-languages" title="Permalink to this heading">¶</a></h3>
+<h3 id="non-english-languages">Non-English languages<a class="headerlink" href="#non-english-languages" title="Link to this heading">¶</a></h3>
 <p>Some fonts will render boxes because they do not contain CJK characters, like for example the
-default <a class="reference internal" href="layouts/typography.html#sphinx_social_cards.validators.layers.Font" title="sphinx_social_cards.validators.layers.Font (Python class) — The specification that describes the font to be used."><code class="xref any py py-class docutils literal notranslate"><span class="pre">font</span></code></a>, <code class="docutils literal notranslate"><span class="pre">Roboto</span></code>. If any text (eg. the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-project" title="(in Sphinx v7.2.0)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">project</span></code></a> name,
+default <a class="reference internal" href="layouts/typography.html#sphinx_social_cards.validators.layers.Font" title="sphinx_social_cards.validators.layers.Font (Python class) — The specification that describes the font to be used."><code class="xref any py py-class docutils literal notranslate"><span class="pre">font</span></code></a>, <code class="docutils literal notranslate"><span class="pre">Roboto</span></code>. If any text (eg. the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-project" title="(in Sphinx v7.2.5)"><code class="xref std std-confval docutils literal notranslate"><span class="pre">project</span></code></a> name,
 <a class="reference internal" href="#meta-field-description" title="description (metadata field option) — A metadata field at the top of the document's source."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">description</span></code></a>, or page <a class="reference internal" href="#meta-field-title" title="title (metadata field option) — A metadata field at the top of the document's source."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">title</span></code></a>) contain CJK characters, then choose another
 font from <a class="reference external" href="https://fontsource.org/">Fontsource</a> which comes with CJK characters.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:4">
@@ -2190,13 +2190,13 @@ Korean</label></div>
 </div>
 </div>
 </div>
-</div><h2 id="choosing-a-color"><span id="id1"></span>Choosing a color<a class="headerlink" href="#choosing-a-color" title="Permalink to this heading">¶</a></h2>
+</div><h2 id="choosing-a-color"><span id="id1"></span>Choosing a color<a class="headerlink" href="#choosing-a-color" title="Link to this heading">¶</a></h2>
 <p>All color fields related to this extension (via <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_layout_options" title="sphinx_social_cards.validators.Social_Cards.cards_layout_options (Python attribute) — A set (dict) of options that can be accessed via the layout.* jinja context. See cards_layout_options for more detail."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout_options</span></code></a> or in <a class="reference internal" href="layouts/layers.html#sphinx_social_cards.validators.layout.Layer" title="sphinx_social_cards.validators.layout.Layer (Python class) — Each layer can have different attributes. A typical layer has size and offset attributes with 1 additional attribute detailing a background or icon or typography or rectangle or ellipse. However, these attributes may combined as needed."><code class="xref any py py-class docutils literal notranslate"><span class="pre">layer</span></code></a>
 attributes) can be specified as a <a class="reference internal" href="#solid-color"><span class="std std-ref">Solid color syntax</span></a> or a <a class="reference internal" href="#gradient-color"><span class="std std-ref">Gradient color specification</span></a>.</p>
-<h3 id="solid-color-syntax"><span id="solid-color"></span>Solid color syntax<a class="headerlink" href="#solid-color-syntax" title="Permalink to this heading">¶</a></h3>
+<h3 id="solid-color-syntax"><span id="solid-color"></span>Solid color syntax<a class="headerlink" href="#solid-color-syntax" title="Link to this heading">¶</a></h3>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="pydantic_extra_types.color.Color">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Color</span></span><a class="headerlink" href="#pydantic_extra_types.color.Color" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Color</span></span><a class="headerlink" href="#pydantic_extra_types.color.Color" title="Link to this definition">¶</a></dt>
 <dd><p>Represents a color.</p>
 <p>A solid color can be specified in the following string forms:</p>
 <ul>
@@ -2323,7 +2323,7 @@ in a layout</label></div>
 </div>
 </dd></dl>
 
-<h3 id="gradient-color-specification"><span id="gradient-color"></span>Gradient color specification<a class="headerlink" href="#gradient-color-specification" title="Permalink to this heading">¶</a></h3>
+<h3 id="gradient-color-specification"><span id="gradient-color"></span>Gradient color specification<a class="headerlink" href="#gradient-color-specification" title="Link to this heading">¶</a></h3>
 <p>Being powered by Qt for Python, this extension supports rendering gradients of colors.</p>
 <p>Complete details about using <a class="reference internal" href="layouts/gradients/index.html"><span class="doc">Gradient Colors</span></a> is described separately for
 each supported gradient orientation:</p>
@@ -2334,15 +2334,15 @@ each supported gradient orientation:</p>
 </ul>
 <p>Be sure to also check out the <a class="reference internal" href="layouts/gradients/presets.html"><span class="doc">Preset Gradients</span></a> for a complete list of conveniently
 pre-defined list of <code class="docutils literal notranslate"><span class="pre">colors</span></code> (with generated examples).</p>
-<h2 id="metadata"><span id="metadata-fields"></span>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading">¶</a></h2>
-<h3 id="changing-the-title">Changing the title<a class="headerlink" href="#changing-the-title" title="Permalink to this heading">¶</a></h3>
+<h2 id="metadata"><span id="metadata-fields"></span>Metadata<a class="headerlink" href="#metadata" title="Link to this heading">¶</a></h2>
+<h3 id="changing-the-title">Changing the title<a class="headerlink" href="#changing-the-title" title="Link to this heading">¶</a></h3>
 <p>By default all generated social cards’ title will use the page’s top-level heading, but it may be
 desirable to adapt the title to the page for which the social card represents. To do this,
 use one of the following options:</p>
 <ul>
 <li><dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-title">
-<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#meta-field-title" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#meta-field-title" title="Link to this definition">¶</a></dt>
 <dd><p>A metadata field at the top of the document’s source.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:title:</span> Some page-specific title
 </code></pre></div>
@@ -2367,14 +2367,14 @@ present in the generated HTML despite whatever theme is used.</p>
 </div>
 </li>
 </ul>
-<h3 id="changing-the-description">Changing the description<a class="headerlink" href="#changing-the-description" title="Permalink to this heading">¶</a></h3>
+<h3 id="changing-the-description">Changing the description<a class="headerlink" href="#changing-the-description" title="Link to this heading">¶</a></h3>
 <p>By default all generated social cards’ description will use the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.description" title="sphinx_social_cards.validators.Social_Cards.description (Python attribute) — This option will be used as the description metadata for all generated pages. It can be overridden for individual pages using the description metadata role."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">description</span></code></a>,
 but it may be desirable to adapt the description to the page for which the social card represents.
 To do this, use one of the following options:</p>
 <ul>
 <li><dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-description">
-<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#meta-field-description" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#meta-field-description" title="Link to this definition">¶</a></dt>
 <dd><p>A metadata field at the top of the document’s source.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:description:</span> Some page-specific description.
 </code></pre></div>
@@ -2394,7 +2394,7 @@ present in the generated HTML despite whatever theme is used.</p>
 </div>
 </li>
 </ul>
-<h3 id="changing-the-icon">Changing the icon<a class="headerlink" href="#changing-the-icon" title="Permalink to this heading">¶</a></h3>
+<h3 id="changing-the-icon">Changing the icon<a class="headerlink" href="#changing-the-icon" title="Link to this heading">¶</a></h3>
 <p>By default all generated social cards’ icon will use the <a class="reference internal" href="layouts/index.html#sphinx_social_cards.validators.Cards_Layout_Options.logo" title="sphinx_social_cards.validators.Cards_Layout_Options.logo (Python attribute) — The icon used for branding of the site. By default, this will be the html_logo (or the sphinx-immaterial theme's icon[logo])."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">Cards_Layout_Options.logo</span></code></a>,
 but it may be desirable to adapt the icon to the page for which the social card represents.</p>
 <div class="note admonition">
@@ -2407,7 +2407,7 @@ is not altered.</p>
 <p>To do this, use either the <a class="reference internal" href="#meta-field-icon" title="icon (metadata field option) — A way to override the icon used in a certain pages social card."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">icon</span></code></a> or the <a class="reference internal" href="#meta-field-card-icon" title="card-icon (metadata field option) — If the used sphinx theme already has assigned behavior to an icon, then the card-icon can be used instead."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">card-icon</span></code></a> metadata field.</p>
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-icon">
-<span class="sig-name descname"><span class="pre">icon</span></span><a class="headerlink" href="#meta-field-icon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">icon</span></span><a class="headerlink" href="#meta-field-icon" title="Link to this definition">¶</a></dt>
 <dd><p>A way to override the icon used in a certain pages social card. The file specified is relative
 to a path declared in the <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.image_paths" title="sphinx_social_cards.validators.Social_Cards.image_paths (Python attribute) — A list of directories that contain images to be used in the creation of social cards. By default, the path to the directory containing the conf.py file is automatically added to this list. Each entry in this list can be an absolute path or a path relative to the conf.py file."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">image_paths</span></code></a> list. If a file extension is not
 given, then <code class="docutils literal notranslate"><span class="pre">.svg</span></code> is assumed.</p>
@@ -2418,7 +2418,7 @@ given, then <code class="docutils literal notranslate"><span class="pre">.svg</s
 
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-card-icon">
-<span class="sig-name descname"><span class="pre">card-icon</span></span><a class="headerlink" href="#meta-field-card-icon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">card-icon</span></span><a class="headerlink" href="#meta-field-card-icon" title="Link to this definition">¶</a></dt>
 <dd><p>If the used sphinx theme already has assigned behavior to an <a class="reference internal" href="#meta-field-icon" title="icon (metadata field option) — A way to override the icon used in a certain pages social card."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">icon</span></code></a>, then the
 <a class="reference internal" href="#meta-field-card-icon" title="card-icon (metadata field option) — If the used sphinx theme already has assigned behavior to an icon, then the card-icon can be used instead."><code class="xref std std-meta-field docutils literal notranslate"><span class="pre">card-icon</span></code></a> can be used instead. It behaves the same for the purpose of this
 sphinx-social-cards extension.</p>
@@ -2427,12 +2427,12 @@ sphinx-social-cards extension.</p>
 </div>
 </dd></dl>
 
-<h3 id="blog-front-matter">Blog front matter<a class="headerlink" href="#blog-front-matter" title="Permalink to this heading">¶</a></h3>
+<h3 id="blog-front-matter">Blog front matter<a class="headerlink" href="#blog-front-matter" title="Link to this heading">¶</a></h3>
 <p>Some of the front matter supported by the <a class="reference external" href="https://ablog.readthedocs.io/en/stable/#how-it-works">ABlog sphinx extension</a> is used in the the pre-defined <code class="docutils literal notranslate"><span class="pre">blog</span></code>
 <a class="reference internal" href="#sphinx_social_cards.validators.Social_Cards.cards_layout" title="sphinx_social_cards.validators.Social_Cards.cards_layout (Python attribute) — The layout file's name used to generate the social cards. If using a custom-made layout (not a pre-made layout), then the layout file must be a YAML file. If the the cards_layout_dir is specified, then that path is searched for a matching layout before searching the default path of pre-made layouts."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">cards_layout</span></code></a>:</p>
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-tags">
-<span class="sig-name descname"><span class="pre">tags</span></span><a class="headerlink" href="#meta-field-tags" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tags</span></span><a class="headerlink" href="#meta-field-tags" title="Link to this definition">¶</a></dt>
 <dd><p>This can be used as a comma-separated list of tags.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:tags:</span> sphinx, social, cards
 </code></pre></div>
@@ -2441,7 +2441,7 @@ sphinx-social-cards extension.</p>
 
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-date">
-<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#meta-field-date" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#meta-field-date" title="Link to this definition">¶</a></dt>
 <dd><p>This can be used as a hard-coded date instead of using <code class="docutils literal notranslate"><span class="pre">config.today</span></code> in the
 <a class="reference internal" href="layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja contexts</span></a>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:date:</span> June 3 2023
@@ -2463,7 +2463,7 @@ leading zeroes. On windows, you would use a <code class="docutils literal notran
 
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-language">
-<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#meta-field-language" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#meta-field-language" title="Link to this definition">¶</a></dt>
 <dd><p>This can be used as a spelled out language name instead of using <code class="docutils literal notranslate"><span class="pre">config.language</span></code> in the
 <a class="reference internal" href="layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja contexts</span></a>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:language:</span> English
@@ -2473,7 +2473,7 @@ leading zeroes. On windows, you would use a <code class="docutils literal notran
 
 <dl class="std meta-field objdesc">
 <dt class="sig sig-object highlight std" id="meta-field-author">
-<span class="sig-name descname"><span class="pre">author</span></span><a class="headerlink" href="#meta-field-author" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">author</span></span><a class="headerlink" href="#meta-field-author" title="Link to this definition">¶</a></dt>
 <dd><p>This can be used as a specific author name instead of using <code class="docutils literal notranslate"><span class="pre">config.author</span></code> in the
 <a class="reference internal" href="layouts/layers.html#jinja-ctx"><span class="std std-ref">jinja contexts</span></a>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><code><span class="nc">:author:</span> Brendan Doherty
@@ -2481,10 +2481,10 @@ leading zeroes. On windows, you would use a <code class="docutils literal notran
 </div>
 </dd></dl>
 
-<h2 id="debugging-layouts">Debugging Layouts<a class="headerlink" href="#debugging-layouts" title="Permalink to this heading">¶</a></h2>
+<h2 id="debugging-layouts">Debugging Layouts<a class="headerlink" href="#debugging-layouts" title="Link to this heading">¶</a></h2>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Debug">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Debug</span></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Debug</span></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug" title="Link to this definition">¶</a></dt>
 <dd><p>To ease creation of custom layouts, optional debugging glyphs can be <a class="reference internal" href="#sphinx_social_cards.validators.Debug.enable" title="sphinx_social_cards.validators.Debug.enable (Python attribute) — If set to True, then debugging outlines and labels are drawn."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">enable</span></code></a>d
 in the generated social card images.</p>
 <div class="results docutils container">
@@ -2512,20 +2512,20 @@ and <a class="reference internal" href="layouts/index.html#sphinx_social_cards.v
 </ul>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Debug.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.enable" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.enable" title="Link to this definition">¶</a></dt>
 <dd><p>If set to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, then debugging outlines and labels are drawn.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Debug.grid">
-<span class="sig-name descname"><span class="pre">grid</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.grid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">grid</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.grid" title="Link to this definition">¶</a></dt>
 <dd><p>If set to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> (the default) and <a class="reference internal" href="#sphinx_social_cards.validators.Debug.enable" title="sphinx_social_cards.validators.Debug.enable (Python attribute) — If set to True, then debugging outlines and labels are drawn."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">enable</span></code></a>d, then a grid of dots are
 drawn.</p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Debug.grid_step">
-<span class="sig-name descname"><span class="pre">grid_step</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.grid_step" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">grid_step</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.grid_step" title="Link to this definition">¶</a></dt>
 <dd><p>If <a class="reference internal" href="#sphinx_social_cards.validators.Debug.grid" title="sphinx_social_cards.validators.Debug.grid (Python attribute) — If set to True (the default) and enabled, then a grid of dots are drawn."><code class="xref any py py-attr docutils literal notranslate"><span class="pre">grid</span></code></a> is enabled, then this <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a> specifies the distance (in pixels) between
 each dot in the grid. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="mi">30</span></code>.</p>
 <div class="results docutils container">
@@ -2549,7 +2549,7 @@ each dot in the grid. Defaults to <code class="code highlight python docutils li
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.Debug.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.color" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">color</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a></span><a class="headerlink" href="#sphinx_social_cards.validators.Debug.color" title="Link to this definition">¶</a></dt>
 <dd><p>The color used to draw the debugging outlines, labels, and grid. The color for
 the debugging text is automatically set based on this color value.</p>
 <div class="results docutils container">
@@ -2647,7 +2647,7 @@ the debugging text is automatically set based on this color value.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.1.2.
+    7.2.4.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
