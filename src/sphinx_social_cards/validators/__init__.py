@@ -16,7 +16,7 @@ from .contexts import Cards_Layout_Options
 from ..colors import auto_get_fg_color, MD_COLORS
 
 LOGGER = getLogger(__name__)
-REQUEST_TIMEOUT = (5, 5)
+REQUEST_TIMEOUT = (5, 10)
 
 
 def try_request(url, timeout=REQUEST_TIMEOUT, **kwargs) -> requests.Response:
