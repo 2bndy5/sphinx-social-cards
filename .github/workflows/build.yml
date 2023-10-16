@@ -131,16 +131,16 @@ jobs:
         with:
           path: docs/_build/html/_static/fonts
           key: docs-build-fonts-${{ runner.os }}
-      # Inkscape seems to be a preferred "delegate" for ImageMagick to work with SVGs
-      # - name: Install Inkscape
-      #   # NOTE: This action is not published to the marketplace!
-      #   # See .github/actions/install_inkscape/action.yml for more detail.
-      #   uses: ./.github/actions/install_inkscape
       - name: Build docs
         env:
           GITHUB_REST_API_TOKEN: ${{ secrets.TEST_VCS_PLUGIN_GITHUB }}
           SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR: docs/_build/html/_static/fonts
         run: pipx run nox -s "docs(html)"
+      - name: Cache docs theme build assets
+        uses: actions/cache/save@v3
+        with:
+          path: docs/_build/html/_static/fonts
+          key: sphinx-immaterial-assets_${{ runner.os }}-${{ github.run_id }}
       - name: Upload doc builds as artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -154,7 +154,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   test:
-    needs: [check_conventions, build]
+    needs: [check_conventions, build, docs]
     strategy:
       fail-fast: false
       matrix:
@@ -194,10 +194,16 @@ jobs:
         with:
           path: 'src/sphinx_social_cards/.*/**'
           key: ${{ runner.os }}-pkg_data-${{ hashFiles('**/package-lock.json', 'setup.py') }}
+      - name: Cache sphinx-immaterial theme build assets
+        uses: actions/cache/restore@v3
+        with:
+          path: docs/_build/html/_static/fonts
+          key: sphinx-immaterial-assets_${{ runner.os }}-${{ github.run_id }}
       - name: Run Python tests
         env:
           COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}.${{ matrix.sphinx-version }}
           GITHUB_REST_API_TOKEN: ${{ secrets.TEST_VCS_PLUGIN_GITHUB }}
+          SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR: docs/_build/html/_static/fonts
         run: pipx run nox -s "tests-${{ matrix.python-version }}(${{ matrix.sphinx-version }})"
       - name: Upload coverage data
         uses: actions/upload-artifact@v3
