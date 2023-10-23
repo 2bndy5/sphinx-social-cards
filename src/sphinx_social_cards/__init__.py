@@ -14,9 +14,9 @@ media previews").
 Dependencies
 ------------
 
-The following dependencies are required:
+The following dependencies are used:
 
-- `PySide6 <https://doc.qt.io/qtforpython-6/quickstart.html>`_
+.. literalinclude:: ../requirements.txt
 
 Installing
 ----------
