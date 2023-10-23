@@ -9,7 +9,7 @@ from pydantic import (
     Field,
     ConfigDict,
     AfterValidator,
-    FieldValidationInfo,
+    ValidationInfo,
 )
 from pydantic_extra_types.color import Color
 from PySide6.QtGui import QGradient
@@ -285,7 +285,7 @@ class Radial_Gradient(Gradient, GradientSpread):
     colors: Dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
 
     @field_validator("focal_radius")
-    def constrain_focal_radius(cls, val: float, info: FieldValidationInfo) -> float:
+    def constrain_focal_radius(cls, val: float, info: ValidationInfo) -> float:
         # the radius is a required field, so get that value
         assert "radius" in info.data
         radius = cast(float, info.data["radius"])
