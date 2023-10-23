@@ -3,7 +3,7 @@
     "@fortawesome/fontawesome-free": "^6.4.2",
     "@mdi/svg": "^7.3.67",
     "@primer/octicons": "^19.8.0",
-    "simple-icons": "^9.18.0",
+    "simple-icons": "^9.19.0",
     "svgo": "^3.0.2"
   }
 }
