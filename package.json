@@ -4,6 +4,6 @@
     "@mdi/svg": "^7.3.67",
     "@primer/octicons": "^19.8.0",
     "simple-icons": "^9.20.0",
-    "svgo": "^3.0.3"
+    "svgo": "^3.0.4"
   }
 }
