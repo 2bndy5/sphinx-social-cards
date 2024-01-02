@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
-    "@mdi/svg": "^7.3.67",
+    "@mdi/svg": "^7.4.47",
     "@primer/octicons": "^19.8.0",
     "simple-icons": "^10.4.0",
     "svgo": "^3.1.0"
