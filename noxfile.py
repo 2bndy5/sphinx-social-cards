@@ -31,6 +31,9 @@ def tests(session: nox.Session, sphinx: str):
     """Run unit tests and collect code coverage analysis."""
     session.install("-e", ".")
     session.install(f"sphinx{sphinx}")
+    if sphinx.endswith("<5"):
+        # sphinxcontrib deps that dropped support for sphinx v4.x
+        session.install("-r", "tests/requirements-sphinx4.txt")
     session.install("-r", "tests/requirements.txt")
     session.run("coverage", "run", "-m", "pytest", "-v")
 
