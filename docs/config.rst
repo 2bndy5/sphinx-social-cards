@@ -16,7 +16,7 @@ conf.py file as well. So, the `social_cards <Social_Cards>` option also needs to
 
 .. autoclass:: sphinx_social_cards.validators.Social_Cards
     :members:
-    :exclude-members: model_post_init, model_fields, model_config
+    :exclude-members: model_post_init, model_fields, model_config, model_computed_fields
 
 .. _choosing-a-font:
 
@@ -426,4 +426,4 @@ Debugging Layouts
 
 .. autoclass:: sphinx_social_cards.validators.Debug
     :members:
-    :exclude-members: model_post_init, model_fields, model_config
+    :exclude-members: model_post_init, model_fields, model_config, model_computed_fields

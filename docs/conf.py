@@ -96,7 +96,7 @@ social_cards = {
 
 autodoc_member_order = "bysource"
 autodoc_default_options = {
-    "exclude-members": "__init__, __new__, model_fields, model_config"
+    "exclude-members": "__init__, __new__, model_fields, model_config, model_computed_fields"
 }
 autodoc_class_signature = "separated"
 add_module_names = False
