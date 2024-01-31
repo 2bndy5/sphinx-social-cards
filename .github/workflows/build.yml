@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache pre-commit environments
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '~/.cache/pre-commit'
           key: pre-commit-${{ steps.python-setup.outputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -67,13 +67,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache node.js modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ matrix.node-version }}-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: pip install build
       - name: Cache generated package data
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: 'src/sphinx_social_cards/.*/**'
           key: ${{ runner.os }}-pkg_data-${{ hashFiles('**/package-lock.json', 'setup.py') }}
@@ -127,7 +127,7 @@ jobs:
         shell: bash
         run: python -m pip install $(ls dist/*.whl)
       - name: Cache fonts for built docs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: docs/_build/html/_static/fonts
           key: docs-build-fonts-${{ runner.os }}
@@ -137,7 +137,7 @@ jobs:
           SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR: docs/_build/html/_static/fonts
         run: pipx run nox -s "docs(html)"
       - name: Cache docs theme build assets
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: docs/_build/html/_static/fonts
           key: sphinx-immaterial-assets_${{ runner.os }}-${{ github.run_id }}
@@ -186,17 +186,17 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache nox env
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: "**/.nox"
           key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-nox-${{ hashFiles('noxfile.py') }}
       - name: Cache generated package data
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: 'src/sphinx_social_cards/.*/**'
           key: ${{ runner.os }}-pkg_data-${{ hashFiles('**/package-lock.json', 'setup.py') }}
       - name: Cache sphinx-immaterial theme build assets
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: docs/_build/html/_static/fonts
           key: sphinx-immaterial-assets_${{ runner.os }}-${{ github.run_id }}
