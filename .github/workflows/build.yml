@@ -22,7 +22,7 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         id: python-setup
@@ -54,7 +54,7 @@ jobs:
         run: |
           sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Need full history to determine version number.
           fetch-depth: 0
@@ -114,7 +114,7 @@ jobs:
         run: |
           sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -179,7 +179,7 @@ jobs:
         run: |
           sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup python
         uses: actions/setup-python@v4
         id: python-setup
@@ -216,7 +216,7 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
