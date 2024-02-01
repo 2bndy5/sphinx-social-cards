@@ -59,7 +59,7 @@ jobs:
           # Need full history to determine version number.
           fetch-depth: 0
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Set up Python ${{ matrix.python-version }}
@@ -104,8 +104,6 @@ jobs:
           - 'macos-latest'
         python-version:
           - '3.x'
-        node-version:
-          - '16.x'
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
