@@ -52,7 +52,8 @@ jobs:
     steps:
       - if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          sudo apt-get update
+          sudo apt-get install -y libgl-dev libglvnd-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
         with:
@@ -110,7 +111,8 @@ jobs:
     steps:
       - if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          sudo apt-get update
+          sudo apt-get install -y libgl-dev libglvnd-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -175,7 +177,8 @@ jobs:
     steps:
       - if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-x11-0
+          sudo apt-get update
+          sudo apt-get install -y libgl-dev libglvnd-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - name: Setup python
