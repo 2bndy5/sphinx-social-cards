@@ -1,4 +1,5 @@
 pytest
 coverage[toml]
+sphinx[test] # needed for pinned version of defusedxml
 sphinx-immaterial
 -r ../requirements-github.txt
