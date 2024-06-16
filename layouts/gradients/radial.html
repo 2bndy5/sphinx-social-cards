@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b6b76e63d02feb5bc.min.css?v=2a5fb5f3" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.c9767e311a7fd7257.min.css?v=5bb8d638" />
         <link rel="stylesheet" type="text/css" href="../../_static/extra-css.css?v=79315577" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -818,7 +818,7 @@ document for a complete list of supported values (with generated examples).</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.common.Radial_Gradient.colors">
-<span class="sig-name descname"><span class="pre">colors</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../config.html#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.common.Radial_Gradient.colors" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">colors</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../config.html#pydantic_extra_types.color.Color" title="pydantic_extra_types.color.Color (Python class) — Represents a color."><span class="pre">Color</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.common.Radial_Gradient.colors" title="Link to this definition">¶</a></dt>
 <dd><p>A mapping of colors to their corresponding positions in the gradient.
 Each item in this mapping is composed of <code class="code highlight yaml docutils literal highlight-yaml"><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value</span></code> pairs in which:</p>
 <ul class="simple">
@@ -854,7 +854,7 @@ colors. When neither the <a class="reference internal" href="#sphinx_social_card
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="sphinx_social_cards.validators.common.Radial_Gradient.spread">
-<span class="sig-name descname"><span class="pre">spread</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="s"><span class="pre">'pad'</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="s"><span class="pre">'reflect'</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="s"><span class="pre">'repeat'</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.common.Radial_Gradient.spread" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">spread</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'pad'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'reflect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'repeat'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sphinx_social_cards.validators.common.Radial_Gradient.spread" title="Link to this definition">¶</a></dt>
 <dd><p>This attribute controls the colors’ behavior outside the gradient’s specified
 area. By default this is set to <code class="code highlight yaml docutils literal highlight-yaml"><span class="l l-Scalar l-Scalar-Plain">pad</span></code>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3">
