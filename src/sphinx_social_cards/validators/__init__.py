@@ -27,7 +27,7 @@ def try_request(url, timeout=REQUEST_TIMEOUT, **kwargs) -> requests.Response:
 
 
 class Debug(CustomBaseModel):
-    """To ease creation of custom layouts, optional debugging glyphs can be `enable`\ d
+    """To ease creation of custom layouts, optional debugging glyphs can be `enable`\\ d
     in the generated social card images.
 
     .. social-card:: {"debug": true}
@@ -46,7 +46,7 @@ class Debug(CustomBaseModel):
     #: If set to :python:`True`, then debugging outlines and labels are drawn.
     enable: bool = False
     grid: bool = True
-    """If set to :python:`True` (the default) and `enable`\ d, then a grid of dots are
+    """If set to :python:`True` (the default) and `enable`\\ d, then a grid of dots are
     drawn."""
     grid_step: int = 30
     """If `grid` is enabled, then this `int` specifies the distance (in pixels) between

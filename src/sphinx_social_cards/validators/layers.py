@@ -316,7 +316,7 @@ class Polygon(GenericShape):
     """
 
     sides: Union[PositiveInt, List[Offset]] = 3
-    """.. |offset-list| replace:: a YAML list of `offset <Offset>`\ s
+    """.. |offset-list| replace:: a YAML list of `offset <Offset>`\\ s
 
     The specification of the polygon's sides. This can be an integer or
     |offset-list|.
@@ -342,7 +342,7 @@ class Polygon(GenericShape):
         .. important::
             :title: Area of polygons are *clamped*
 
-            If any of the specified `offset <Offset>`\ s are located outside the
+            If any of the specified `offset <Offset>`\\ s are located outside the
             layer's `size <Size>`, then the `offset <Offset>` will be moved to within
             the layer's `size <Size>`. This stipulation has a noticeable effect on
             polygons draw with a `border <Border>`.
@@ -515,7 +515,7 @@ class Icon(LayerImage):
     """When combining these attributes, the `image` is colorized by the specified
     `color`.
 
-    .. hint:: If no `color` is specified, then the `image`\ 's original color is shown.
+    .. hint:: If no `color` is specified, then the `image`\\ 's original color is shown.
     .. social-card::
         :dry-run:
 

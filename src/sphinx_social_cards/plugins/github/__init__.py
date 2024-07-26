@@ -18,7 +18,7 @@ To enable this plugin, add it to your list of sphinx :confval:`extensions` in co
 Configuration
 *************
 
-This extension uses :confval:`html_theme_options`\ [:themeconf:`repo_url`] from
+This extension uses :confval:`html_theme_options`\\ [:themeconf:`repo_url`] from
 sphinx-immaterial_ configuration value or its own :confval:`repo_url` configuration
 value to set the repository URL.
 

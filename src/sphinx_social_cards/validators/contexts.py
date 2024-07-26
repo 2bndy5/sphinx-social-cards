@@ -48,7 +48,7 @@ class Cards_Layout_Options(BaseModel):
     background_color: Optional[ColorType] = None
     """The fallback value used for a layer's `background.color <Background.color>`
     attribute in most `pre-designed layouts <pre-designed-layouts>`. By default, this
-    value is set to the :themeconf:`palette`\ [:themeconf:`primary`] color or
+    value is set to the :themeconf:`palette`\\ [:themeconf:`primary`] color or
     :yaml:`"#4051B2"` for themes other than sphinx-immaterial_.
 
     .. social-card::
@@ -87,7 +87,7 @@ class Cards_Layout_Options(BaseModel):
     """
     accent: Optional[ColorType] = None
     """The color used as a foreground accentuating color. By default, this value is set
-    to the :themeconf:`palette`\ [:themeconf:`accent`] color or :yaml:`"#4051B2"` for
+    to the :themeconf:`palette`\\ [:themeconf:`accent`] color or :yaml:`"#4051B2"` for
     themes other than sphinx-immaterial_.
 
     .. social-card::
@@ -129,7 +129,7 @@ class Cards_Layout_Options(BaseModel):
     logo: Optional[Icon] = None
     """The icon used for branding of the site. By default, this will be the
     :confval:`html_logo` (or the sphinx-immaterial_ theme's
-    :themeconf:`icon`\ [:themeconf:`logo`]).
+    :themeconf:`icon`\\ [:themeconf:`logo`]).
 
     In most :ref:`pre-designed layouts <pre-designed-layouts>`, the image's `color
     <Icon.color>` is used as is. This behavior can be changed by setting this option.
@@ -190,7 +190,7 @@ class Config(BaseModel):
     language: Annotated[Optional[str], Field(validate_default=True)] = None
     today: Optional[str] = today_default
     """The :confval:`today` value. Defaults to current date using
-    :python:`"\<month> \<day> \<year>"` format."""
+    :python:`"\\<month> \\<day> \\<year>"` format."""
 
     @field_validator("today")
     def revert_today_default(cls, val: Optional[str]):
@@ -235,4 +235,4 @@ class JinjaContexts(BaseModel):
     page: Page = Page()
     plugin: Dict[str, Any] = {}
     """A `dict` whose items correspond to :doc:`compatible plugins
-    <../plugins/index>`\ ' contexts."""
+    <../plugins/index>`\\ ' contexts."""
