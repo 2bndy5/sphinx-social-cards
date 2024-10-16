@@ -2,5 +2,5 @@
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 900;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmYUtfBBc9AMP6lQ.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu92Fr1MmYUtfBBc9AMP6lQ.ttf) format('truetype');
 }
