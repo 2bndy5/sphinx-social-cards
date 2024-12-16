@@ -15,7 +15,7 @@ from sphinx.environment import BuildEnvironment
 import sphinx.config
 from sphinx.util.logging import getLogger
 import sphinx.util.typing
-from typing_extensions import Literal
+from typing import Literal
 
 LOGGER = getLogger(__name__)
 

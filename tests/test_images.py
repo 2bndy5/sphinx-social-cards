@@ -1,12 +1,11 @@
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 
 from sphinx.testing.util import SphinxTestApp
 from PySide6.QtGui import QImage
 import pytest
 from sphinx_social_cards.images import resize_image
 from sphinx_social_cards.validators.layout import Size
-from typing_extensions import Literal
 
 
 @pytest.mark.parametrize(

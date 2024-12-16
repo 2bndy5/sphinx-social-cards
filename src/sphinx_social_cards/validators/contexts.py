@@ -3,11 +3,10 @@
 from importlib import import_module
 import platform
 import time
-from typing import Dict, Optional, Any, cast
+from typing import Dict, Optional, Any, cast, Annotated
 
 from pydantic import BaseModel, field_validator, Field, ConfigDict, field_serializer
 from sphinx.search import languages, SearchLanguage
-from typing_extensions import Annotated
 from .common import CustomBaseModel, ColorType, PathType, serialize_color
 from .layers import Icon, Font
 

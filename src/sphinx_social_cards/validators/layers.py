@@ -1,8 +1,7 @@
 """This module contains validating dataclasses for a layout's layers."""
 
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Annotated, Literal
 
-from typing_extensions import Annotated, Literal
 from pydantic import field_validator, Field, AliasChoices, field_serializer
 
 from .common import CustomBaseModel, Offset, ColorType, PositiveFloat, serialize_color

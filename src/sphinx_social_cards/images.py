@@ -1,13 +1,12 @@
 from logging import getLogger
 from pathlib import Path
-from typing import List, Union, Optional, cast, Tuple
+from typing import List, Union, Optional, cast, Tuple, Literal
 from urllib.parse import urlparse, quote
 
 from PySide6.QtGui import QImage, QImageReader, QPainter, QBrush
 from PySide6.QtCore import Qt, QSize, QRect
 from PySide6.QtGui import QColor
 from PySide6.QtSvg import QSvgRenderer
-from typing_extensions import Literal
 from .validators import try_request
 from .validators.layout import Size
 
