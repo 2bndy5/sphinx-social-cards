@@ -1489,7 +1489,9 @@ the cache is purged).</p>
     <span class="n">today</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_fmt</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
     <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
         <span class="n">user_cache_dir</span><span class="p">(</span>
-            <span class="s2">&quot;sphinx_social_cards.plugins.github&quot;</span><span class="p">,</span> <span class="s2">&quot;2bndy5&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">today</span>  <span class="c1"># (1)!</span>
+            <span class="s2">&quot;sphinx_social_cards.plugins.github&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2bndy5&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">today</span><span class="p">,</span>  <span class="c1"># (1)!</span>
         <span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">cache_dir</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cache_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
