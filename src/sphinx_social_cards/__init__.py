@@ -39,6 +39,7 @@ There are also :doc:`directive` provided for finite control over the generated i
 a specific page. Lastly, :doc:`plugins/index` can be used to easily share customizations
 between documentation projects.
 """
+
 import hashlib
 import json
 from pathlib import Path
@@ -134,9 +135,7 @@ class SocialCardTransform(SphinxTransform):
         if self.document is None or not isinstance(builder, StandaloneHTMLBuilder):
             return
         doc_path = self.env.doc2path(self.env.docname, base=False)
-        if conf.enable and (
-            doc_path in conf.cards_exclude and doc_path not in conf.cards_include
-        ):
+        if conf.enable and (doc_path in conf.cards_exclude and doc_path not in conf.cards_include):
             return
         elif not conf.enable and doc_path not in conf.cards_include:
             return
@@ -252,20 +251,14 @@ class SocialCardDirective(SphinxDirective):
         valid_conf: Social_Cards = getattr(self.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
 
         # render meta_data overrides (if any)
-        if (
-            "hide-meta-data" not in self.options
-            and "meta-data" in self.options
-            and dry_run
-        ):
+        if "hide-meta-data" not in self.options and "meta-data" in self.options and dry_run:
             meta_data_rst = "\n".join(
                 [f":{key}: {val or ''}" for key, val in new_meta_data.items()]
             )
             meta_data_block = docutils.nodes.literal_block(
                 meta_data_rst, meta_data_rst, language="rst"
             )
-            caption_text = self.options.get(
-                "meta-data-caption", "my-document.rst (meta-data)"
-            )
+            caption_text = self.options.get("meta-data-caption", "my-document.rst (meta-data)")
             if caption_text:
                 container_node += container_wrapper(self, meta_data_block, caption_text)
             else:
@@ -275,9 +268,7 @@ class SocialCardDirective(SphinxDirective):
         if "hide-conf" not in self.options and dry_run:
             conf_py = f"social_cards = {json.dumps(conf_src, indent=4)}"
             conf_py = conf_py.replace(": true", ": True").replace(": false", ": False")
-            conf_py_block = docutils.nodes.literal_block(
-                conf_py, conf_py, language="python"
-            )
+            conf_py_block = docutils.nodes.literal_block(conf_py, conf_py, language="python")
             caption_text = self.options.get("conf-caption", "conf.py")
             if caption_text:
                 container_node += container_wrapper(self, conf_py_block, caption_text)
@@ -286,9 +277,7 @@ class SocialCardDirective(SphinxDirective):
 
         # merge in plugins contexts/layouts
         # NOTE: done before parsing layout and after creating code block
-        conf.cards_layout_dir = list(
-            set(conf.cards_layout_dir) | set(valid_conf.cards_layout_dir)
-        )
+        conf.cards_layout_dir = list(set(conf.cards_layout_dir) | set(valid_conf.cards_layout_dir))
 
         theme_options: dict = getattr(self.config, "html_theme_options")
         site_url = urlparse(conf.site_url)
@@ -296,9 +285,7 @@ class SocialCardDirective(SphinxDirective):
         page_uri = ""
         builder = self.env.app.builder
         if isinstance(builder, StandaloneHTMLBuilder):
-            page_uri = builder.get_target_uri(self.env.docname).rstrip(
-                builder.link_suffix
-            )
+            page_uri = builder.get_target_uri(self.env.docname).rstrip(builder.link_suffix)
         page_title = get_default_page_title(self.state.document)
         if page_title is None:
             LOGGER.error(
@@ -320,9 +307,7 @@ class SocialCardDirective(SphinxDirective):
                 theme=theme_options,
                 site_description=conf.description,
                 site_url=ctx_url,
-                docstitle=getattr(
-                    self.config, "project", "An example name for a project"
-                ),
+                docstitle=getattr(self.config, "project", "An example name for a project"),
                 author=getattr(self.config, "author", ""),
                 language=cast(str, getattr(self.config, "language", "en")),
                 today=getattr(self.config, "today", None),
@@ -340,14 +325,10 @@ class SocialCardDirective(SphinxDirective):
         if self.content:
             layout_src = "\n".join(self.content)
             if "hide-layout" not in self.options and dry_run:
-                layout_block = docutils.nodes.literal_block(
-                    layout_src, layout_src, language="yaml"
-                )
+                layout_block = docutils.nodes.literal_block(layout_src, layout_src, language="yaml")
                 caption_text = self.options.get("layout-caption", "my-layout.yml")
                 if caption_text:
-                    container_node += container_wrapper(
-                        self, layout_block, caption_text
-                    )
+                    container_node += container_wrapper(self, layout_block, caption_text)
                 else:
                     container_node += layout_block
         factory.parse_layout(layout_src)
@@ -367,8 +348,7 @@ class SocialCardDirective(SphinxDirective):
             img_name = str(Path(conf.cache_dir, ".social_card_examples", img_name))
             img_node = docutils.nodes.image(
                 "",
-                uri="../" * (len(uri_parts) - 1)
-                + str(Path(img_name).relative_to(self.env.srcdir)),
+                uri="../" * (len(uri_parts) - 1) + str(Path(img_name).relative_to(self.env.srcdir)),
                 alt="A image generated by sphinx-social-cards",
                 align="center",
                 classes=self.options.get("class", []),
@@ -411,7 +391,7 @@ class CardGeneratorDirective(SocialCardDirective, Image):
         "height": directives.length_or_unitless,  # type: ignore[dict-item]
         "width": directives.length_or_percentage_or_unitless,
         "scale": directives.percentage,  # type: ignore[dict-item]
-        "align": lambda arg: directives.choice(arg, Image.align_values),
+        "align": lambda arg: directives.choice(arg, Image.align_values),  # type: ignore[dict-item]
     }
     hardcoded_options = ["dry-run", "hide-meta", "hide-conf", "hide-layout"]
 
@@ -445,9 +425,7 @@ class CardGeneratorDirective(SocialCardDirective, Image):
 
 
 def setup(app: Sphinx):
-    app.add_config_value(
-        "social_cards", default={}, rebuild="html", types=[Social_Cards]
-    )
+    app.add_config_value("social_cards", default={}, rebuild="html", types=[Social_Cards])
     app.add_transform(SocialCardTransform)
     app.connect("config-inited", _load_config)
     app.connect("builder-inited", _assert_plugin_context, priority=999)

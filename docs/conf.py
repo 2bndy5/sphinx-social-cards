@@ -15,7 +15,7 @@ from sphinx.environment import BuildEnvironment
 import sphinx.config
 from sphinx.util.logging import getLogger
 import sphinx.util.typing
-from typing_extensions import Literal
+from typing import Literal
 
 LOGGER = getLogger(__name__)
 
@@ -26,15 +26,11 @@ else:
 
 # Need a way to avoid hitting the GitHub REST API rate limit in repo CI
 use_gh_rest_api = False
-if "CI" not in os.environ or (
-    os.environ.get("CI", False) and platform.system().lower() == "linux"
-):
+if "CI" not in os.environ or (os.environ.get("CI", False) and platform.system().lower() == "linux"):
     # Only use the GH REST API in CI when building docs for Linux.
     # Also allow local builds to use the GH REST API.
     use_gh_rest_api = True
-    LOGGER.info(
-        "NOTE: GitHub REST API will be used (if info cache not found or outdated)"
-    )
+    LOGGER.info("NOTE: GitHub REST API will be used (if info cache not found or outdated)")
 
 
 pkg_meta = get_metadata("sphinx-social-cards").json
@@ -206,9 +202,7 @@ html_theme_options = {
 object_description_options = [
     (
         "std:meta-field",
-        dict(
-            toc_icon_class="data", toc_icon_text="M", generate_synopses="first_sentence"
-        ),
+        dict(toc_icon_class="data", toc_icon_text="M", generate_synopses="first_sentence"),
     ),
     ("py:class", dict(toc_icon_class="data", toc_icon_text="A")),
 ]
@@ -294,9 +288,7 @@ jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
     "gradient_presets": {
-        "presets": {
-            p.value: p.name for p in list(QGradient.Preset) if p.name != "NumPresets"
-        }
+        "presets": {p.value: p.name for p in list(QGradient.Preset) if p.name != "NumPresets"}
     },
 }
 
@@ -321,9 +313,7 @@ def _parse_confval_signature(
         if types:
             type_constraint = typing.Union[tuple(types)]  # type: ignore
             node += sphinx.addnodes.desc_sig_punctuation(" : ", " : ")
-            annotations = sphinx.domains.python._parse_annotation(
-                stringify(type_constraint), env
-            )
+            annotations = sphinx.domains.python._parse_annotation(stringify(type_constraint), env)
             node += sphinx.addnodes.desc_type("", "", *annotations)
         if not callable(default):
             node += sphinx.addnodes.desc_sig_punctuation(" = ", " = ")

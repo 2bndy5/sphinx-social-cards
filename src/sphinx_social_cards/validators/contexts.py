@@ -1,12 +1,12 @@
 """This module holds the data classes used to populate the jinja contexts."""
+
 from importlib import import_module
 import platform
 import time
-from typing import Dict, Optional, Any, cast
+from typing import Dict, Optional, Any, cast, Annotated
 
 from pydantic import BaseModel, field_validator, Field, ConfigDict, field_serializer
 from sphinx.search import languages, SearchLanguage
-from typing_extensions import Annotated
 from .common import CustomBaseModel, ColorType, PathType, serialize_color
 from .layers import Icon, Font
 
@@ -24,9 +24,7 @@ class Cards_Layout_Options(BaseModel):
         This section heavily relies on knowledge about :ref:`using_jinja`
     """
 
-    model_config = ConfigDict(
-        validate_assignment=True, extra="allow", str_strip_whitespace=True
-    )
+    model_config = ConfigDict(validate_assignment=True, extra="allow", str_strip_whitespace=True)
 
     background_image: Optional[PathType] = None
     """The fallback value used for a layer's `background.image <Background.image>`

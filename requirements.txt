@@ -4,4 +4,3 @@ PySide6
 pyyaml
 requests
 sphinx
-typing_extensions

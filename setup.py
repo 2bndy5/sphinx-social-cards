@@ -30,9 +30,7 @@ def download_fonts(font_id: str, font_cache: Path):
     """
     header = {
         # needed to avoid response 403
-        "User-Agent": (
-            "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"
-        ),
+        "User-Agent": ("Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"),
     }
     with urlopen(
         Request(f"https://api.fontsource.org/v1/fonts/{font_id}", headers=header)
@@ -107,12 +105,8 @@ class BundleCommand(Command, SubCommand):
                 Path(pkg_root, "package.json").exists()
                 and Path(pkg_root, "tools", "svgo_config.js").exists()
             )
-            is_nox_session = os.environ.get("NOX_CURRENT_SESSION", "").startswith(
-                "tests-3."
-            )
-            is_ci_building_dirty = (
-                os.environ.get("SPHINX_SOCIAL_CARDS_BUILD_DIRTY", "") == "true"
-            )
+            is_nox_session = os.environ.get("NOX_CURRENT_SESSION", "").startswith("tests-3.")
+            is_ci_building_dirty = os.environ.get("SPHINX_SOCIAL_CARDS_BUILD_DIRTY", "") == "true"
             self.dirty = not npm_able or is_nox_session or is_ci_building_dirty
 
         if self.dirty:
@@ -161,9 +155,7 @@ class BundleCommand(Command, SubCommand):
                     elif icons_src.is_file():
                         # copy the file (eg. LICENSE)
                         icons_dist.parent.mkdir(parents=True, exist_ok=True)
-                        Path(icons_dist, icons_src.name).write_bytes(
-                            icons_src.read_bytes()
-                        )
+                        Path(icons_dist, icons_src.name).write_bytes(icons_src.read_bytes())
 
             # get Roboto fonts and store as pkg data
             font_cache = Path(pkg_src, ".fonts")

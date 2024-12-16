@@ -94,9 +94,7 @@ def get_doc_meta_data(document: docutils.nodes.document) -> Dict[str, str]:
     ret_val = {}
 
     # extract meta_data fields from current doc (up until current line)
-    doc_node_index = document.first_child_not_matching_class(
-        docutils.nodes.PreBibliographic
-    )
+    doc_node_index = document.first_child_not_matching_class(docutils.nodes.PreBibliographic)
     if doc_node_index is not None:
         for node in cast(docutils.nodes.Element, document[doc_node_index]):
             if isinstance(node, docutils.nodes.field):
@@ -109,9 +107,7 @@ def get_doc_meta_data(document: docutils.nodes.document) -> Dict[str, str]:
 
     # extract meta_data from meta directives in current doc (up until current line)
     meta_tags = [
-        doc_node
-        for doc_node in document.children
-        if isinstance(doc_node, meta_node_types)
+        doc_node for doc_node in document.children if isinstance(doc_node, meta_node_types)
     ]
     for tag in meta_tags:
         assert isinstance(tag, docutils.nodes.Element)

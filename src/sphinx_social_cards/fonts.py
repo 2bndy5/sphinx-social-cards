@@ -1,4 +1,5 @@
 """A way of getting font's sources with `fontsource API <https://fontsource.org/docs/api/>`_."""
+
 import json
 from urllib.parse import quote
 from pathlib import Path
@@ -72,9 +73,7 @@ class FontSourceManager:
             info_cache.write_text(json.dumps(font_info, indent=2), encoding="utf-8")
         styles = font_info.get("styles", [])
         if font.style not in styles:
-            raise ValueError(
-                f"{font.family} font family has no {font.style} style; only: {styles}"
-            )
+            raise ValueError(f"{font.family} font family has no {font.style} style; only: {styles}")
         if font.subset is None:
             font.subset = font_info.get("defSubset", None)
             assert font.subset is not None
@@ -83,8 +82,7 @@ class FontSourceManager:
             assert subsets is not None
             if font.subset not in subsets:
                 raise ValueError(
-                    f"{font.family} font family has no {font.subset} subset; "
-                    f"only {subsets}"
+                    f"{font.family} font family has no {font.subset} subset; " f"only {subsets}"
                 )
         weights = font_info.get("weights", None)
         assert weights is not None
@@ -115,9 +113,7 @@ class FontSourceManager:
         LOGGER.info("Fetching font: %s", font_file_name)
         variants = info.get("variants", None)
         assert variants is not None
-        variant_url = variants[str(font.weight)][font.style][font.subset].get(
-            "url", None
-        )
+        variant_url = variants[str(font.weight)][font.style][font.subset].get("url", None)
         assert variant_url is not None and "ttf" in variant_url
         response = try_request(variant_url["ttf"])
         font_path.parent.mkdir(parents=True, exist_ok=True)

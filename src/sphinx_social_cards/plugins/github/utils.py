@@ -46,7 +46,9 @@ def get_cache_dir() -> str:
     today = time.strftime(time_fmt, time.localtime())
     cache_dir = Path(
         user_cache_dir(
-            "sphinx_social_cards.plugins.github", "2bndy5", version=today  # (1)!
+            "sphinx_social_cards.plugins.github",
+            "2bndy5",
+            version=today,  # (1)!
         )
     )
     if cache_dir.parent.exists() and not cache_dir.exists():

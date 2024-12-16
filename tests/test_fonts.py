@@ -4,13 +4,9 @@ from sphinx_social_cards.validators.layers import Font
 from sphinx_social_cards.fonts import FontSourceManager
 
 
-@pytest.mark.parametrize(
-    "style", ["normal", pytest.param("bold", marks=pytest.mark.xfail)]
-)
+@pytest.mark.parametrize("style", ["normal", pytest.param("bold", marks=pytest.mark.xfail)])
 @pytest.mark.parametrize("weight", [400, 555])
-@pytest.mark.parametrize(
-    "subset", ["latin", pytest.param("undefined", marks=pytest.mark.xfail)]
-)
+@pytest.mark.parametrize("subset", ["latin", pytest.param("undefined", marks=pytest.mark.xfail)])
 @pytest.mark.parametrize("family", ["Roboto", "Noto Sans"])
 def test_font(sphinx_make_app, family: str, style: str, weight: int, subset: str):
     app: SphinxTestApp = sphinx_make_app(

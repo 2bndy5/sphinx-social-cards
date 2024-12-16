@@ -134,16 +134,12 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
     owner_cache_file = Path(cache_dir, owner_cache_name).with_suffix(".json")
     request_args = get_api_token()
     if owner_cache_file.exists():
-        gh_ctx.owner = Owner.model_validate_json(
-            owner_cache_file.read_text(encoding="utf-8")
-        )
+        gh_ctx.owner = Owner.model_validate_json(owner_cache_file.read_text(encoding="utf-8"))
     else:
         owner_cache_file.parent.mkdir(parents=True, exist_ok=True)
         # get github account account info
         LOGGER.info("Fetching info for github context about account: %s", owner)
-        res_json = try_request(
-            f"https://api.github.com/users/{owner}", **request_args
-        ).json()
+        res_json = try_request(f"https://api.github.com/users/{owner}", **request_args).json()
         assert isinstance(res_json, dict)
         gh_ctx.owner = Owner(
             **{
@@ -178,9 +174,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
                         description=org.get("description", ""),
                     )
                 )
-        owner_cache_file.write_text(
-            gh_ctx.owner.model_dump_json(indent=2), encoding="utf-8"
-        )
+        owner_cache_file.write_text(gh_ctx.owner.model_dump_json(indent=2), encoding="utf-8")
 
     if repo is None:
         return gh_ctx.model_dump()
@@ -188,9 +182,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
     repo_cache_name = quote("/".join([owner, quote(repo)]))
     repo_cache_file = Path(cache_dir, repo_cache_name).with_suffix(".json")
     if repo_cache_file.exists():
-        gh_ctx.repo = Repo.model_validate_json(
-            repo_cache_file.read_text(encoding="utf-8")
-        )
+        gh_ctx.repo = Repo.model_validate_json(repo_cache_file.read_text(encoding="utf-8"))
     else:
         repo_cache_file.parent.mkdir(parents=True, exist_ok=True)
         LOGGER.info("Fetching info for github context about repo: %s/%s", owner, repo)
@@ -234,8 +226,6 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         if "tags_url" in res_json:
             response = try_request(res_json["tags_url"]).json()
             gh_ctx.repo.tags = [t["name"] for t in cast(List[Dict[str, str]], response)]
-        repo_cache_file.write_text(
-            gh_ctx.repo.model_dump_json(indent=2), encoding="utf-8"
-        )
+        repo_cache_file.write_text(gh_ctx.repo.model_dump_json(indent=2), encoding="utf-8")
 
     return gh_ctx.model_dump()

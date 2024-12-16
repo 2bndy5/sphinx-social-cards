@@ -26,9 +26,7 @@ def test_big_number():
     (
         ["repo_url", "https://github.com/2bndy5/CirquePinnacle"],
         ["social_cards['site_url']", "https://nRF24.github.io/RF24"],
-        pytest.param(
-            "social_cards['site_url']", "https://RF24.rtfd.io", marks=pytest.mark.xfail
-        ),
+        pytest.param("social_cards['site_url']", "https://RF24.rtfd.io", marks=pytest.mark.xfail),
         ["repo_url", "https://github.com/2bndy5"],
         ["repo_url", "https://github.com/2bndy5/CirquePinnacle"],
     ),
@@ -36,9 +34,7 @@ def test_big_number():
 )
 def test_plugin_github(sphinx_make_app, url_key: str, url: str):
     if os.environ.get("CI", False) and (
-        platform.system().lower() != "linux"
-        or sys.version_info < (3, 11)
-        or sphinx_version < (7,)
+        platform.system().lower() != "linux" or sys.version_info < (3, 11) or sphinx_version < (7,)
     ):
         pytest.skip(
             "To avoid REST API rate limit, this test runs (in CI) only on Linux with "
@@ -64,9 +60,7 @@ Test Title
         assert not app._warning.getvalue()
     except (RuntimeError, ExtensionError) as exc:
         if "returned 403" in str(exc):
-            pytest.skip(
-                "GitHub REST API hit rate limit. Code coverage may be compromised."
-            )
+            pytest.skip("GitHub REST API hit rate limit. Code coverage may be compromised.")
         else:
             raise exc
 
@@ -84,8 +78,6 @@ Test Title
 """
         },
     )
-    add_images_dir(
-        app, Path(__file__).parent.parent / "src" / "sphinx_social_cards" / ".icons"
-    )
+    add_images_dir(app, Path(__file__).parent.parent / "src" / "sphinx_social_cards" / ".icons")
     app.build()
     assert not app._warning.getvalue()

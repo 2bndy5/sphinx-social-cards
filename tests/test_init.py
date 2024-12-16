@@ -4,12 +4,8 @@ import pytest
 from sphinx.testing.util import SphinxTestApp
 
 
-@pytest.mark.parametrize(
-    "include", [["index.rst"], []], ids=["include-index", "include-none"]
-)
-@pytest.mark.parametrize(
-    "exclude", [["index.rst"], []], ids=["exclude-index", "exclude-none"]
-)
+@pytest.mark.parametrize("include", [["index.rst"], []], ids=["include-index", "include-none"])
+@pytest.mark.parametrize("exclude", [["index.rst"], []], ids=["exclude-index", "exclude-none"])
 @pytest.mark.parametrize("enable", [True, False], ids=["enabled", "disabled"])
 def test_transform(
     sphinx_make_app,
@@ -49,9 +45,7 @@ Test Title
     ([True, True], [True, False], [False, False]),
     ids=["args+conf_caption", "args+no_conf_caption", "no_args+no_conf_caption"],
 )
-@pytest.mark.parametrize(
-    "meta_caption", [True, False], ids=["meta_caption", "no_meta_caption"]
-)
+@pytest.mark.parametrize("meta_caption", [True, False], ids=["meta_caption", "no_meta_caption"])
 @pytest.mark.parametrize(
     "layout_caption", [True, False], ids=["layout_caption", "no_layout_caption"]
 )
@@ -91,9 +85,7 @@ Test Title
 
 
 @pytest.mark.parametrize("via_directive", [True, False], ids=["directive", "transform"])
-def test_builder_check(
-    sphinx_make_app, caplog: pytest.LogCaptureFixture, via_directive: bool
-):
+def test_builder_check(sphinx_make_app, caplog: pytest.LogCaptureFixture, via_directive: bool):
     caplog.set_level(10, "sphinx.sphinx_social_cards")
     app: SphinxTestApp = sphinx_make_app(
         buildername="latex",

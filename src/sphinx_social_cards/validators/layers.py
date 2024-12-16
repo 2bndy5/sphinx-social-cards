@@ -1,15 +1,13 @@
 """This module contains validating dataclasses for a layout's layers."""
-from typing import Optional, Union, List
 
-from typing_extensions import Annotated, Literal
+from typing import Optional, Union, List, Annotated, Literal
+
 from pydantic import field_validator, Field, AliasChoices, field_serializer
 
 from .common import CustomBaseModel, Offset, ColorType, PositiveFloat, serialize_color
 
 PositiveInt = Annotated[int, Field(gt=0)]
-color_aliases = AliasChoices(
-    "linear_gradient", "radial_gradient", "conical_gradient", "color"
-)
+color_aliases = AliasChoices("linear_gradient", "radial_gradient", "conical_gradient", "color")
 
 
 class Border(CustomBaseModel):

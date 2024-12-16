@@ -3,6 +3,7 @@
     This module holds the information that plugins need to interface with the
     sphinx_social_cards extension. Currently, this module holds the following:
 """
+
 import logging
 from pathlib import Path
 from typing import Dict, Any, Union

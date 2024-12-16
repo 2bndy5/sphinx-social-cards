@@ -1,6 +1,6 @@
 import nox
 
-SUPPORTED_PY_VER = list(f"3.{x}" for x in range(8, 13))
+SUPPORTED_PY_VER = list(f"3.{x}" for x in range(9, 14))
 nox.options.reuse_existing_virtualenvs = True
 
 
@@ -34,6 +34,8 @@ def tests(session: nox.Session, sphinx: str):
     if sphinx.endswith("<5"):
         # sphinxcontrib deps that dropped support for sphinx v4.x
         session.install("-r", "tests/requirements-sphinx4.txt")
+    if sphinx.endswith("<6") and tuple([int(x) for x in session.python.split(".")]) >= (3, 13):
+        session.install("standard-imghdr")
     session.install("-r", "tests/requirements.txt")
     session.run("coverage", "run", "-m", "pytest", "-v")
 

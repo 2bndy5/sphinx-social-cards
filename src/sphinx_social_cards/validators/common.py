@@ -1,6 +1,6 @@
 import math
 from pathlib import Path
-from typing import Optional, Dict, Union, Any, cast
+from typing import Optional, Dict, Union, Any, cast, Annotated, Literal
 
 from pydantic import (
     BaseModel as PydanticBaseModel,
@@ -13,7 +13,6 @@ from pydantic import (
 )
 from pydantic_extra_types.color import Color
 from PySide6.QtGui import QGradient
-from typing_extensions import Annotated, Literal
 
 
 def _validate_path(val: Union[str, Path]) -> str:
