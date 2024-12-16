@@ -236,7 +236,7 @@ jobs:
           name: coverage-report
           path: htmlcov/
       - name: Post coverage summary
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
@@ -258,9 +258,9 @@ jobs:
           path: dist
       - name: Publish to PyPI (test server)
         if: ${{ ! startsWith(github.ref, 'refs/tags/v') }}
-        uses: pypa/gh-action-pypi-publish@v1.10.3
+        uses: pypa/gh-action-pypi-publish@v1.12.3
         with:
           repository-url: https://test.pypi.org/legacy/
       - name: Publish to PyPI (main server)
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: pypa/gh-action-pypi-publish@v1.10.3
+        uses: pypa/gh-action-pypi-publish@v1.12.3
