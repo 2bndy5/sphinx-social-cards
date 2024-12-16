@@ -11,8 +11,7 @@ from sphinx_social_cards.validators.layout import Size
 
 
 need_sphinx_immaterial_and_pydantic_v2 = pytest.mark.skipif(
-    tuple([int(x) for x in get_version("sphinx-immaterial").split(".")[:3]])
-    < (0, 11, 5),
+    tuple([int(x) for x in get_version("sphinx-immaterial").split(".")[:3]]) < (0, 11, 5),
     reason="pydantic v2 API not used by sphinx-immaterial until v0.11.5",
 )
 
@@ -199,9 +198,7 @@ social_cards["debug"] = True
     ],
     ids=["valid_colors", "invalid_pos"],
 )
-def test_gradient_colors(
-    sphinx_make_app, preset: Union[int, str], colors: Dict[float, str]
-):
+def test_gradient_colors(sphinx_make_app, preset: Union[int, str], colors: Dict[float, str]):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""
 social_cards["cards_layout_options"] = {{
@@ -222,9 +219,7 @@ social_cards["cards_layout_options"] = {{
 
 
 @pytest.mark.xfail
-@pytest.mark.parametrize(
-    "point", [Offset(x=500, y=500), None], ids=["focal_offset", "center"]
-)
+@pytest.mark.parametrize("point", [Offset(x=500, y=500), None], ids=["focal_offset", "center"])
 @pytest.mark.parametrize("radius", [500])
 def test_bad_focal_radius(point: Optional[Offset], radius: float):
     args = dict(center=Offset(x=1200, y=630), radius=500, focal_radius=radius)

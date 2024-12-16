@@ -69,19 +69,13 @@ def get_qt_gradient(
             color.end.y - offset.y,
         )
     if isinstance(color, Radial_Gradient):
-        grad = QRadialGradient(
-            color.center.x - offset.x, color.center.y - offset.y, color.radius
-        )
+        grad = QRadialGradient(color.center.x - offset.x, color.center.y - offset.y, color.radius)
         if color.focal_point is not None:
-            grad.setFocalPoint(
-                color.focal_point.x - offset.x, color.focal_point.y - offset.y
-            )
+            grad.setFocalPoint(color.focal_point.x - offset.x, color.focal_point.y - offset.y)
         if color.focal_radius is not None:
             grad.setFocalRadius(color.focal_radius)
     if isinstance(color, Conical_Gradient):
-        grad = QConicalGradient(
-            color.center.x - offset.x, color.center.y - offset.y, color.angle
-        )
+        grad = QConicalGradient(color.center.x - offset.x, color.center.y - offset.y, color.angle)
     if color.preset is not None:
         for p_grad in list(QGradient.Preset):
             if isinstance(color.preset, int) and color.preset == p_grad.value:
@@ -104,9 +98,7 @@ def get_luminance_contrast(rgba: Sequence[float]) -> float:
     NOTE: This does not account for transparency of a color.
     See https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
     """
-    r, g, b = [
-        c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in rgba[:3]
-    ]
+    r, g, b = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in rgba[:3]]
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 

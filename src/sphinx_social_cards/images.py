@@ -61,13 +61,9 @@ def render_svg(img_path: IMG_PATH_TYPE, size: Size) -> QImage:
     tgt_size = QSize(size.width, size.height)
     if any([size.width != svg_size.width(), size.height != svg_size.height()]):
         if svg_size.width() < svg_size.height():
-            svg_size = QSize(
-                svg_size.width() * size.height / svg_size.height(), size.height
-            )
+            svg_size = QSize(svg_size.width() * size.height / svg_size.height(), size.height)
         else:  # svg_size.height() <= svg_size.width():
-            svg_size = QSize(
-                size.width, svg_size.height() * size.width / svg_size.width()
-            )
+            svg_size = QSize(size.width, svg_size.height() * size.width / svg_size.width())
     else:
         svg_size = tgt_size
     img = QImage(svg_size, QImage.Format.Format_ARGB32_Premultiplied)
@@ -106,12 +102,8 @@ def resize_image(
     else:
         img = QImage(img_path)
     if img.isNull():
-        supported_formats = [
-            fmt.toStdString() for fmt in QImageReader.supportedImageFormats()
-        ]
-        raise RuntimeError(
-            f"{str(img_path)} is not of a supported format {supported_formats}"
-        )
+        supported_formats = [fmt.toStdString() for fmt in QImageReader.supportedImageFormats()]
+        raise RuntimeError(f"{str(img_path)} is not of a supported format {supported_formats}")
     w, h = cast(Tuple[int, int], img.size().toTuple())
     if aspect and (size.width != w or size.height != h):
         if isinstance(aspect, str):
@@ -135,9 +127,7 @@ def resize_image(
                     size.width, mode=Qt.TransformationMode.SmoothTransformation
                 )
         if w != h:
-            _tmp_canvas = QImage(
-                size.width, size.height, QImage.Format.Format_ARGB32_Premultiplied
-            )
+            _tmp_canvas = QImage(size.width, size.height, QImage.Format.Format_ARGB32_Premultiplied)
             _tmp_canvas.fill(Qt.GlobalColor.transparent)
             with QPainter(_tmp_canvas) as painter:
                 rect = QRect(0, 0, img_copy.width(), img_copy.height())
@@ -161,22 +151,16 @@ def resize_image(
     return img.copy(img.rect())
 
 
-def overlay_color(
-    img: QImage, color: Union[QColor, QBrush], mask: bool = False
-) -> QImage:
+def overlay_color(img: QImage, color: Union[QColor, QBrush], mask: bool = False) -> QImage:
     if mask:
         paint_bucket = QImage(img.size(), QImage.Format.Format_ARGB32_Premultiplied)
-        paint_bucket.fill(
-            color if isinstance(color, QColor) else Qt.GlobalColor.transparent
-        )
+        paint_bucket.fill(color if isinstance(color, QColor) else Qt.GlobalColor.transparent)
         with QPainter(paint_bucket) as painter:
             painter.setPen(Qt.GlobalColor.transparent)
             if isinstance(color, QBrush):
                 painter.setBrush(color)
                 painter.drawRect(img.rect())
-            painter.setCompositionMode(
-                QPainter.CompositionMode.CompositionMode_DestinationIn
-            )
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_DestinationIn)
             painter.drawImage(0, 0, img)
         return paint_bucket
     with QPainter(img) as painter:

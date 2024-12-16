@@ -43,13 +43,7 @@ from typing_extensions import Literal
             / "regular"
             / "building"
         ),
-        (
-            Path(__file__).parent.parent
-            / "src"
-            / "sphinx_social_cards"
-            / ".icons"
-            / "sphinx_logo"
-        ),
+        (Path(__file__).parent.parent / "src" / "sphinx_social_cards" / ".icons" / "sphinx_logo"),
     ],
     ids=[
         "none",

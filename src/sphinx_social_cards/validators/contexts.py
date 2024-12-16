@@ -1,4 +1,5 @@
 """This module holds the data classes used to populate the jinja contexts."""
+
 from importlib import import_module
 import platform
 import time
@@ -24,9 +25,7 @@ class Cards_Layout_Options(BaseModel):
         This section heavily relies on knowledge about :ref:`using_jinja`
     """
 
-    model_config = ConfigDict(
-        validate_assignment=True, extra="allow", str_strip_whitespace=True
-    )
+    model_config = ConfigDict(validate_assignment=True, extra="allow", str_strip_whitespace=True)
 
     background_image: Optional[PathType] = None
     """The fallback value used for a layer's `background.image <Background.image>`

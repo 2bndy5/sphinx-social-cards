@@ -72,11 +72,7 @@ class CardGenerator:
         self.jinja_env = SandboxedEnvironment(
             loader=FileSystemLoader(
                 [
-                    str(
-                        fp
-                        if Path(fp).is_absolute()
-                        else Path(self.doc_src, fp).resolve()
-                    )
+                    str(fp if Path(fp).is_absolute() else Path(self.doc_src, fp).resolve())
                     for fp in config.cards_layout_dir
                 ]
                 + [str(_DEFAULT_LAYOUT_DIR)]
@@ -92,9 +88,7 @@ class CardGenerator:
         self.jinja_env.line_comment_prefix = "##"
         self.jinja_env.finalize = lambda output: "null" if output is None else output
         self.jinja_env.filters["yaml"] = (
-            lambda x: yaml.safe_dump(x, default_flow_style=True)
-            .rstrip("\n...\n")
-            .rstrip("\n")
+            lambda x: yaml.safe_dump(x, default_flow_style=True).rstrip("\n...\n").rstrip("\n")
         )
 
     def parse_layout(self, content: Optional[str] = None):
@@ -112,9 +106,7 @@ class CardGenerator:
         else:
             for ext in (".yml", ".yaml", ".YML", ".YAML"):
                 try:
-                    template = self.jinja_env.get_template(
-                        self.config.cards_layout + ext
-                    )
+                    template = self.jinja_env.get_template(self.config.cards_layout + ext)
                     break
                 except TemplateNotFound:
                     continue  # we'll raise the error when all extensions were tried
@@ -214,9 +206,7 @@ class CardGenerator:
         )
 
         assert len(align) == 2
-        font_flags = QTextOption(
-            anchor_translator[0][align[0]] | anchor_translator[1][align[1]]
-        )
+        font_flags = QTextOption(anchor_translator[0][align[0]] | anchor_translator[1][align[1]])
         font_flags.setWrapMode(QTextOption.WrapMode.NoWrap)
         font_flags.setFlags(QTextOption.Flag.ShowLineAndParagraphSeparators)
 
@@ -264,9 +254,7 @@ class CardGenerator:
                     display_lines[line_count] = "…"
                 break
 
-        text_layout = QTextLayout(
-            "\n".join(display_lines), canvas.font(), canvas.device()
-        )
+        text_layout = QTextLayout("\n".join(display_lines), canvas.font(), canvas.device())
         text_layout.setFlags(font_flags.flags().value)
         return display_lines, text_layout, font_flags
 
@@ -297,9 +285,7 @@ class CardGenerator:
 
         y_offset = 0
         layer_rect = QRectF(0, 0, layer.size.width, layer.size.height)
-        bbox = metrics.boundingRect(
-            layer_rect, font_flags.alignment().value, "\n".join(raw_text)
-        )
+        bbox = metrics.boundingRect(layer_rect, font_flags.alignment().value, "\n".join(raw_text))
         canvas.setBrush(Qt.GlobalColor.transparent)
         text_layout.beginLayout()
         for text in raw_text:
@@ -309,9 +295,7 @@ class CardGenerator:
             line = text_layout.createLine()
             line.setNumColumns(len(text))
             line_bbox = metrics.boundingRect(bbox, font_flags.alignment().value, text)
-            pos = QPointF(
-                line_bbox.x() + typography.border.width / 2, y_offset + max(0, bbox.y())
-            )
+            pos = QPointF(line_bbox.x() + typography.border.width / 2, y_offset + max(0, bbox.y()))
             line.setPosition(pos)
             # canvas.drawRect(pos.x(), pos.y(), line_bbox.width(), line_bbox.height())
             y_offset += metrics.height() + min(0, padding)
@@ -455,9 +439,7 @@ class CardGenerator:
         assert layer.size is not None
         if shape_config.border.width:
             width = shape_config.border.width
-            rect = QRectF(
-                width, width, layer.size.width - width, layer.size.height - width
-            )
+            rect = QRectF(width, width, layer.size.width - width, layer.size.height - width)
             pen.setJoinStyle(Qt.PenJoinStyle.MiterJoin)
         canvas.setPen(pen)
         canvas.setBrush(brush)
@@ -570,10 +552,8 @@ class CardGenerator:
         rect = QRectF(
             layer.offset.x,
             layer.offset.y,
-            layer.size.width
-            - 1 * (layer.size.width == self.config._parsed_layout.size.width),
-            layer.size.height
-            - 1 * (layer.size.height == self.config._parsed_layout.size.height),
+            layer.size.width - 1 * (layer.size.width == self.config._parsed_layout.size.width),
+            layer.size.height - 1 * (layer.size.height == self.config._parsed_layout.size.height),
         )
         font_db_info = self.load_font(Typography(content=""))
         canvas.setFont(QFontDatabase.font(font_db_info.family, font_db_info.style, 10))
@@ -676,12 +656,8 @@ class CardGenerator:
                 if self.config.debug.grid:
                     steps = self.config.debug.grid_step
                     points = []
-                    for y in range(
-                        steps, self.config._parsed_layout.size.height, steps
-                    ):
-                        for x in range(
-                            steps, self.config._parsed_layout.size.width, steps
-                        ):
+                    for y in range(steps, self.config._parsed_layout.size.height, steps):
+                        for x in range(steps, self.config._parsed_layout.size.width, steps):
                             points.append(QPointF(x - 1, y))
                             points.append(QPointF(x + 1, y))
                             points.append(QPointF(x, y - 1))

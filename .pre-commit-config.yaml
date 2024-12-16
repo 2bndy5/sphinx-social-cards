@@ -1,11 +1,6 @@
 repos:
-  - repo: https://github.com/python/black
-    rev: 23.7.0
-    hooks:
-      - id: black
-        exclude: ^cookiecutter/
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: check-yaml
         exclude: ^tests/layouts/
@@ -17,12 +12,16 @@ repos:
       - id: mixed-line-ending
         args: ["--fix=lf"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.0.278
+    rev: v0.8.3
     hooks:
+      # Run the linter.
       - id: ruff
         exclude: ^cookiecutter/
+      # Run the formatter.
+      - id: ruff-format
+        exclude: ^cookiecutter/
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
+    rev: v1.13.0
     hooks:
       - id: mypy
         name: mypy (library code)

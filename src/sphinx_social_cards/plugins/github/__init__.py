@@ -82,6 +82,7 @@ or using the ``sphinx-social-cards`` package's optional dependency:
              ``/Users/$(id -un)/Library/Caches/sphinx_social_cards.plugins.github/<month> <day>
              <year>``
 """
+
 from pathlib import Path
 from typing import Tuple
 

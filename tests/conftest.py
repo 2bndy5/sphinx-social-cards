@@ -39,7 +39,8 @@ social_cards = {
         for filename, content in files.items():
             (tmp_path / filename).write_text(content, encoding="utf-8")
         app = make_app(
-            srcdir=SphinxPath(str(tmp_path)), **kwargs  # type: ignore[call-arg]
+            srcdir=SphinxPath(str(tmp_path)),
+            **kwargs,  # type: ignore[call-arg]
         )
         return app
 

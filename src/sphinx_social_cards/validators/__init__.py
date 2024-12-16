@@ -1,4 +1,5 @@
 """This module contains validating dataclasses for the configurations in python"""
+
 from pathlib import Path
 from typing import Union, List, Optional, cast, Dict, Set
 
@@ -282,9 +283,7 @@ class Social_Cards(CustomBaseModel):
         theme_icon: Optional[Dict[str, str]] = theme_options.get("icon", None)
         theme_logo: Optional[str] = None
         if theme_icon is not None and "logo" in theme_icon:
-            tmp = (
-                Path(__file__).parent.parent / ".icons" / (theme_icon["logo"] + ".svg")
-            )
+            tmp = Path(__file__).parent.parent / ".icons" / (theme_icon["logo"] + ".svg")
             if not tmp.exists():
                 raise ValueError(f"Could not find image: {theme_icon['logo']}")
             theme_logo = str(tmp)
