@@ -1,6 +1,6 @@
 import nox
 
-SUPPORTED_PY_VER = list(f"3.{x}" for x in range(8, 13))
+SUPPORTED_PY_VER = list(f"3.{x}" for x in range(9, 14))
 nox.options.reuse_existing_virtualenvs = True
 
 
