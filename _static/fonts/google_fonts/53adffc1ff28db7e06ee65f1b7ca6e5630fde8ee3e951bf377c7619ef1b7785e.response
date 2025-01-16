@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 200;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/roboto/v47/KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLgHQuAj-lnYi128W0Q.ttf) format('truetype');
+}

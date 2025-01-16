@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.77097494e2ab63a09.min.css?v=be19ddb3" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.54edf29961ce02a4c.min.css?v=15662400" />
         <link rel="stylesheet" type="text/css" href="../_static/extra-css.css?v=79315577" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1484,7 +1484,7 @@ the cache is purged).</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption highlight"><span class="filename"><span class="caption-text">
 </span>How the cache location is chosen via <a class="reference external" href="https://github.com/ActiveState/appdirs">appdirs</a> API<a class="headerlink" href="#id3" title="Permalink to this code">¶</a></span></div>
-<div class="highlight-python notranslate"><div class="annotate highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_cache_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="annotate highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_cache_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">time_fmt</span> <span class="o">=</span> <span class="s2">&quot;%B </span><span class="si">%#d</span><span class="s2"> %Y&quot;</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;windows&quot;</span> <span class="k">else</span> <span class="s2">&quot;%B </span><span class="si">%-d</span><span class="s2"> %Y&quot;</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_fmt</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
     <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>

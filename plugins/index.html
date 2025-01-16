@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.77097494e2ab63a09.min.css?v=be19ddb3" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.54edf29961ce02a4c.min.css?v=15662400" />
         <link rel="stylesheet" type="text/css" href="../_static/extra-css.css?v=79315577" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -752,13 +752,13 @@
 <p>A typical plugin involves a <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function and another function that gets called when Sphinx
 has prepared the builder for use (the <a class="extlink-sphinx-event reference external" href="https://www.sphinx-doc.org/en/master/extdev/appapi.html#event-builder-inited">builder-inited event</a>). For more details on writing
 a sphinx extension, see the <a class="reference external" href="https://www.sphinx-doc.org/en/master/development/tutorials/helloworld.html">Sphinx Hello World tutorial</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sphinx.application</span> <span class="kn">import</span> <span class="n">Sphinx</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.application</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphinx</span>
 
-<span class="k">def</span> <span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
     <span class="c1"># add contexts, layouts, or images from here</span>
     <span class="k">pass</span>
 
-<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
     <span class="c1"># connect your on_builder_init() to the builder-inited event</span>
     <span class="n">app</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;builder-inited&quot;</span><span class="p">,</span> <span class="n">on_builder_init</span><span class="p">)</span>
 </code></pre></div>
@@ -802,10 +802,10 @@ Not using hyphens in key names</label></div>
 </div>
 </div>
 </div></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sphinx.application</span> <span class="kn">import</span> <span class="n">Sphinx</span>
-<span class="kn">from</span> <span class="nn">sphinx_social_cards.plugins</span> <span class="kn">import</span> <span class="n">add_jinja_context</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.application</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphinx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx_social_cards.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_jinja_context</span>
 
-<span class="k">def</span> <span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
     <span class="n">my_ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span><span class="p">}</span>
     <span class="n">add_jinja_context</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;my_ctx&quot;</span><span class="p">:</span> <span class="n">my_ctx</span><span class="p">})</span>
 </code></pre></div>
@@ -829,11 +829,11 @@ If a <code class="docutils literal notranslate"><span class="pre">default</span>
 <code class="docutils literal notranslate"><span class="pre">bitbucket</span></code> plugin can have layouts in the plugin’s <code class="docutils literal notranslate"><span class="pre">layouts/bitbucket</span></code> directory. When the
 layouts are added, the layout <code class="docutils literal notranslate"><span class="pre">bitbucket/default</span></code> will not override the <code class="docutils literal notranslate"><span class="pre">default</span></code> layout.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">sphinx.application</span> <span class="kn">import</span> <span class="n">Sphinx</span>
-<span class="kn">from</span> <span class="nn">sphinx_social_cards.plugins</span> <span class="kn">import</span> <span class="n">add_layouts_dir</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.application</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphinx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx_social_cards.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_layouts_dir</span>
 
-<span class="k">def</span> <span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
     <span class="n">add_layouts_dir</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;layouts&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -851,11 +851,11 @@ name from a different path.</p>
 are added, the image <code class="docutils literal notranslate"><span class="pre">bootstrap/logo.png</span></code> will not take precedence over another image named
 <code class="docutils literal notranslate"><span class="pre">logo.png</span></code>.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">sphinx.application</span> <span class="kn">import</span> <span class="n">Sphinx</span>
-<span class="kn">from</span> <span class="nn">sphinx_social_cards.plugins</span> <span class="kn">import</span> <span class="n">add_images_dir</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.application</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphinx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx_social_cards.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_images_dir</span>
 
-<span class="k">def</span> <span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_builder_init</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">):</span>
     <span class="n">add_images_dir</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
