@@ -2,5 +2,5 @@
   font-family: 'Roboto Mono';
   font-style: italic;
   font-weight: 100;
-  src: url(https://fonts.gstatic.com/s/robotomono/v30/L0xoDF4xlVMF-BfR8bXMIjhOsXG-q2oeuFoqFrlnAdW6CpyeTIwsW4U.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/robotomono/v31/L0xoDF4xlVMF-BfR8bXMIjhOsXG-q2oeuFoqFrlnAdW6CpyeTIwsW4U.ttf) format('truetype');
 }
