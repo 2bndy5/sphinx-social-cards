@@ -7,19 +7,18 @@ name = "sphinx-social-cards"
 description = "Generate social media cards for documentation pages with Sphinx"
 readme = "README.rst"
 keywords = ["sphinx", "social", "cards", "previews"]
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.9"
-dynamic = ["version", "dependencies", "optional-dependencies"]
+dynamic = ["version"]
 authors = [
     { name = "Brendan Doherty", email = "2bndy5@gmail.com" }
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Environment :: Web Environment",
     "Framework :: Sphinx :: Extension",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -27,19 +26,32 @@ classifiers = [
     "Topic :: Documentation :: Sphinx",
     "Topic :: Utilities",
 ]
+dependencies = [
+    "fontawesome-free-pack>=7.0.1",
+    "material-design-icons-pack>=7.4.47",
+    "octicons-pack>=19.18.0",
+    "pydantic>=2.4",
+    "pydantic-extra-types>=2.10.5",
+    "pyside6>=6.9.2",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.5",
+    "simple-icons-pack>=15.15.0",
+    "sphinx>=4.5",
+]
 
 [project.urls]
 Documentation =  "https://2bndy5.github.io/sphinx-social-cards"
 Source = "http://github.com/2bndy5/sphinx-social-cards"
 
+[project.optional-dependencies]
+github = [
+    "appdirs>=1.4.4",
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["sphinx_social_cards", "sphinx_social_cards.*"]
 exclude = ["plugins*", "validators*"]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
-optional-dependencies = { github = { file = ["requirements-github.txt"] }}
 
 [tool.setuptools_scm]
 # It would be nice to include the commit hash in the version, but that
@@ -50,8 +62,9 @@ local_scheme = "no-local-version"
 fallback_version = "0.0.0"
 
 [tool.ruff]
-# Decrease the maximum line length to 100 characters. (mostly for unbreakable docstrings)
+# Decrease the maximum line length to 100 characters. (mostly for unbreakable doc-strings)
 line-length = 100
+extend-exclude = ["cookiecutter/"]
 
 [tool.mypy]
 show_error_codes = true
@@ -79,3 +92,24 @@ skip_empty = true
 
 [tool.coverage.html]
 show_contexts = true
+
+[dependency-groups]
+dev = [
+    "docutils-stubs>=0.0.22",
+    "nox>=2025.5.1",
+    "pre-commit>=4.3.0",
+    "types-pyyaml>=6.0.12.20250915",
+    "types-requests>=2.32.4.20250913",
+]
+docs = [
+    "sphinx-immaterial>=0.12.5",
+    "sphinx-jinja>=2.0.2",
+]
+test = [
+    "appdirs>=1.4.4",
+    "coverage[toml]>=7.10.6",
+    "pytest>=8.4.2",
+    "sphinx-immaterial>=0.12.5",
+    "sphinx[test]>=4.5",
+    "standard-imghdr ; python_full_version >= '3.13'",
+]

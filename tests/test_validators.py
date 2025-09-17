@@ -132,7 +132,7 @@ html_theme_options = {{
             + "e9f3c94fbd6b23dd78d699c47102cb2d3f4a0008/docs/_static/images/Ybin.gif",
             "material/library",
         ],
-        pytest.param(None, "non-existent", marks=pytest.mark.xfail),
+        [None, "non-existent"],
         pytest.param("https://bad-url", "", marks=pytest.mark.xfail),
     ),
     ids=["bundled", "url", "invalid_svg", "bad_url"],

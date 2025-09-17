@@ -2,6 +2,10 @@ from logging import getLogger
 from pathlib import Path
 from typing import List, Union, Optional, cast, Tuple, Literal
 from urllib.parse import urlparse, quote
+from material_design_icons_pack import get_icon as mdi_get_icon
+from simple_icons_pack import get_icon as simple_get_icon
+from fontawesome_free_pack import get_icon as fa_get_icon
+from octicons_pack import get_icon as oct_get_icon
 
 from PySide6.QtGui import QImage, QImageReader, QPainter, QBrush
 from PySide6.QtCore import Qt, QSize, QRect
@@ -13,6 +17,51 @@ from .validators.layout import Size
 LOGGER = getLogger(__name__)
 
 IMG_PATH_TYPE = Optional[Union[str, Path]]
+
+
+def get_embedded_svg(pack_name: str, slug: str) -> Optional[Path]:
+    """Get an SVG string from an icon pack with embedded SVG data, and
+    export the SVG data to a file.
+
+    :param pack_name: The abridged name of the icon pack. The supported
+        values come from the supported icon pack:
+
+        - ``material``: ``material-design-icons-pack``
+        - ``fontawesome``: ``fontawesome-free-pack``
+        - ``octicons``: ``octicons-pack``
+        - ``simple``: ``simple-icons-pack``
+    :param slug: The slug identifier of the individual icon.
+
+    If no SVG is found in an icon pack, then `None` is returned.
+
+    If the SVG is found, then the SVG data is exported to a file located
+    in this package's .icons/ folder. In this case the SVG file's path is
+    returned.
+    """
+    svg = None
+    if pack_name == "material":
+        icon = mdi_get_icon(slug)
+        if icon is not None:
+            svg = icon.svg
+    if pack_name == "fontawesome":
+        icon = fa_get_icon(slug)
+        if icon is not None:
+            svg = icon.svg
+    if pack_name == "octicons":
+        icon = oct_get_icon(slug)
+        if icon is not None:
+            svg = icon.svg
+    if pack_name == "simple":
+        icon = simple_get_icon(slug)
+        if icon is not None:
+            svg = icon.svg
+    if svg is not None:
+        pkg_icon = Path(__file__).parent / ".icons" / pack_name / f"{slug}.svg"
+        if not pkg_icon.exists():
+            pkg_icon.parent.mkdir(parents=True, exist_ok=True)
+            pkg_icon.write_bytes(svg.encode(encoding="utf-8"))
+        return pkg_icon
+    return None
 
 
 def find_image(
@@ -34,10 +83,18 @@ def find_image(
             file_name.write_bytes(response.content)
         img_name = file_name
     if isinstance(img_name, str):
-        img_name.strip()
-        img_name = Path(img_name)
-    if not img_name.suffix:
-        img_name = img_name.with_suffix(".svg")
+        img_name = img_name.strip()
+        tmp_file_path = Path(img_name)
+        if "/" in img_name and not tmp_file_path.suffix:
+            # image name might be a slug from redistributed-icon packs (see dependencies)
+            pack, slug = str(img_name).split("/", maxsplit=1)[:2]
+            svg_file = get_embedded_svg(pack_name=pack, slug=slug)
+            if svg_file is not None:
+                return svg_file
+        if not tmp_file_path.suffix:
+            img_name = tmp_file_path.with_suffix(".svg")
+        else:
+            img_name = tmp_file_path
     if not img_name.is_absolute():
         rel_path = Path(doc_src, img_name)
         if rel_path.exists():

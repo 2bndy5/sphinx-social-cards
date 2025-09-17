@@ -67,12 +67,12 @@ def test_directive(
 Test Title
 ==========
 
-.. social-card:: { dir_arg if with_args else ''}
+.. social-card:: {dir_arg if with_args else ""}
     :meta-data: {{ "title": "A test" }}
-    :conf-caption: {'A caption' if not conf_caption else ''}
-    :meta-data-caption: {'A caption' if not meta_caption else ''}
-    :layout-caption: {'A caption' if not layout_caption else ''}
-    {':dry-run:' if dry_run else ''}
+    :conf-caption: {"A caption" if not conf_caption else ""}
+    :meta-data-caption: {"A caption" if not meta_caption else ""}
+    :layout-caption: {"A caption" if not layout_caption else ""}
+    {":dry-run:" if dry_run else ""}
 
     layers: []
 """
@@ -95,7 +95,7 @@ Test Title
 ==========
 
 .. social-card::
-    {':dry-run:' if not via_directive else ''}
+    {":dry-run:" if not via_directive else ""}
 """
         },
     )

@@ -2,7 +2,6 @@ import json
 import os
 from pathlib import Path
 import subprocess
-import shutil
 from typing import List, Dict, Any
 from urllib.request import Request, urlopen, HTTPError
 from setuptools import setup, Command
@@ -12,15 +11,6 @@ from setuptools.command.sdist import sdist
 
 pkg_root = Path(__file__).parent
 pkg_src = pkg_root / "src" / "sphinx_social_cards"
-icon_pkgs = {
-    "material": ["@mdi/svg/svg", "@mdi/svg/LICENSE"],
-    "octicons": ["@primer/octicons/build/svg", "@primer/octicons/LICENSE"],
-    "simple": ["simple-icons/icons", "simple-icons/LICENSE.md"],
-    "fontawesome": [
-        "@fortawesome/fontawesome-free/svgs",
-        "@fortawesome/fontawesome-free/LICENSE.txt",
-    ],
-}
 
 
 def download_fonts(font_id: str, font_cache: Path):
@@ -114,15 +104,9 @@ class BundleCommand(Command, SubCommand):
     def finalize_options(self):
         """Post-process options."""
         if self.dirty is None:
-            # If package.json and svgo config doesn't exist, then assume this is
-            # building from sdist and icons should already be bundled.
-            npm_able = (
-                Path(pkg_root, "package.json").exists()
-                and Path(pkg_root, "tools", "svgo_config.js").exists()
-            )
             is_nox_session = os.environ.get("NOX_CURRENT_SESSION", "").startswith("tests-3.")
             is_ci_building_dirty = os.environ.get("SPHINX_SOCIAL_CARDS_BUILD_DIRTY", "") == "true"
-            self.dirty = not npm_able or is_nox_session or is_ci_building_dirty
+            self.dirty = is_nox_session or is_ci_building_dirty
 
         if self.dirty:
             # NOTE: As of setuptools v64.0.2, we cannot raise an exception here for
@@ -130,10 +114,6 @@ class BundleCommand(Command, SubCommand):
             if not Path(pkg_src, ".fonts").exists():
                 self.dirty = False
                 return
-            for icon_set in icon_pkgs:
-                if not Path(pkg_src, ".icons", icon_set).exists():
-                    self.dirty = False
-                    return
 
     def run(self) -> None:
         """Run command."""
@@ -144,34 +124,6 @@ class BundleCommand(Command, SubCommand):
             subprocess.run(args, check=True, shell=True, cwd=str(pkg_root))
 
         if not self.dirty:
-            # ensure icons from npm pkg exist
-            __run_process("npm", "install")
-            # optimize/copy icons to pkg as pkg data
-            for name, sources in icon_pkgs.items():
-                icons_dist = pkg_src / ".icons" / name
-                for src in sources:
-                    icons_src = pkg_root / "node_modules" / src
-                    if icons_src.is_dir():
-                        if icons_dist.exists():
-                            shutil.rmtree(str(icons_dist))
-                        # copy icons from npm pkg
-                        __run_process(
-                            "npx",
-                            "svgo",
-                            "--config",
-                            str(pkg_root / "tools" / "svgo_config.js"),
-                            "-r",
-                            "-q",
-                            "-f",
-                            str(icons_src),
-                            "-o",
-                            str(icons_dist),
-                        )
-                    elif icons_src.is_file():
-                        # copy the file (eg. LICENSE)
-                        icons_dist.parent.mkdir(parents=True, exist_ok=True)
-                        Path(icons_dist, icons_src.name).write_bytes(icons_src.read_bytes())
-
             # get Roboto fonts and store as pkg data
             font_cache = Path(pkg_src, ".fonts")
             font_cache.mkdir(exist_ok=True)

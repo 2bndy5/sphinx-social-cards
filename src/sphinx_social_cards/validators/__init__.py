@@ -135,9 +135,9 @@ class Social_Cards(CustomBaseModel):
     detail."""
     cards_exclude: Union[List[str], Set[str]] = []
     """This `list` can be used to exclude certain pages from generating social cards.
-    Default is an empty `list`. |clude-list|
+    Default is an empty `list`. |glob-list|
 
-    .. |clude-list| replace:: Each item **must** be relative to the directory
+    .. |glob-list| replace:: Each item **must** be relative to the directory
         containing the conf.py file. :mod:`Glob patterns <glob>` are supported, and file
         suffixes are only required when specifying an individual document source.
 
@@ -158,7 +158,7 @@ class Social_Cards(CustomBaseModel):
     """
     cards_include: Union[List[str], Set[str]] = []
     """This `list` can be used to include certain pages from `cards_exclude` `list`.
-    Default is an empty `list`. |clude-list|
+    Default is an empty `list`. |glob-list|
 
     .. code-block:: python
         :caption: include all docs in the ``blog-posts`` folder
@@ -283,10 +283,7 @@ class Social_Cards(CustomBaseModel):
         theme_icon: Optional[Dict[str, str]] = theme_options.get("icon", None)
         theme_logo: Optional[str] = None
         if theme_icon is not None and "logo" in theme_icon:
-            tmp = Path(__file__).parent.parent / ".icons" / (theme_icon["logo"] + ".svg")
-            if not tmp.exists():
-                raise ValueError(f"Could not find image: {theme_icon['logo']}")
-            theme_logo = str(tmp)
+            theme_logo = cast(str, theme_icon["logo"])
         if self.cards_layout_options.logo is None:
             self.cards_layout_options.logo = Icon(
                 image=getattr(config, "html_logo", None) or theme_logo

@@ -4,7 +4,7 @@ from typing import Optional, Union, Literal
 from sphinx.testing.util import SphinxTestApp
 from PySide6.QtGui import QImage
 import pytest
-from sphinx_social_cards.images import resize_image
+from sphinx_social_cards.images import resize_image, get_embedded_svg
 from sphinx_social_cards.validators.layout import Size
 
 
@@ -16,33 +16,10 @@ from sphinx_social_cards.validators.layout import Size
         Path(__file__).parent.parent / "docs" / "images" / "avatar.jpg",
         Path(__file__).parent.parent / "docs" / "images" / "rainbow.png",
         Path(__file__).parent / "rainbow.png",
-        (
-            Path(__file__).parent.parent
-            / "src"
-            / "sphinx_social_cards"
-            / ".icons"
-            / "material"
-            / "library"
-        ),
-        (
-            Path(__file__).parent.parent
-            / "src"
-            / "sphinx_social_cards"
-            / ".icons"
-            / "fontawesome"
-            / "solid"
-            / "language"
-        ),
-        (
-            Path(__file__).parent.parent
-            / "src"
-            / "sphinx_social_cards"
-            / ".icons"
-            / "fontawesome"
-            / "regular"
-            / "building"
-        ),
-        (Path(__file__).parent.parent / "src" / "sphinx_social_cards" / ".icons" / "sphinx_logo"),
+        "material/library",
+        "fontawesome/solid/language",
+        "fontawesome/regular/building",
+        "simple/python",
     ],
     ids=[
         "none",
@@ -63,14 +40,18 @@ def test_resize_image(
     size: Size,
     aspect_ratio: Union[bool, Literal["width", "height"]],
 ):
-    result = resize_image(image, size, aspect_ratio)
+    path = image
+    if isinstance(image, str) and "/" in image and image != __file__:
+        pack, slug = image.split("/", maxsplit=1)
+        path = get_embedded_svg(pack, slug)
+    result = resize_image(path, size, aspect_ratio)
     if result:
         assert isinstance(result, QImage)
         assert result.width() == size.width
         assert result.height() == size.height
 
 
-def test_icon_gradient_overlay(sphinx_make_app):
+def test_icon_gradient_overlay(sphinx_make_app) -> None:
     app: SphinxTestApp = sphinx_make_app(
         files={
             "index.rst": """

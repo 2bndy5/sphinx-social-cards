@@ -65,7 +65,7 @@ Test Title
           border:
             width: 25
             color: white
-          corners: [{', '.join(corners)}]
+          corners: [{", ".join(corners)}]
 """,
         },
     )
@@ -132,7 +132,7 @@ Test Title
           line: {{ amount: 3 }}
           align: center
           border:
-            color: {'red' if overflow == 'on' else 'null'}
+            color: {"red" if overflow == "on" else "null"}
             width: 1
 """,
         },
@@ -260,10 +260,10 @@ Test Title
     size: {{ width: 900, height: 330 }}
     layers:
       - ellipse:
-          color: {'red' if border_to_origin == 'off' else 'null'}
+          color: {"red" if border_to_origin == "off" else "null"}
           arc: {{ end: -90 }}
           border:
-            color: {'green' if border_to_origin == 'on' else 'null'}
+            color: {"green" if border_to_origin == "on" else "null"}
             width: 45
           border_to_origin: {border_to_origin}
 """,

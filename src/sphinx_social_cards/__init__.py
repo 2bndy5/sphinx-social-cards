@@ -16,7 +16,14 @@ Dependencies
 
 The following dependencies are used:
 
-.. literalinclude:: ../requirements.txt
+.. jinja:: deps
+
+    .. code-block:: python
+
+        {% for dep in deps -%}
+            {{ dep }}
+        {% endfor %}
+
 
 Installing
 ----------
@@ -44,7 +51,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from typing import List, cast, Union, Any, Dict, Set, Optional
+from typing import List, cast, Union, Any, Dict, Set, Optional, Callable
 from urllib.parse import urlparse
 
 import docutils.nodes
@@ -213,7 +220,7 @@ class SocialCardDirective(SphinxDirective):
     optional_arguments = 1  # conf is an optional json string
     final_argument_whitespace = True
     has_content = True  # an example layout will be our content
-    option_spec = {
+    option_spec: Dict[str, Callable[[str], Any]] = {
         "name": directives.unchanged,
         "class": directives.class_option,
         "meta-data": directives.unchanged,  # meta-data is an optional json string
@@ -291,7 +298,7 @@ class SocialCardDirective(SphinxDirective):
             LOGGER.error(
                 "Could not find page title for %s. Did you place the directive after "
                 "the top-level section title? NOTE: Top-level section titles in "
-                "docstrings (via `autodoc` directives) may not be detected.",
+                "doc-strings (via `autodoc` directives) may not be detected.",
                 self.env.doc2path(self.env.docname, base=False),
             )
 
@@ -357,7 +364,7 @@ class SocialCardDirective(SphinxDirective):
             par_node = docutils.nodes.paragraph("", "", ref_node, classes=["result"])
             container_node += par_node
         else:
-            # set meta_data and add it to the doctree
+            # set meta_data and add it to the doc tree
             existing_meta_data.pop("card-icon", None)
             img_uri, added_meta_data = complete_doc_meta_data(
                 existing_meta_data,
