@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sphinx-social-cards"
 description = "Generate social media cards for documentation pages with Sphinx"
-readme = "README.rst"
+readme = "README.md"
 keywords = ["sphinx", "social", "cards", "previews"]
 license = "MIT"
 requires-python = ">=3.9"
