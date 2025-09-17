@@ -82,7 +82,7 @@ class FontSourceManager:
             assert subsets is not None
             if font.subset not in subsets:
                 raise ValueError(
-                    f"{font.family} font family has no {font.subset} subset; " f"only {subsets}"
+                    f"{font.family} font family has no {font.subset} subset; only {subsets}"
                 )
         weights = font_info.get("weights", None)
         assert weights is not None

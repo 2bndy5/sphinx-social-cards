@@ -1,0 +1,109 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+    permissions:
+      contents: read
+    env:
+      SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR: ${{ github.workspace }}/docs_theme_build_cache
+    steps:
+      - if: runner.os == 'Linux'
+        run: |-
+          sudo apt-get update
+          sudo apt-get install -y libgl-dev libglvnd-dev libxkbcommon-x11-0
+          echo "QT_QPA_PLATFORM=offscreen" >> "${GITHUB_ENV}"
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Python ${{ matrix.python-version }}
+        id: python-setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup UV
+        id: uv-setup
+        uses: astral-sh/setup-uv@b75a909f75acd358c2196fb9a5f1299a9a8868a4 # v6.7.0
+        with:
+          python-version: ${{ steps.python-setup.outputs.python-version }}
+          enable-cache: true
+      - name: Restore cache of sphinx-immaterial fonts
+        uses: actions/cache/restore@v4
+        id: restore-cache
+        with:
+          path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-test-docs-cache-${{ github.run_id }}
+      - name: Run tests
+        run: uvx nox -s tests --python ${{ matrix.python-version }}
+        env:
+          COVERAGE_FILE: .coverage.${{ github.run_id }}.${{ github.run_attempt }}.${{ runner.os }}.${{ matrix.python-version }}
+          GITHUB_REST_API_TOKEN: ${{ github.token }}
+          FORCE_COLOR: 1
+      - name: Cache sphinx-immaterial fonts
+        if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-test-docs-cache-${{ github.run_id }}
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-${{ runner.os }}-py${{ matrix.python-version }}
+          path: .coverage*
+          include-hidden-files: true
+
+  coverage-report:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-data-*
+          merge-multiple: true
+      - name: Setup Python
+        id: python-setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - name: Setup UV
+        id: uv-setup
+        uses: astral-sh/setup-uv@b75a909f75acd358c2196fb9a5f1299a9a8868a4 # v6.7.0
+        with:
+          python-version: ${{ steps.python-setup.outputs.python-version }}
+          enable-cache: true
+      - name: Create coverage report
+        run: uvx nox -s coverage
+      - name: Upload comprehensive coverage HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov/
+      - name: Post coverage summary
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)

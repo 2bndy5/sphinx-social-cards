@@ -104,9 +104,9 @@ def get_luminance_contrast(rgba: Sequence[float]) -> float:
 
 def auto_get_fg_color(color: ColorType) -> Color:
     luminance: Optional[float] = None
-    assert isinstance(
-        color, (Color, Linear_Gradient, Radial_Gradient, Conical_Gradient)
-    ), "color should already be validated"
+    assert isinstance(color, (Color, Linear_Gradient, Radial_Gradient, Conical_Gradient)), (
+        "color should already be validated"
+    )
     if isinstance(color, Color):
         rgb = [c / 255 for c in color.as_rgb_tuple(alpha=False)]
         luminance = get_luminance_contrast(rgb)

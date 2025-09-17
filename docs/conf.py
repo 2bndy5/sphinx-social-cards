@@ -33,7 +33,9 @@ if "CI" not in os.environ or (os.environ.get("CI", False) and platform.system().
     LOGGER.info("NOTE: GitHub REST API will be used (if info cache not found or outdated)")
 
 
-pkg_meta = get_metadata("sphinx-social-cards").json
+pkg_meta: typing.Dict[str, typing.Union[str, typing.List[str]]] = get_metadata(
+    "sphinx-social-cards"
+).json  # type: ignore[attr-defined]
 assert "version" in pkg_meta
 assert "name" in pkg_meta
 assert "author_email" in pkg_meta
@@ -284,12 +286,14 @@ else:
         ]
     )
 
+pkg_deps = typing.cast(list[str], pkg_meta["requires_dist"])
 jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
     "gradient_presets": {
         "presets": {p.value: p.name for p in list(QGradient.Preset) if p.name != "NumPresets"}
     },
+    "deps": {"deps": pkg_deps},
 }
 
 
