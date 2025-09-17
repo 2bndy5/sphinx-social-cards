@@ -107,9 +107,12 @@ docs = [
 ]
 test = [
     "appdirs>=1.4.4",
-    "coverage[toml]>=7.10.6",
     "pytest>=8.4.2",
     "sphinx-immaterial>=0.12.5",
     "sphinx[test]>=4.5",
     "standard-imghdr ; python_full_version >= '3.13'",
+    {include-group = "coverage"},
+]
+coverage = [
+    "coverage[toml]>=7.10.6",
 ]
