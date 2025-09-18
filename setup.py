@@ -104,14 +104,15 @@ class BundleCommand(Command, SubCommand):
     def finalize_options(self):
         """Post-process options."""
         if self.dirty is None:
-            is_nox_session = os.environ.get("NOX_CURRENT_SESSION", "").startswith("tests-3.")
-            is_ci_building_dirty = os.environ.get("SPHINX_SOCIAL_CARDS_BUILD_DIRTY", "") == "true"
-            self.dirty = is_nox_session or is_ci_building_dirty
+            nox_session = os.environ.get("NOX_CURRENT_SESSION", "")
+            is_nox_session = nox_session.startswith("tests") or nox_session.startswith("docs")
+            self.dirty = is_nox_session
 
         if self.dirty:
             # NOTE: As of setuptools v64.0.2, we cannot raise an exception here for
             # editable installs.
-            if not Path(pkg_src, ".fonts").exists():
+            font_files = list(Path(pkg_src, ".fonts").glob("*.ttf"))
+            if not font_files:
                 self.dirty = False
                 return
 

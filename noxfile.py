@@ -99,7 +99,7 @@ def tests(session: nox.Session, sphinx: int):
 @nox.session
 def coverage(session: nox.Session):
     """Create coverage report."""
-    uv_sync(session, "--group", "test")
+    uv_sync(session, "--group", "coverage")
     session.run("coverage", "combine")
     total = int(session.run("coverage", "report", "--format=total", silent=True))
     session.run("coverage", "xml")

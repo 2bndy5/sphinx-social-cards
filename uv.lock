@@ -1393,6 +1393,9 @@ github = [
 ]
 
 [package.dev-dependencies]
+coverage = [
+    { name = "coverage", extra = ["toml"] },
+]
 dev = [
     { name = "docutils-stubs" },
     { name = "nox" },
@@ -1434,6 +1437,7 @@ requires-dist = [
 provides-extras = ["github"]
 
 [package.metadata.requires-dev]
+coverage = [{ name = "coverage", extras = ["toml"], specifier = ">=7.10.6" }]
 dev = [
     { name = "docutils-stubs", specifier = ">=0.0.22" },
     { name = "nox", specifier = ">=2025.5.1" },

@@ -3,8 +3,24 @@ name: Test
 on:
   push:
     branches: [main]
+    paths:
+      - "**/*.py"
+      - "!cookiecutter/**"
+      - "src/sphinx_social_cards/**/*.yml"
+      - ".pre-commit-config.yaml"
+      - "uv.lock"
+      - "pyproject.toml"
+      - ".github/workflows/test.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "**/*.py"
+      - "!cookiecutter/**"
+      - "src/sphinx_social_cards/**/*.yml"
+      - ".pre-commit-config.yaml"
+      - "uv.lock"
+      - "pyproject.toml"
+      - ".github/workflows/test.yml"
 
 permissions: {}
 
@@ -18,8 +34,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     permissions:
       contents: read
     env:
