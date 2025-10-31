@@ -1,5 +1,6 @@
 """This module contains validating dataclasses for a parsed yaml layout."""
 
+from typing import Optional
 from pydantic import BaseModel
 from .common import CustomBaseModel, Offset
 from .layers import (
@@ -122,7 +123,7 @@ class Layer(CustomBaseModel):
     #: The layer `offset <Offset>`. Defaults to :yaml:`{ x: 0, y: 0 }`.
     offset: Offset = Offset()
     #: An optional :doc:`mask`.
-    mask: "Mask" | None = None
+    mask: Optional["Mask"] = None
 
 
 class Mask(Layer):
