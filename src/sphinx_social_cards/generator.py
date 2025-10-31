@@ -2,7 +2,6 @@ import math
 from logging import getLogger
 import re
 from pathlib import Path
-from typing import Optional, Tuple, List, Union
 
 from jinja2 import TemplateNotFound, FileSystemLoader, Template
 from jinja2.sandbox import SandboxedEnvironment
@@ -91,7 +90,7 @@ class CardGenerator:
             lambda x: yaml.safe_dump(x, default_flow_style=True).rstrip("\n...\n").rstrip("\n")
         )
 
-    def parse_layout(self, content: Optional[str] = None):
+    def parse_layout(self, content: str | None = None):
         template: Template
         if content is not None:
             template = self.jinja_env.from_string(content)
@@ -125,9 +124,7 @@ class CardGenerator:
                 )
                 raise exc
 
-    def get_color(
-        self, spec: Optional[ColorType], offset: Offset
-    ) -> Optional[Union[QColor, QBrush]]:
+    def get_color(self, spec: ColorType | None, offset: Offset) -> QColor | QBrush | None:
         if spec:
             if isinstance(spec, (Color, str)):
                 return get_qt_color(spec)
@@ -146,8 +143,8 @@ class CardGenerator:
     @staticmethod
     def calc_font_size(
         line_amt: int,
-        line_height: Union[float, int],
-        max_height: Union[float, int],
+        line_height: float | int,
+        max_height: float | int,
         font_db_info: QtAppFontInfo,
     ) -> QFont:
         theoretical_height = max_height / line_amt
@@ -180,7 +177,7 @@ class CardGenerator:
         layer: Layer,
         canvas: QPainter,
         font_db_info: QtAppFontInfo,
-    ) -> Tuple[List[str], QTextLayout, QTextOption]:
+    ) -> tuple[list[str], QTextLayout, QTextOption]:
         assert layer.size is not None
         font = self.calc_font_size(
             typography.line.amount,
@@ -210,7 +207,7 @@ class CardGenerator:
         font_flags.setWrapMode(QTextOption.WrapMode.NoWrap)
         font_flags.setFlags(QTextOption.Flag.ShowLineAndParagraphSeparators)
 
-        display_lines: List[str] = [""]
+        display_lines: list[str] = [""]
         line_count = 0
         max_width = layer.size.width - typography.border.width
         for word in re.split(r"([\0\s\n])", _insert_wbr(typography.content, "\0")):
@@ -363,7 +360,7 @@ class CardGenerator:
 
     def get_shape_args(
         self, layer: Layer, shape_config: GenericShape
-    ) -> Tuple[QBrush, QPen, QRectF]:
+    ) -> tuple[QBrush, QPen, QRectF]:
         assert layer.size is not None
         rect = QRectF(0, 0, layer.size.width, layer.size.height)
 

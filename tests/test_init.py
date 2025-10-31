@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 import pytest
 from sphinx.testing.util import SphinxTestApp
 
@@ -10,8 +9,8 @@ from sphinx.testing.util import SphinxTestApp
 def test_transform(
     sphinx_make_app,
     caplog: pytest.LogCaptureFixture,
-    include: List[str],
-    exclude: List[str],
+    include: list[str],
+    exclude: list[str],
     enable: bool,
 ):
     caplog.set_level(10, "sphinx.sphinx_social_cards")

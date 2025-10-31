@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Union, Literal
+from typing import Literal
 
 from sphinx.testing.util import SphinxTestApp
 from PySide6.QtGui import QImage
@@ -36,9 +36,9 @@ from sphinx_social_cards.validators.layout import Size
 @pytest.mark.parametrize("size", [Size(width=100, height=100)])
 @pytest.mark.parametrize("aspect_ratio", [True, "width", "height"])
 def test_resize_image(
-    image: Optional[Union[str, Path]],
+    image: str | Path | None,
     size: Size,
-    aspect_ratio: Union[bool, Literal["width", "height"]],
+    aspect_ratio: bool | Literal["width", "height"],
 ):
     path = image
     if isinstance(image, str) and "/" in image and image != __file__:

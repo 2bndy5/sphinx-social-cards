@@ -1,6 +1,6 @@
 from logging import getLogger
 from pathlib import Path
-from typing import List, Union, Optional, cast, Tuple, Literal
+from typing import cast, Literal
 from urllib.parse import urlparse, quote
 from material_design_icons_pack import get_icon as mdi_get_icon
 from simple_icons_pack import get_icon as simple_get_icon
@@ -16,10 +16,10 @@ from .validators.layout import Size
 
 LOGGER = getLogger(__name__)
 
-IMG_PATH_TYPE = Optional[Union[str, Path]]
+IMG_PATH_TYPE = str | Path | None
 
 
-def get_embedded_svg(pack_name: str, slug: str) -> Optional[Path]:
+def get_embedded_svg(pack_name: str, slug: str) -> Path | None:
     """Get an SVG string from an icon pack with embedded SVG data, and
     export the SVG data to a file.
 
@@ -66,10 +66,10 @@ def get_embedded_svg(pack_name: str, slug: str) -> Optional[Path]:
 
 def find_image(
     img_name: IMG_PATH_TYPE,
-    possible_locations: List[Union[str, Path]],
-    doc_src: Union[str, Path],
-    cache_dir: Union[str, Path],
-) -> Optional[Path]:
+    possible_locations: list[str | Path],
+    doc_src: str | Path,
+    cache_dir: str | Path,
+) -> Path | None:
     """Find the image file in pre-known possible locations."""
     if not img_name:
         return None
@@ -147,7 +147,7 @@ def render_svg(img_path: IMG_PATH_TYPE, size: Size) -> QImage:
 def resize_image(
     img_path: IMG_PATH_TYPE,
     size: Size,
-    aspect: Union[bool, Literal["width", "height"]],
+    aspect: bool | Literal["width", "height"],
 ) -> QImage:
     """Resize an image according to specified `size`."""
     if img_path is None:
@@ -160,7 +160,7 @@ def resize_image(
     if img.isNull():
         supported_formats = [fmt.toStdString() for fmt in QImageReader.supportedImageFormats()]
         raise RuntimeError(f"{str(img_path)} is not of a supported format {supported_formats}")
-    w, h = cast(Tuple[int, int], img.size().toTuple())
+    w, h = cast(tuple[int, int], img.size().toTuple())
     if aspect and (size.width != w or size.height != h):
         if isinstance(aspect, str):
             if aspect == "width":
@@ -207,7 +207,7 @@ def resize_image(
     return img.copy(img.rect())
 
 
-def overlay_color(img: QImage, color: Union[QColor, QBrush], mask: bool = False) -> QImage:
+def overlay_color(img: QImage, color: QColor | QBrush, mask: bool = False) -> QImage:
     if mask:
         paint_bucket = QImage(img.size(), QImage.Format.Format_ARGB32_Premultiplied)
         paint_bucket.fill(color if isinstance(color, QColor) else Qt.GlobalColor.transparent)

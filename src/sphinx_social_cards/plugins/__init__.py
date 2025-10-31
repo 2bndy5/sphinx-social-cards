@@ -6,7 +6,7 @@
 
 import logging
 from pathlib import Path
-from typing import Dict, Any, Union
+from typing import Any
 from sphinx.application import Sphinx
 from ..validators import Social_Cards
 
@@ -21,7 +21,7 @@ SPHINX_SOCIAL_CARDS_CONFIG_KEY = "sphinx_social_cards"
 `Social_Cards` object."""
 
 
-def add_jinja_context(app: Sphinx, jinja_ctx: Dict[str, Any]):
+def add_jinja_context(app: Sphinx, jinja_ctx: dict[str, Any]):
     """Adds a `dict` to the builder environment key for `plugin <JinjaContexts.plugin>`
     `jinja contexts <jinja-ctx>`."""
     plugins_env = getattr(app.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, {})
@@ -30,7 +30,7 @@ def add_jinja_context(app: Sphinx, jinja_ctx: Dict[str, Any]):
     setattr(app.env, SPHINX_SOCIAL_CARDS_PLUGINS_ENV_KEY, plugins_env)
 
 
-def add_layouts_dir(app: Sphinx, layouts_dir: Union[str, Path]):
+def add_layouts_dir(app: Sphinx, layouts_dir: str | Path):
     """Adds a `str` or :py:class:`~pathlib.Path` of new layouts to the
     `cards_layout_dir` `list`."""
     layouts_dir = Path(layouts_dir).resolve()
@@ -40,7 +40,7 @@ def add_layouts_dir(app: Sphinx, layouts_dir: Union[str, Path]):
     setattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)
 
 
-def add_images_dir(app: Sphinx, images_dir: Union[str, Path]):
+def add_images_dir(app: Sphinx, images_dir: str | Path):
     """Adds a `str` or :py:class:`~pathlib.Path` of new images to the
     `image_paths` `list`."""
     images_dir = Path(images_dir).resolve()

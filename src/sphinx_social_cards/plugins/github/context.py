@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Dict, Optional, cast, List, Union, Any
+from typing import cast, Any
 from urllib.parse import quote
 
 import pydantic
@@ -10,8 +10,8 @@ from ...validators import try_request
 
 LOGGER = getLogger(__name__)
 
-INT_OR_STR = Union[int, str]
-OPT_STR = Optional[str]
+INT_OR_STR = int | str
+OPT_STR = str | None
 
 
 class BaseUser(pydantic.BaseModel):
@@ -52,14 +52,14 @@ class Repo(pydantic.BaseModel):
     #: The number of open repository issues.
     open_issues: INT_OR_STR = 0
     #: The `list` of search topics designated for the repository.
-    topics: List[str] = []
+    topics: list[str] = []
     #: The name of the repository.
     name: OPT_STR = None
     #: The repository description.
     description: OPT_STR = None
     #: The primarily used program language in the repository.
     language: OPT_STR = None
-    languages: Dict[str, float] = {}
+    languages: dict[str, float] = {}
     """A `dict` of the used program languages in the repository. Each key is a
     language's name (eg. "Python"), and each value is the corresponding language's
     percent used (eg "97.8").
@@ -68,11 +68,11 @@ class Repo(pydantic.BaseModel):
     homepage: OPT_STR = None
     #: The repository GitHub.com URI |protocol-stripped|
     html_url: OPT_STR = None
-    tags: List[str] = []
+    tags: list[str] = []
     """A `list`  of the repository's tags (`str`). These values seem to be
     ordered in recent descending to oldest tagged commits."""
     #: A `list`  of the repository's `contributor <Contributor>`\ s.
-    contributors: List[Contributor] = []
+    contributors: list[Contributor] = []
 
 
 class Owner(BaseUser):
@@ -92,7 +92,7 @@ class Owner(BaseUser):
     #: A link to a blog site.
     blog: OPT_STR = None
     #: A flag indicating the user is available for employment.
-    hirable: Optional[bool] = None
+    hirable: bool | None = None
     #: The publicly available email (if any).
     email: OPT_STR = None
     #: The account profile's location.
@@ -106,7 +106,7 @@ class Owner(BaseUser):
     #: The URI to the GitHub.com site |protocol-stripped|
     html_url: OPT_STR = None
     #: A `list`  of the `Organization`\ s to which the account belongs.
-    organizations: List[Organization] = []
+    organizations: list[Organization] = []
 
 
 class Github(pydantic.BaseModel):
@@ -118,14 +118,14 @@ class Github(pydantic.BaseModel):
     repo: Repo = Repo()
 
 
-def get_api_token() -> Dict[str, Dict[str, str]]:
+def get_api_token() -> dict[str, dict[str, str]]:
     token = os.environ.get("GITHUB_REST_API_TOKEN", "")
     if not token:
         return {}
     return {"headers": {"Authorization": token}}
 
 
-def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, Any]:
+def get_context_github(owner: str | None, repo: str | None) -> dict[str, Any]:
     gh_ctx = Github()
     if owner is None:
         return gh_ctx.model_dump()
@@ -166,7 +166,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         gh_ctx.owner.html_url = strip_url_protocol(res_json.get("html_url", ""))
         if "organizations_url" in res_json:
             response = try_request(res_json["organizations_url"], **request_args).json()
-            for org in cast(List[Dict[str, str]], response):
+            for org in cast(list[dict[str, str]], response):
                 gh_ctx.owner.organizations.append(
                     Organization(
                         login=org.get("login", ""),
@@ -187,7 +187,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         repo_cache_file.parent.mkdir(parents=True, exist_ok=True)
         LOGGER.info("Fetching info for github context about repo: %s/%s", owner, repo)
         res_json = try_request(f"https://api.github.com/repos/{owner}/{repo}").json()
-        res_json = cast(Dict[str, Any], res_json)
+        res_json = cast(dict[str, Any], res_json)
         license_name = ""
         if isinstance(res_json.get("license", None), dict):
             license_name = res_json.get("license", {}).get("name", "")
@@ -206,7 +206,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
         )
         if "languages_url" in res_json:
             langs = try_request(res_json["languages_url"]).json()
-            langs = cast(Dict[str, float], langs)
+            langs = cast(dict[str, float], langs)
             # convert arbitrary units to percentages
             total = sum(list(langs.values()))
             for lang in langs:
@@ -214,7 +214,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
             gh_ctx.repo.languages = langs
         if "contributors_url" in res_json:
             response = try_request(res_json["contributors_url"]).json()
-            response = cast(List[Dict[str, Any]], response)
+            response = cast(list[dict[str, Any]], response)
             gh_ctx.repo.contributors = [
                 Contributor(
                     login=u["login"],
@@ -225,7 +225,7 @@ def get_context_github(owner: Optional[str], repo: Optional[str]) -> Dict[str, A
             ]
         if "tags_url" in res_json:
             response = try_request(res_json["tags_url"]).json()
-            gh_ctx.repo.tags = [t["name"] for t in cast(List[Dict[str, str]], response)]
+            gh_ctx.repo.tags = [t["name"] for t in cast(list[dict[str, str]], response)]
         repo_cache_file.write_text(gh_ctx.repo.model_dump_json(indent=2), encoding="utf-8")
 
     return gh_ctx.model_dump()

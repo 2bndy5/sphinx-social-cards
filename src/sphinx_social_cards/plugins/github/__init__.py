@@ -84,7 +84,6 @@ or using the ``sphinx-social-cards`` package's optional dependency:
 """
 
 from pathlib import Path
-from typing import Tuple
 
 from sphinx.application import Sphinx
 from sphinx.util.logging import getLogger
@@ -100,7 +99,7 @@ from ...validators import Social_Cards
 LOGGER = getLogger(__name__)
 
 
-def _get_config_info(app: Sphinx) -> Tuple[str, str]:
+def _get_config_info(app: Sphinx) -> tuple[str, str]:
     # Parse the necessary information from the validated config object
     card_config: Social_Cards = getattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
     # again for sphinx-immaterial theme

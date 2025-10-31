@@ -8,7 +8,7 @@ description = "Generate social media cards for documentation pages with Sphinx"
 readme = "README.md"
 keywords = ["sphinx", "social", "cards", "previews"]
 license = "MIT"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dynamic = ["version"]
 authors = [
     { name = "Brendan Doherty", email = "2bndy5@gmail.com" }

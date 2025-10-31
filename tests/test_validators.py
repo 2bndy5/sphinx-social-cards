@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List, Dict, Union, Optional
 
 from importlib.metadata import version as get_version
 import pytest
@@ -63,20 +62,18 @@ def test_bad_comparison(op: str):
     (["en", "English"], ["es", "Spanish"], ["xx", "xx"], [None, "English"]),
     ids=["English", "Spanish", "unknown", "None"],
 )
-def test_ctx_lang_code(code: Optional[str], expected: Optional[str]):
+def test_ctx_lang_code(code: str | None, expected: str | None):
     assert Config(site_url="", language=code).language == expected
 
 
 @pytest.mark.parametrize("val", ["today", None], ids=["str", "None"])
-def test_ctx_today(val: Optional[str]):
+def test_ctx_today(val: str | None):
     assert Config(site_url="", today=val).today == val or today_default
 
 
 @need_sphinx_immaterial_and_pydantic_v2
 @pytest.mark.parametrize("palette", [PALETTE, [PALETTE, PALETTE]], ids=["dict", "list"])
-def test_default_immaterial_colors(
-    sphinx_make_app, palette: Union[List[Dict[str, str]], Dict[str, str]]
-):
+def test_default_immaterial_colors(sphinx_make_app, palette: list[dict[str, str]] | dict[str, str]):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""html_theme = 'sphinx_immaterial'
 extensions.append("sphinx_immaterial")
@@ -107,7 +104,7 @@ social_cards["cards_layout_options"] = { "background_color ": "#00F" }
 
 @need_sphinx_immaterial_and_pydantic_v2
 @pytest.mark.parametrize("font", [{"text": "Roboto"}, False], ids=["default", "system"])
-def test_default_font(sphinx_make_app, font: Union[Dict[str, str], bool]):
+def test_default_font(sphinx_make_app, font: dict[str, str] | bool):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""html_theme = 'sphinx_immaterial'
 extensions.append("sphinx_immaterial")
@@ -137,7 +134,7 @@ html_theme_options = {{
     ),
     ids=["bundled", "url", "invalid_svg", "bad_url"],
 )
-def test_default_logo(sphinx_make_app, logo: Optional[str], svg: str):
+def test_default_logo(sphinx_make_app, logo: str | None, svg: str):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""html_theme = 'sphinx_immaterial'
 extensions.append("sphinx_immaterial")
@@ -198,7 +195,7 @@ social_cards["debug"] = True
     ],
     ids=["valid_colors", "invalid_pos"],
 )
-def test_gradient_colors(sphinx_make_app, preset: Union[int, str], colors: Dict[float, str]):
+def test_gradient_colors(sphinx_make_app, preset: int | str, colors: dict[float, str]):
     app: SphinxTestApp = sphinx_make_app(
         extra_conf=f"""
 social_cards["cards_layout_options"] = {{
@@ -221,7 +218,7 @@ social_cards["cards_layout_options"] = {{
 @pytest.mark.xfail
 @pytest.mark.parametrize("point", [Offset(x=500, y=500), None], ids=["focal_offset", "center"])
 @pytest.mark.parametrize("radius", [500])
-def test_bad_focal_radius(point: Optional[Offset], radius: float):
+def test_bad_focal_radius(point: Offset | None, radius: float):
     args = dict(center=Offset(x=1200, y=630), radius=500, focal_radius=radius)
     if point is not None:
         args["focal_point"] = point

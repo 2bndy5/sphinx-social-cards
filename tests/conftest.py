@@ -1,6 +1,6 @@
 import pathlib
 import shutil
-from typing import Dict, Callable, Generator
+from typing import Callable, Generator
 import pytest
 import sphinx
 
@@ -30,7 +30,7 @@ social_cards = {
 }
 """
 
-    def make(files: Dict[str, str], extra_conf: str = "", **kwargs):
+    def make(files: dict[str, str], extra_conf: str = "", **kwargs):
         (tmp_path / "conf.py").write_text(conf + extra_conf, encoding="utf-8")
         shutil.copytree(
             str(pathlib.Path(__file__).parent.parent / "docs" / "images"),

@@ -53,11 +53,15 @@ def skip_version(python: int, sphinx: int) -> bool:
     return python < 10 and sphinx >= 8
 
 
+SUPPORTED_PYTHON = range(10, 15)
+SUPPORTED_SPHINX = range(4, 9)
+
+
 def test_version() -> list[tuple[str, int]]:
     """generator function to conform tested versions of sphinx and python"""
     conditions = []
-    for python in range(9, 14):
-        for sphinx in range(4, 9):
+    for python in SUPPORTED_PYTHON:
+        for sphinx in SUPPORTED_SPHINX:
             if skip_version(python, sphinx):
                 continue
             conditions.append((f"3.{python}", sphinx))
@@ -67,8 +71,8 @@ def test_version() -> list[tuple[str, int]]:
 def test_ids() -> list[str]:
     """generator function to conform tested versions of sphinx and python"""
     ids = []
-    for python in range(9, 14):
-        for sphinx in range(4, 9):
+    for python in SUPPORTED_PYTHON:
+        for sphinx in SUPPORTED_SPHINX:
             if skip_version(python, sphinx):
                 continue
             ids.append(f"3.{python},sphinx{sphinx}")

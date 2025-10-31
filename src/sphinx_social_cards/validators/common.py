@@ -1,6 +1,6 @@
 import math
 from pathlib import Path
-from typing import Optional, Dict, Union, Any, cast, Annotated, Literal
+from typing import Any, cast, Annotated, Literal, TypeAlias
 
 from pydantic import (
     BaseModel as PydanticBaseModel,
@@ -15,7 +15,7 @@ from pydantic_extra_types.color import Color
 from PySide6.QtGui import QGradient
 
 
-def _validate_path(val: Union[str, Path]) -> str:
+def _validate_path(val: str | Path) -> str:
     val = Path(val)
     if val.is_absolute() and not val.exists():
         raise FileNotFoundError(f"{str(val)} does not exist")
@@ -23,7 +23,7 @@ def _validate_path(val: Union[str, Path]) -> str:
     return str(val)
 
 
-PathType = Annotated[Union[str, Path], AfterValidator(_validate_path)]
+PathType = Annotated[str | Path, AfterValidator(_validate_path)]
 PositiveFloat = Annotated[float, Field(gt=0)]
 
 
@@ -50,7 +50,7 @@ class Offset(CustomBaseModel):
 class Gradient(CustomBaseModel):
     """A specification that defines a color gradient."""
 
-    colors: Dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
+    colors: dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
     """A mapping of colors to their corresponding positions in the gradient.
     Each item in this mapping is composed of :yaml:`key: value` pairs in which:
 
@@ -69,14 +69,14 @@ class Gradient(CustomBaseModel):
         absolute top-left corner of the card).
     .. |color-pos| replace:: position in the mapping of `colors`.
     """
-    preset: Optional[Union[str, int]] = None
+    preset: str | int | None = None
     """An optional preset gradient that has a pre-defined mapping of `colors`. Each
     preset is referenced by name (string) or by index (integer). See the :doc:`presets`
     document for a complete list of supported values (with generated examples).
     """
 
     @field_validator("preset")
-    def validate_preset(cls, val: Union[str, int]) -> Union[str, int]:
+    def validate_preset(cls, val: str | int) -> str | int:
         supported = [p for p in list(QGradient.Preset) if p.name != "NumPresets"]
         assert isinstance(val, (str, int))
         if isinstance(val, str) and " " in val:
@@ -88,7 +88,7 @@ class Gradient(CustomBaseModel):
         return val
 
     @field_serializer("colors")
-    def serialize_color_list(self, val: Dict[float, Color]) -> Dict[float, str]:
+    def serialize_color_list(self, val: dict[float, Color]) -> dict[float, str]:
         return {k: v.as_rgb() for k, v in val.items()}
 
 
@@ -135,7 +135,7 @@ class Conical_Gradient(Gradient):
                               1.0: blue
             {% endfor %}
     """
-    colors: Dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
+    colors: dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
 
     @field_validator("angle")
     def clamp_angle(cls, val: float) -> float:
@@ -161,7 +161,7 @@ class Linear_Gradient(Gradient, GradientSpread):
     end: Offset
     """The ending position (`offset <Offset>`) |rel_root_offset| This offset
     corresponds to the maximum ``1.0`` |color-pos|"""
-    colors: Dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
+    colors: dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
 
 
 class Radial_Gradient(Gradient, GradientSpread):
@@ -203,7 +203,7 @@ class Radial_Gradient(Gradient, GradientSpread):
                               1.0: blue
             {% endfor %}
     """
-    focal_point: Optional[Offset] = None
+    focal_point: Offset | None = None
     """The focal point (`offset <Offset>`) used to give the gradient a perspective.
     By default, the value of `center` is used. If the specified `offset <Offset>` is
     outside the circumference defined via `radius`, then this `offset <Offset>` will
@@ -240,7 +240,7 @@ class Radial_Gradient(Gradient, GradientSpread):
                               1.0: green
             {% endfor %}
     """
-    focal_radius: Optional[float] = None
+    focal_radius: float | None = None
     """The radius from the `focal_point` defines the aperture width of the gradient's
     perspective. This is highly relative to the `center`'s `radius`. Furthermore, if the
     `focal_radius` forms a circumference than extends beyond the `center`'s `radius`,
@@ -281,7 +281,7 @@ class Radial_Gradient(Gradient, GradientSpread):
                             spread: repeat
             {% endfor %}
     """
-    colors: Dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
+    colors: dict[Annotated[float, Field(ge=0.0, le=1.0)], Color] = {}
 
     @field_validator("focal_radius")
     def constrain_focal_radius(cls, val: float, info: ValidationInfo) -> float:
@@ -304,10 +304,10 @@ class Radial_Gradient(Gradient, GradientSpread):
         return val
 
 
-ColorType = Union[Color, Linear_Gradient, Radial_Gradient, Conical_Gradient]
+ColorType: TypeAlias = Color | Linear_Gradient | Radial_Gradient | Conical_Gradient
 
 
-def serialize_color(color: Optional[ColorType]) -> Optional[Union[str, Dict[str, Any]]]:
+def serialize_color(color: ColorType | None) -> str | dict[str, Any] | None:
     if color is None:
         return None
     assert isinstance(color, (Color, Gradient))

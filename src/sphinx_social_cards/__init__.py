@@ -51,7 +51,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from typing import List, cast, Union, Any, Dict, Set, Optional, Callable
+from typing import cast, Any, Callable
 from urllib.parse import urlparse
 
 import docutils.nodes
@@ -91,7 +91,7 @@ layout_ctx_parser: TypeAdapter[Cards_Layout_Options] = TypeAdapter(Cards_Layout_
 
 def _load_config(app: Sphinx, config: Config):
     assert hasattr(config, "social_cards"), f"config not found: {dir(config)}"
-    user_config: Dict[str, Any] = getattr(config, "social_cards")
+    user_config: dict[str, Any] = getattr(config, "social_cards")
     # LOGGER.info("config loaded: %r", user_config)
     card_config: Social_Cards = config_parser.validate_python(user_config)
     # LOGGER.info("layout options: %r", card_config.cards_layout_options)
@@ -109,9 +109,9 @@ def _assert_plugin_context(app: Sphinx):
 def flush_cache(
     app: Sphinx,
     env: BuildEnvironment,
-    added: Set[str],
-    changed: Set[str],
-    removed: Set[str],
+    added: set[str],
+    changed: set[str],
+    removed: set[str],
 ):
     ext_config: Social_Cards = app.config[SPHINX_SOCIAL_CARDS_CONFIG_KEY]
     assert isinstance(ext_config.cache_dir, (str, Path))
@@ -150,7 +150,7 @@ class SocialCardTransform(SphinxTransform):
         meta_data = get_doc_meta_data(self.document)
         LOGGER.debug("meta_data found:\n%s", json.dumps(meta_data, indent=2))
 
-        page_meta: Dict[str, str] = {}
+        page_meta: dict[str, str] = {}
         if "title" in meta_data:
             page_meta.update(title=meta_data["title"])
         if "description" in meta_data:
@@ -220,7 +220,7 @@ class SocialCardDirective(SphinxDirective):
     optional_arguments = 1  # conf is an optional json string
     final_argument_whitespace = True
     has_content = True  # an example layout will be our content
-    option_spec: Dict[str, Callable[[str], Any]] = {
+    option_spec: dict[str, Callable[[str], Any]] = {
         "name": directives.unchanged,
         "class": directives.class_option,
         "meta-data": directives.unchanged,  # meta-data is an optional json string
@@ -233,7 +233,7 @@ class SocialCardDirective(SphinxDirective):
         "conf-caption": directives.unchanged,
     }
 
-    def run(self) -> List[docutils.nodes.Node]:
+    def run(self) -> list[docutils.nodes.Node]:
         """Run the directive."""
         container_node = docutils.nodes.container("", classes=["results"])
 
@@ -247,7 +247,7 @@ class SocialCardDirective(SphinxDirective):
             merged_meta_data.update(new_meta_data)
 
         # handle social_cards config
-        conf_src = cast(Dict[str, Any], self.config["social_cards"]).copy()
+        conf_src = cast(dict[str, Any], self.config["social_cards"]).copy()
         if not self.arguments:
             self.options["hide-conf"] = True
         else:
@@ -328,7 +328,7 @@ class SocialCardDirective(SphinxDirective):
         factory = CardGenerator(context=contexts, config=conf)
 
         # render layout overrides (if any)
-        layout_src: Optional[str] = None
+        layout_src: str | None = None
         if self.content:
             layout_src = "\n".join(self.content)
             if "hide-layout" not in self.options and dry_run:
@@ -346,7 +346,7 @@ class SocialCardDirective(SphinxDirective):
         img_name = f"{self.env.docname}-{file_hash}.png"
 
         # save image; path (& meta_data injection) depends on `dry-run` option
-        output_path: Union[Path, str] = Path(self.env.app.outdir, conf.path)
+        output_path: Path | str = Path(self.env.app.outdir, conf.path)
         if dry_run:
             output_path = self.env.app.srcdir
             uri_parts = Path(img_name).parts
@@ -402,7 +402,7 @@ class CardGeneratorDirective(SocialCardDirective, Image):
     }
     hardcoded_options = ["dry-run", "hide-meta", "hide-conf", "hide-layout"]
 
-    def run(self) -> List[docutils.nodes.Node]:
+    def run(self) -> list[docutils.nodes.Node]:
         # run the social-card directive and get the image's path and hyperlink refuri
         for key in self.hardcoded_options:
             self.options[key] = True
@@ -412,7 +412,7 @@ class CardGeneratorDirective(SocialCardDirective, Image):
         ).splitlines()
         results = SocialCardDirective.run(self)
         # structure returned should always be the same because we used hardcoded_options
-        container_node = cast(List[docutils.nodes.Element], results)[0]
+        container_node = cast(list[docutils.nodes.Element], results)[0]
         assert container_node.children
         assert isinstance(container_node[0], docutils.nodes.paragraph)
         assert cast(docutils.nodes.Element, container_node[0]).children

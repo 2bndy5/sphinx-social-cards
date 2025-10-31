@@ -1,7 +1,6 @@
 """This module contains validating dataclasses for a parsed yaml layout."""
 
-from typing import List, Optional
-
+from typing import Optional
 from pydantic import BaseModel
 from .common import CustomBaseModel, Offset
 from .layers import (
@@ -107,18 +106,18 @@ class Layer(CustomBaseModel):
     """
 
     #: An optional :doc:`background`.
-    background: Optional[Background] = None
+    background: Background | None = None
     #: An optional :doc:`typography`.
-    typography: Optional[Typography] = None
+    typography: Typography | None = None
     #: An optional :doc:`shapes/rectangle`.
-    rectangle: Optional[Rectangle] = None
+    rectangle: Rectangle | None = None
     #: An optional :doc:`shapes/ellipse`.
-    ellipse: Optional[Ellipse] = None
+    ellipse: Ellipse | None = None
     #: An optional :doc:`shapes/polygon`.
-    polygon: Optional[Polygon] = None
+    polygon: Polygon | None = None
     #: An optional :doc:`icon`.
-    icon: Optional[Icon] = None
-    size: Optional[Size] = None
+    icon: Icon | None = None
+    size: Size | None = None
     """The layer `size <Size>`. Defaults to values inherited from the
     `layout.size <Layout.size>`."""
     #: The layer `offset <Offset>`. Defaults to :yaml:`{ x: 0, y: 0 }`.
@@ -282,6 +281,6 @@ class Layout(BaseModel):
     If this is not specified, then the layout uses the default `width <Size.width>` and
     `height <Size.height>` values.
     """
-    layers: List[Layer] = []
+    layers: list[Layer] = []
     """A YAML list of :doc:`layers in the layout <layers>` that define the entire
     content of the layout."""

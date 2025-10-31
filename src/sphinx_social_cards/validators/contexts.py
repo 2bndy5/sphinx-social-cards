@@ -3,7 +3,7 @@
 from importlib import import_module
 import platform
 import time
-from typing import Dict, Optional, Any, cast, Annotated
+from typing import Any, cast, Annotated
 
 from pydantic import BaseModel, field_validator, Field, ConfigDict, field_serializer
 from sphinx.search import languages, SearchLanguage
@@ -26,7 +26,7 @@ class Cards_Layout_Options(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True, extra="allow", str_strip_whitespace=True)
 
-    background_image: Optional[PathType] = None
+    background_image: PathType | None = None
     """The fallback value used for a layer's `background.image <Background.image>`
     attribute. Default is :python:`None`. This image will not be shown if the
     `background_color` has no alpha channel (transparency) value.
@@ -43,7 +43,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               image: '{{ layout.background_image }}'
     """
-    background_color: Optional[ColorType] = None
+    background_color: ColorType | None = None
     """The fallback value used for a layer's `background.color <Background.color>`
     attribute in most `pre-designed layouts <pre-designed-layouts>`. By default, this
     value is set to the :themeconf:`palette`\\ [:themeconf:`primary`] color or
@@ -61,7 +61,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               color: '{{ layout.background_color | yaml }}'
     """
-    color: Optional[ColorType] = None
+    color: ColorType | None = None
     """The color used for the foreground text in most `pre-designed layouts
     <pre-designed-layouts>`. By default, this will be computed as :yaml:`"white"` or
     :yaml:`"black"` based on the `background_color`.
@@ -83,7 +83,7 @@ class Cards_Layout_Options(BaseModel):
               align: center
               line: { amount: 2 }
     """
-    accent: Optional[ColorType] = None
+    accent: ColorType | None = None
     """The color used as a foreground accentuating color. By default, this value is set
     to the :themeconf:`palette`\\ [:themeconf:`accent`] color or :yaml:`"#4051B2"` for
     themes other than sphinx-immaterial_.
@@ -100,7 +100,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               color: '{{ layout.accent| yaml }}'
     """
-    font: Optional[Font] = None
+    font: Font | None = None
     """The `font <Font>` specification to be used.
 
     .. seealso:: Please review :ref:`choosing-a-font` section.
@@ -124,7 +124,7 @@ class Cards_Layout_Options(BaseModel):
               line: { amount: 2 }
               align: center
     """
-    logo: Optional[Icon] = None
+    logo: Icon | None = None
     """The icon used for branding of the site. By default, this will be the
     :confval:`html_logo` (or the sphinx-immaterial_ theme's
     :themeconf:`icon`\\ [:themeconf:`logo`]).
@@ -155,15 +155,15 @@ class Cards_Layout_Options(BaseModel):
     """
 
     @field_serializer("background_color")
-    def serialize_bg_color(self, color: Optional[ColorType], _info):
+    def serialize_bg_color(self, color: ColorType | None, _info):
         return serialize_color(color)
 
     @field_serializer("color")
-    def serialize_fg_color(self, color: Optional[ColorType], _info):
+    def serialize_fg_color(self, color: ColorType | None, _info):
         return serialize_color(color)
 
     @field_serializer("accent")
-    def serialize_accent_color(self, color: Optional[ColorType], _info):
+    def serialize_accent_color(self, color: ColorType | None, _info):
         return serialize_color(color)
 
 
@@ -171,33 +171,33 @@ class Config(BaseModel):
     """A `dict` whose items expose some configuration options in conf.py. The following
     items are included in this context:"""
 
-    theme: Dict[str, Any] = {}
+    theme: dict[str, Any] = {}
     """A `dict` whose items correspond to the :confval:`html_theme_options`. This
     `dict` is very dependent on the choice of sphinx theme and what it defines in its
     ``theme.conf`` file."""
     #: The `social_cards.description <Social_Cards.description>` value.
-    site_description: Optional[str] = None
+    site_description: str | None = None
     site_url: str
     """The `social_cards.site_url <Social_Cards.site_url>` value. This value has the
     transport protocol (``https://``) automatically removed for convenience."""
     #: The :confval:`project` value which is used as the site's title.
-    docstitle: Optional[str] = None
+    docstitle: str | None = None
     #: The :confval:`author` value.
-    author: Optional[str] = None
+    author: str | None = None
     #: The full language name that corresponds to the :confval:`language` value
-    language: Annotated[Optional[str], Field(validate_default=True)] = None
-    today: Optional[str] = today_default
+    language: Annotated[str | None, Field(validate_default=True)] = None
+    today: str | None = today_default
     """The :confval:`today` value. Defaults to current date using
     :python:`"\\<month> \\<day> \\<year>"` format."""
 
     @field_validator("today")
-    def revert_today_default(cls, val: Optional[str]):
+    def revert_today_default(cls, val: str | None):
         if not val:
             return today_default
         return val
 
     @field_validator("language")
-    def _get_lang_name(cls, val: Optional[str]) -> Optional[str]:
+    def _get_lang_name(cls, val: str | None) -> str | None:
         if val is None:
             val = "en"
         lang_class = languages.get(val)
@@ -213,12 +213,12 @@ class Config(BaseModel):
 class Page(CustomBaseModel):
     """A `dict` whose items include the following:"""
 
-    meta: Dict[str, str] = {}
+    meta: dict[str, str] = {}
     """A `dict` whose items correspond to the page's :ref:`Metadata <metadata-fields>`
     (or :du-tree:`meta element(s) <meta>` created via the :du-dir:`meta directive
     <metadata>`)."""
     #: The value of the title of the page for which the card is generated.
-    title: Optional[str] = None
+    title: str | None = None
     canonical_url: str = ""
     """A URL of the current page relative to the `site_url <Social_Cards.site_url>`
     value."""
@@ -231,6 +231,6 @@ class JinjaContexts(BaseModel):
     layout: Cards_Layout_Options = Cards_Layout_Options()
     config: Config = Config(site_url="")
     page: Page = Page()
-    plugin: Dict[str, Any] = {}
+    plugin: dict[str, Any] = {}
     """A `dict` whose items correspond to :doc:`compatible plugins
     <../plugins/index>`\\ ' contexts."""

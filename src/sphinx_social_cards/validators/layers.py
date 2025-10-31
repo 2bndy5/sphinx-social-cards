@@ -1,6 +1,6 @@
 """This module contains validating dataclasses for a layout's layers."""
 
-from typing import Optional, Union, List, Annotated, Literal
+from typing import Annotated, Literal
 
 from pydantic import field_validator, Field, AliasChoices, field_serializer
 
@@ -13,28 +13,28 @@ color_aliases = AliasChoices("linear_gradient", "radial_gradient", "conical_grad
 class Border(CustomBaseModel):
     #: The border's width in pixels. Defaults to :yaml:`0`.
     width: Annotated[float, Field(ge=0)] = 0
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
     """The border's color.
 
     .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
     """
 
     @field_serializer("color")
-    def serialize_border_color(self, val: Optional[ColorType]):
+    def serialize_border_color(self, val: ColorType | None):
         return serialize_color(val)
 
 
 class GenericShape(CustomBaseModel):
     #:The shape's outlining `border <Border>` specification.
     border: Border = Border()
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
     """The shape's fill color.
 
     .. seealso:: Please review :ref:`choosing_a_color` section for more detail.
     """
 
     @field_serializer("color")
-    def serialize_shape_color(self, val: Optional[ColorType]):
+    def serialize_shape_color(self, val: ColorType | None):
         return serialize_color(val)
 
 
@@ -125,7 +125,7 @@ class Ellipse(GenericShape):
     """
 
     #: The specification for drawing only an `arc <Arc>` of an ellipse.
-    arc: Optional[Arc] = None
+    arc: Arc | None = None
     border_to_origin: bool = False
     """This switch controls the rendering of the border when :attr:`arc` is specified.
     If the :attr:`arc` attribute is not specified, then this switch has no effect.
@@ -158,7 +158,7 @@ class Ellipse(GenericShape):
                         offset: { x: 350, y: 165 }
             {% endfor %}
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
 
 
 class Rectangle(GenericShape):
@@ -214,7 +214,7 @@ class Rectangle(GenericShape):
                     offset: { x: 400, y: 115 }
     """
 
-    radius: Optional[Union[int, float]] = 0
+    radius: int | float | None = 0
     """The radius of the rounded corner in pixels. Defaults to 0 (no rounding).
 
     .. tip::
@@ -226,7 +226,7 @@ class Rectangle(GenericShape):
         and not all `corners` are rounded, then there *will* be visible artifacts from
         rendering each corner individually.
     """
-    corners: List[Literal["top left", "top right", "bottom right", "bottom left"]] = [
+    corners: list[Literal["top left", "top right", "bottom right", "bottom left"]] = [
         "top left",
         "top right",
         "bottom right",
@@ -260,7 +260,7 @@ class Rectangle(GenericShape):
               corners: ['top right', 'bottom right']
               color: green
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
 
 
 class Polygon(GenericShape):
@@ -313,7 +313,7 @@ class Polygon(GenericShape):
                       color: green
     """
 
-    sides: Union[PositiveInt, List[Offset]] = 3
+    sides: PositiveInt | list[Offset] = 3
     """.. |offset-list| replace:: a YAML list of `offset <Offset>`\\ s
 
     The specification of the polygon's sides. This can be an integer or
@@ -426,23 +426,21 @@ class Polygon(GenericShape):
                         offset: { x: 400, y: 115 }
            {% endfor %}
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
 
     @field_validator("sides")
-    def assert_sides(
-        cls, val: Union[PositiveInt, List[Offset]]
-    ) -> Union[PositiveInt, List[Offset]]:
+    def assert_sides(cls, val: PositiveInt | list[Offset]) -> PositiveInt | list[Offset]:
         if isinstance(val, int) and val <= 2:
             return 3
         if isinstance(val, list) and len(val) < 2:
-            raise ValueError("List of offsets must have at least 2 items: %r", val)
+            raise ValueError("list of offsets must have at least 2 items: %r", val)
         return val
 
 
 class LayerImage(CustomBaseModel):
-    image: Optional[str] = None
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
-    preserve_aspect: Union[bool, Literal["width", "height"]] = True
+    image: str | None = None
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
+    preserve_aspect: bool | Literal["width", "height"] = True
     """If an image is used that doesn't match the layer's `size <Size>`, then the image
     will be resized accordingly. This option can be used to control which horizontal
     `width <Size.width>` or vertical `height <Size.height>` or both (:yaml:`true`)
@@ -454,7 +452,7 @@ class LayerImage(CustomBaseModel):
     """
 
     @field_serializer("color")
-    def serialize__border_color(self, val: Optional[ColorType]):
+    def serialize__border_color(self, val: ColorType | None):
         return serialize_color(val)
 
 
@@ -473,7 +471,7 @@ class Background(LayerImage):
               color: "#000000AB"
     """
 
-    image: Optional[str] = None
+    image: str | None = None
     """The path to an image used as the card's background. This path can be absolute or
     relative to one of the paths specified in
     `social_cards.image_paths <Social_Cards.image_paths>`.
@@ -493,7 +491,7 @@ class Background(LayerImage):
           - background:
               image: images/rainbow.png
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
     """The color used as the background fill color. This color will overlay the entire
     `background.image <Background.image>` (if specified). So be sure to add transparency
     (an alpha color value) when using both a background image and color.
@@ -526,7 +524,7 @@ class Icon(LayerImage):
               color: "white"
     """
 
-    image: Optional[str] = None
+    image: str | None = None
     """An image file's path. This path can be absolute or relative to one of the paths
     specified in `social_cards.image_paths <Social_Cards.image_paths>`.
 
@@ -551,7 +549,7 @@ class Icon(LayerImage):
             icon:
               image: sphinx_logo.svg
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
     """The color used as the fill color. The actual image color is not used when
     specifying this, rather the non-transparent data is used as a mask for this value.
 
@@ -665,10 +663,10 @@ class Font(CustomBaseModel):
     """The weight of the font used. If this doesn't match the weights available, then
     the first weight defined for the font is used and a warning is emitted. Default is
     :yaml:`400`."""
-    subset: Optional[str] = None
+    subset: str | None = None
     """A subset type used for the font. If not specified, this will use the default
     defined for the font (eg. :python:`"latin"`)."""
-    path: Optional[str] = None
+    path: str | None = None
     """The path to the TrueType font (``*.ttf``). If this is not specified, then it is
     set in accordance with the a cache corresponding to the `family`, `style`, `weight`,
     and `subset` options. If explicitly specified, then this value overrides the
@@ -757,7 +755,7 @@ class Typography(CustomBaseModel):
           * :si-icon:`material/arrow-down` ``center bottom``
           * :si-icon:`material/arrow-bottom-right` ``end bottom``
     """
-    color: Optional[ColorType] = Field(default=None, validation_alias=color_aliases)
+    color: ColorType | None = Field(default=None, validation_alias=color_aliases)
     """The color to be used for the displayed text. If not specified, then this defaults
     to `cards_layout_options.color <Cards_Layout_Options.color>`.
 
@@ -799,7 +797,7 @@ class Typography(CustomBaseModel):
                           {%- endif %}
           {% endfor %}
     """
-    font: Optional[Font] = None
+    font: Font | None = None
     """The specified font to use. If not specified, then this defaults to values in
     `cards_layout_options.font <Cards_Layout_Options.font>`.
 
