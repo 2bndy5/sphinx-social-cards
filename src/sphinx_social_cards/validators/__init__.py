@@ -1,7 +1,7 @@
 """This module contains validating dataclasses for the configurations in python"""
 
 from pathlib import Path
-from typing import Union, List, Optional, cast, Dict, Set
+from typing import cast
 
 from pydantic import field_validator, PrivateAttr
 from pydantic_extra_types.color import Color
@@ -125,7 +125,7 @@ class Social_Cards(CustomBaseModel):
                     {%- endif %}
         {% endfor %}
     """
-    cards_layout_dir: List[PathType] = []
+    cards_layout_dir: list[PathType] = []
     """The list of paths (absolute or relative to conf.py) where the `cards_layout` is
     located. In the case of similarly named layout files, the order in this list takes
     precedence."""
@@ -133,7 +133,7 @@ class Social_Cards(CustomBaseModel):
     """A set (`dict`) of options that can be accessed via the ``layout.*`` :ref:`jinja
     context <jinja-ctx>`. See `cards_layout_options <Cards_Layout_Options>` for more
     detail."""
-    cards_exclude: Union[List[str], Set[str]] = []
+    cards_exclude: list[str] | set[str] = []
     """This `list` can be used to exclude certain pages from generating social cards.
     Default is an empty `list`. |glob-list|
 
@@ -156,7 +156,7 @@ class Social_Cards(CustomBaseModel):
     .. note::
         This option does not affect the :rst:dir:`social-card` directive.
     """
-    cards_include: Union[List[str], Set[str]] = []
+    cards_include: list[str] | set[str] = []
     """This `list` can be used to include certain pages from `cards_exclude` `list`.
     Default is an empty `list`. |glob-list|
 
@@ -169,7 +169,7 @@ class Social_Cards(CustomBaseModel):
             ]
         }
     """
-    image_paths: List[PathType] = []
+    image_paths: list[PathType] = []
     """A list of directories that contain images to be used in the creation of social
     cards. By default, the path to the directory containing the conf.py file is
     automatically added to this list. Each entry in this list can be an absolute path or
@@ -199,7 +199,7 @@ class Social_Cards(CustomBaseModel):
                 `Simple Icons <https://simpleicons.org/>`_
               - ``simple/<icon-name>``
     """
-    debug: Union[Debug, bool] = Debug()
+    debug: Debug | bool = Debug()
     """A field to specify layout debugging helpers. See `Debugging Layouts`_ for more
     detail."""
     _parsed_layout: Layout = PrivateAttr(default=Layout())
@@ -207,7 +207,7 @@ class Social_Cards(CustomBaseModel):
     """This option specifies where the generated social card images will be written to.
     It's normally not necessary to change this option. Defaults to the documentation's
     output in the subfolder '_static/social_cards'."""
-    cache_dir: Union[str, Path] = "social_cards_cache"
+    cache_dir: str | Path = "social_cards_cache"
     """The directory (relative to the conf.py file) that is used to store cached data
     for generating the social cards. By default, this will create/use a directory named
     :python:`"social_cards_cache"` located adjacent to the conf.py file.
@@ -229,14 +229,14 @@ class Social_Cards(CustomBaseModel):
     """
 
     @field_validator("debug")
-    def validate_debug(cls, val: Union[bool, Debug]) -> Debug:
+    def validate_debug(cls, val: bool | Debug) -> Debug:
         if isinstance(val, bool):
             return Debug(enable=val)
         return val
 
-    def get_fonts(self) -> List[Font]:
+    def get_fonts(self) -> list[Font]:
         assert self.cards_layout_options.font is not None
-        fonts: List[Font] = [self.cards_layout_options.font]
+        fonts: list[Font] = [self.cards_layout_options.font]
         for layer in self._parsed_layout.layers:
             if layer.typography is not None and layer.typography.font is not None:
                 fonts.append(layer.typography.font)
@@ -266,13 +266,13 @@ class Social_Cards(CustomBaseModel):
         cache_dir.mkdir(parents=True, exist_ok=True)
         self.cache_dir = cache_dir
 
-        excluded: Set[str] = set()
+        excluded: set[str] = set()
         for pattern in self.cards_exclude:
             for match in Path(doc_src).glob(pattern):
                 rel_uri = match.relative_to(doc_src).as_posix()
                 excluded.add(rel_uri)
         self.cards_exclude = excluded
-        included: Set[str] = set()
+        included: set[str] = set()
         for pattern in self.cards_include:
             for match in Path(doc_src).glob(pattern):
                 rel_uri = match.relative_to(doc_src).as_posix()
@@ -280,8 +280,8 @@ class Social_Cards(CustomBaseModel):
         self.cards_include = included
 
     def _set_default_logo(self, config: Config, theme_options: dict):
-        theme_icon: Optional[Dict[str, str]] = theme_options.get("icon", None)
-        theme_logo: Optional[str] = None
+        theme_icon: dict[str, str] | None = theme_options.get("icon", None)
+        theme_logo: str | None = None
         if theme_icon is not None and "logo" in theme_icon:
             theme_logo = cast(str, theme_icon["logo"])
         if self.cards_layout_options.logo is None:
@@ -303,7 +303,7 @@ class Social_Cards(CustomBaseModel):
         if any([color is None, accent is None]):
             # try getting primary color from sphinx-immaterial theme's config
             palette = cast(
-                Union[List[Dict[str, str]], Dict[str, str]],
+                list[dict[str, str]] | dict[str, str],
                 theme_options.get("palette"),
             )
             if isinstance(palette, list):  # using light/dark mode toggle

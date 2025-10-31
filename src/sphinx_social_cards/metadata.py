@@ -1,4 +1,4 @@
-from typing import Dict, cast, Tuple, Type, Optional
+from typing import cast, Type
 
 import sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
@@ -6,7 +6,7 @@ import docutils.nodes
 from .validators import Social_Cards
 
 
-meta_node_types: Tuple[Type[docutils.nodes.Element], ...]
+meta_node_types: tuple[Type[docutils.nodes.Element], ...]
 
 if sphinx.version_info >= (6,):
     meta_node_types = (docutils.nodes.meta,)  # type: ignore[attr-defined]
@@ -20,15 +20,15 @@ else:
 
 
 def complete_doc_meta_data(
-    existing_meta_data: Dict[str, str],
+    existing_meta_data: dict[str, str],
     builder: StandaloneHTMLBuilder,
     title: str,
     description: str,
     card_config: Social_Cards,
     page_name: str,
     img_hash: str,
-) -> Tuple[Optional[str], Dict[str, str]]:
-    new_meta_data: Dict[str, str] = {}
+) -> tuple[str | None, dict[str, str]]:
+    new_meta_data: dict[str, str] = {}
     if not isinstance(builder, StandaloneHTMLBuilder):
         return (None, new_meta_data)  # nothing left to do then
     uri = builder.get_target_uri(page_name)
@@ -37,7 +37,7 @@ def complete_doc_meta_data(
     uri = uri.rstrip(builder.link_suffix) + f"-{img_hash}.png"
     img_url = "/".join([site_url, card_config.path, uri])
 
-    def update_meta(id_: Dict[str, str], content: str):
+    def update_meta(id_: dict[str, str], content: str):
         prop, type_ = id_.popitem()
         attr_name = f"{prop}={type_}"
         # check if meta_data already exists
@@ -67,7 +67,7 @@ def complete_doc_meta_data(
     return (uri, new_meta_data)
 
 
-def add_doc_meta_data(document: docutils.nodes.document, meta_data: Dict[str, str]):
+def add_doc_meta_data(document: docutils.nodes.document, meta_data: dict[str, str]):
     parent = docutils.nodes.Element()
 
     for key, val in meta_data.items():
@@ -90,7 +90,7 @@ def add_doc_meta_data(document: docutils.nodes.document, meta_data: Dict[str, st
     document[index:index] = parent.children
 
 
-def get_doc_meta_data(document: docutils.nodes.document) -> Dict[str, str]:
+def get_doc_meta_data(document: docutils.nodes.document) -> dict[str, str]:
     ret_val = {}
 
     # extract meta_data fields from current doc (up until current line)

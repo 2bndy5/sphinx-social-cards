@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
-from typing import List, Dict, Any
+from typing import Any
 from urllib.request import Request, urlopen, HTTPError
 from setuptools import setup, Command
 from setuptools.command.build import SubCommand
@@ -25,7 +25,7 @@ def download_fonts(font_id: str, font_cache: Path):
     with urlopen(
         Request(f"https://api.fontsource.org/v1/fonts/{font_id}", headers=header)
     ) as response:
-        data: Dict[str, Any] = json.loads(response.read())
+        data: dict[str, Any] = json.loads(response.read())
     assert "family" in data
     family = data["family"]
     # cache the font info
@@ -33,7 +33,7 @@ def download_fonts(font_id: str, font_cache: Path):
 
     # get all weights from default subset of normal style in TTF format
     assert "weights" in data and data["weights"]
-    weights: List[int] = data["weights"]
+    weights: list[int] = data["weights"]
     assert "defSubset" in data
     subset = data["defSubset"]
     assert "variants" in data

@@ -3,7 +3,6 @@ import platform
 import re
 import shutil
 import time
-from typing import Tuple, Optional
 from urllib.parse import urlparse
 
 from appdirs import user_cache_dir
@@ -27,7 +26,7 @@ def strip_url_protocol(url: str) -> str:
     return f"{url_parts.netloc}{url_parts.path}"
 
 
-def match_url(repo_url: str, site_url: str) -> Tuple[Optional[str], Optional[str]]:
+def match_url(repo_url: str, site_url: str) -> tuple[str | None, str | None]:
     match_repo_url = re.match(
         r"^.+github\.com\/([^/]+)\/?([^/]+)?",
         repo_url,

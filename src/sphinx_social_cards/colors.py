@@ -1,4 +1,4 @@
-from typing import NamedTuple, Union, Sequence, cast, Tuple, List, Optional
+from typing import NamedTuple, Sequence, cast
 
 from pydantic_extra_types.color import Color
 from PySide6.QtGui import (
@@ -22,9 +22,9 @@ from .validators.layers import Offset
 
 class ColorAttr(NamedTuple):
     #: The color used as the background fill color.
-    fill: Union[QColor, QBrush]
+    fill: QColor | QBrush
     #: The color used for the foreground text.
-    text: Union[QColor, QBrush]
+    text: QColor | QBrush
 
 
 #: The default color palette
@@ -58,8 +58,8 @@ def get_qt_color(color: Color) -> QColor:
 
 
 def get_qt_gradient(
-    color: Union[Linear_Gradient, Radial_Gradient, Conical_Gradient], offset: Offset
-) -> Union[QLinearGradient, QRadialGradient, QConicalGradient]:
+    color: Linear_Gradient | Radial_Gradient | Conical_Gradient, offset: Offset
+) -> QLinearGradient | QRadialGradient | QConicalGradient:
     assert isinstance(color, Gradient)
     if isinstance(color, Linear_Gradient):
         grad = QLinearGradient(
@@ -103,7 +103,7 @@ def get_luminance_contrast(rgba: Sequence[float]) -> float:
 
 
 def auto_get_fg_color(color: ColorType) -> Color:
-    luminance: Optional[float] = None
+    luminance: float | None = None
     assert isinstance(color, (Color, Linear_Gradient, Radial_Gradient, Conical_Gradient)), (
         "color should already be validated"
     )
@@ -116,7 +116,7 @@ def auto_get_fg_color(color: ColorType) -> Color:
         # We'll take the average of luminance contrast for each color & hope for the best
         gradient = get_qt_gradient(color, Offset(x=0, y=0))
         total = 0.0
-        for _, grad_color in cast(List[Tuple[float, QColor]], gradient.stops()):
+        for _, grad_color in cast(list[tuple[float, QColor]], gradient.stops()):
             total += get_luminance_contrast(
                 [
                     grad_color.redF(),

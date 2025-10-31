@@ -3,7 +3,7 @@
 import json
 from urllib.parse import quote
 from pathlib import Path
-from typing import Dict, Any, List, NamedTuple
+from typing import Any, NamedTuple
 
 from PySide6.QtGui import QGuiApplication
 from sphinx.util.logging import getLogger
@@ -58,7 +58,7 @@ class FontSourceManager:
         else:
             url = f"{_FONT_SOURCE_API}{cls.api_version}?family={quote(font.family)}"
             response = try_request(url)
-            info: List[Dict[str, Any]] = response.json()
+            info: list[dict[str, Any]] = response.json()
             LOGGER.info("Polling font info using url: %s", url)
             if not info:
                 raise ValueError(f"no info for font query: {font.family}")
@@ -101,7 +101,7 @@ class FontSourceManager:
     @classmethod
     def _download(cls, font: Font, info_cache: Path) -> None:
         assert info_cache.exists()
-        info: Dict[str, Any] = json.loads(info_cache.read_text(encoding="utf-8"))
+        info: dict[str, Any] = json.loads(info_cache.read_text(encoding="utf-8"))
         font_id = info.get("id", None)
         assert font_id is not None
         if "variants" not in info:

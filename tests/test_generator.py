@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Union, List
 import pytest
 from sphinx.testing.util import SphinxTestApp
 
@@ -49,7 +48,7 @@ Test Title
     ),
     ids=["all", "2"],
 )
-def test_rectangle(sphinx_make_app, radius: int, corners: List[str]):
+def test_rectangle(sphinx_make_app, radius: int, corners: list[str]):
     app: SphinxTestApp = sphinx_make_app(
         files={
             "index.rst": f"""
@@ -282,7 +281,7 @@ Test Title
     ],
     ids=["regular", "invalid_custom", "custom"],
 )
-def test_polygon(sphinx_make_app, sides: Union[int, str]) -> None:
+def test_polygon(sphinx_make_app, sides: int | str) -> None:
     app: SphinxTestApp = sphinx_make_app(
         extra_conf="social_cards['enable']=False",
         files={

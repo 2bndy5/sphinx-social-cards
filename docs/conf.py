@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import platform
-import typing
 import time
 
 import docutils.nodes
@@ -15,7 +14,7 @@ from sphinx.environment import BuildEnvironment
 import sphinx.config
 from sphinx.util.logging import getLogger
 import sphinx.util.typing
-from typing import Literal
+from typing import Literal, cast
 
 LOGGER = getLogger(__name__)
 
@@ -33,9 +32,7 @@ if "CI" not in os.environ or (os.environ.get("CI", False) and platform.system().
     LOGGER.info("NOTE: GitHub REST API will be used (if info cache not found or outdated)")
 
 
-pkg_meta: typing.Dict[str, typing.Union[str, typing.List[str]]] = get_metadata(
-    "sphinx-social-cards"
-).json  # type: ignore[attr-defined]
+pkg_meta: dict[str, str | list[str]] = get_metadata("sphinx-social-cards").json  # type: ignore[attr-defined]
 assert "version" in pkg_meta
 assert "name" in pkg_meta
 assert "author_email" in pkg_meta
@@ -54,7 +51,7 @@ html_baseurl = os.environ.get(
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = pkg_meta["name"]
-author = typing.cast(str, pkg_meta["author_email"]).rsplit(" ", 1)[0]
+author = cast(str, pkg_meta["author_email"]).rsplit(" ", 1)[0]
 copyright = f"2023, {author}"
 release = pkg_meta["version"]
 
@@ -286,7 +283,7 @@ else:
         ]
     )
 
-pkg_deps = typing.cast(list[str], pkg_meta["requires_dist"])
+pkg_deps = cast(list[str], pkg_meta["requires_dist"])
 jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
@@ -315,7 +312,7 @@ def _parse_confval_signature(
         if isinstance(types, type):
             types = (types,)
         if types:
-            type_constraint = typing.Union[tuple(types)]  # type: ignore
+            type_constraint = tuple(types)  # type: ignore
             node += sphinx.addnodes.desc_sig_punctuation(" : ", " : ")
             annotations = sphinx.domains.python._parse_annotation(stringify(type_constraint), env)
             node += sphinx.addnodes.desc_type("", "", *annotations)
