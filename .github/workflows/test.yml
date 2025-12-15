@@ -56,12 +56,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Setup UV
         id: uv-setup
-        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
         with:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
       - name: Restore cache of sphinx-immaterial fonts
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: restore-cache
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
@@ -74,12 +74,12 @@ jobs:
           FORCE_COLOR: 1
       - name: Cache sphinx-immaterial fonts
         if: always() && steps.restore-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.python-version }}-test-docs-cache-${{ github.run_id }}
       - name: Upload coverage data
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-data-${{ runner.os }}-py${{ matrix.python-version }}
           path: .coverage*
@@ -93,7 +93,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: coverage-data-*
           merge-multiple: true
@@ -104,19 +104,19 @@ jobs:
           python-version: 3.x
       - name: Setup UV
         id: uv-setup
-        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
         with:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
       - name: Create coverage report
         run: uvx nox -s coverage
       - name: Upload comprehensive coverage HTML report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-report
           path: htmlcov/
       - name: Post coverage summary
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
