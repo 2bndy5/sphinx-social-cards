@@ -57,12 +57,12 @@ jobs:
         with:
           python-version: "3.x"
       - name: Setup uv
-        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
         with:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
       - name: Restore cache of sphinx-immaterial fonts
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: restore-cache
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
@@ -79,7 +79,7 @@ jobs:
           path: docs/_build/html
       - name: Cache sphinx-immaterial fonts
         if: always() && steps.restore-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
           key: ${{ matrix.os }}-docs-cache-${{ github.run_id }}
