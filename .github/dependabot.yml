@@ -9,6 +9,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      python:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/" # covers .github/workflows/*.yml
     schedule:
