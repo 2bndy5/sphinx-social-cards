@@ -47,12 +47,16 @@ a specific page. Lastly, :doc:`plugins/index` can be used to easily share custom
 between documentation projects.
 """
 
-import hashlib
+import asyncio
+import copyreg
 import json
 from pathlib import Path
 import re
 from typing import cast, Any, Callable
 from urllib.parse import urlparse
+import weakref
+
+import img_gen
 
 import docutils.nodes
 from docutils.parsers.rst import directives
@@ -88,6 +92,77 @@ _CARD_IMG_CHECK = re.compile(r"(?:property=og|name=twitter):image")
 config_parser: TypeAdapter[Social_Cards] = TypeAdapter(Social_Cards)
 layout_ctx_parser: TypeAdapter[Cards_Layout_Options] = TypeAdapter(Cards_Layout_Options)
 
+# ---------------------------------------------------------------------------
+# Pickle support for pyo3-backed img_gen types
+# Sphinx pickles its BuildEnvironment between incremental builds.  The config
+# object (stored on env.config) can contain img_gen.Font / img_gen.Icon /
+# img_gen.ColorKind values which are not picklable by default.  We register
+# copyreg reducers so that pickle can round-trip them via JSON.
+# ---------------------------------------------------------------------------
+
+
+def _reconstruct_img_gen_font(json_str: str) -> "img_gen.Font":
+    return img_gen.Font.from_json_str(json_str)
+
+
+def _reduce_img_gen_font(obj: "img_gen.Font"):
+    return (_reconstruct_img_gen_font, (obj.as_json_str(),))
+
+
+def _reconstruct_img_gen_icon(json_str: str) -> "img_gen.Icon":
+    return img_gen.Icon.from_json_str(json_str)
+
+
+def _reduce_img_gen_icon(obj: "img_gen.Icon"):
+    return (_reconstruct_img_gen_icon, (obj.as_json_str(),))
+
+
+def _reconstruct_img_gen_color(json_str: str) -> "img_gen.ColorKind":
+    return img_gen.ColorKind.from_json_str(json_str)
+
+
+def _reduce_img_gen_color(obj: "img_gen.ColorKind"):
+    return (_reconstruct_img_gen_color, (obj.as_json_str(),))
+
+
+copyreg.pickle(img_gen.Font, _reduce_img_gen_font)
+copyreg.pickle(img_gen.Icon, _reduce_img_gen_icon)
+for _color_variant in vars(img_gen.ColorKind).values():
+    if isinstance(_color_variant, type):
+        copyreg.pickle(_color_variant, _reduce_img_gen_color)
+
+# ---------------------------------------------------------------------------
+# img_gen.Generator is not picklable and must not live on app.env.
+# Keep it in a WeakKeyDictionary keyed by the Sphinx app so it is
+# automatically discarded when the app is garbage-collected.
+# ---------------------------------------------------------------------------
+_generators: weakref.WeakKeyDictionary[Any, img_gen.Generator] = weakref.WeakKeyDictionary()
+
+
+class _ImgGenEncoder(json.JSONEncoder):
+    """Custom JSON encoder that handles ``img_gen`` Rust-backed types.
+
+    All ``img_gen`` types expose an ``as_json_str()`` method.  We round-trip
+    through that to get a plain Python value that the standard encoder can
+    handle, so the final output is still pretty-printed JSON.
+    """
+
+    def default(self, obj: Any) -> Any:
+        if hasattr(obj, "as_json_str"):
+            return json.loads(obj.as_json_str())
+        return super().default(obj)
+
+
+async def _render(generator: img_gen.Generator, layout: img_gen.Layout) -> img_gen.Image:
+    """Wrap the Rust async fn so it is called inside the running event loop.
+
+    Per pyo3-async-runtimes, the Rust function must be invoked *while* the
+    event loop is running, not before.  A plain Python ``async def`` ensures
+    ``generator.render()`` is only called once ``asyncio.run`` has started the
+    loop.
+    """
+    return await generator.render(layout)
+
 
 def _load_config(app: Sphinx, config: Config):
     assert hasattr(config, "social_cards"), f"config not found: {dir(config)}"
@@ -99,6 +174,14 @@ def _load_config(app: Sphinx, config: Config):
     # LOGGER.info("config parsed: %r", card_config)
     setattr(config, SPHINX_SOCIAL_CARDS_CONFIG_KEY, card_config)
     CardGenerator.doc_src = app.srcdir
+
+
+def _init_generator(app: Sphinx):
+    card_config: Social_Cards = getattr(app.config, SPHINX_SOCIAL_CARDS_CONFIG_KEY)
+    _generators[app] = img_gen.Generator(
+        external_resource_paths=list(card_config.image_paths),
+        cache_root=card_config.cache_dir,
+    )
 
 
 def _assert_plugin_context(app: Sphinx):
@@ -161,7 +244,7 @@ class SocialCardTransform(SphinxTransform):
             page_meta.update(icon=meta_data.pop("card-icon"))
         page_meta.update({k: v for k, v in meta_data.items()})
         page_title = get_default_page_title(self.document)
-        description = cast(str, page_meta.get("description", conf.description))
+        description = page_meta.get("description", conf.description)
         site_url = urlparse(conf.site_url)
         ctx_url = site_url.netloc + site_url.path
         page_uri = builder.get_target_uri(self.env.docname).rstrip(builder.link_suffix)
@@ -194,8 +277,11 @@ class SocialCardTransform(SphinxTransform):
         )
         factory = CardGenerator(config=conf, context=card_contexts)
         factory.parse_layout()
-        card = factory.render_card()
-        file_hash = hashlib.sha256(card.bits()).hexdigest()[:16]
+        generator: img_gen.Generator = _generators[self.app]
+        layout = img_gen.Layout.from_yaml_str(factory._rendered_yaml)
+        layout.debug = img_gen.Debug.from_json_str(conf.debug.model_dump_json())
+        image = asyncio.run(_render(generator, layout))
+        file_hash = image.sha256[:16]
 
         # add the updated meta_data
         img_uri, added_meta_data = complete_doc_meta_data(
@@ -206,13 +292,14 @@ class SocialCardTransform(SphinxTransform):
             conf,
             self.env.docname,
             file_hash,
+            layout=layout,
         )
         assert img_uri is not None
 
         # save the image (& meta_data)
         img_path = Path(self.app.outdir, conf.path, img_uri)
         img_path.parent.mkdir(parents=True, exist_ok=True)
-        card.save(str(img_path))
+        image.save(str(img_path))
         add_doc_meta_data(self.document, added_meta_data)
 
 
@@ -273,7 +360,7 @@ class SocialCardDirective(SphinxDirective):
 
         # render social_cards config overrides (if any)
         if "hide-conf" not in self.options and dry_run:
-            conf_py = f"social_cards = {json.dumps(conf_src, indent=4)}"
+            conf_py = f"social_cards = {json.dumps(conf_src, indent=4, cls=_ImgGenEncoder)}"
             conf_py = conf_py.replace(": true", ": True").replace(": false", ": False")
             conf_py_block = docutils.nodes.literal_block(conf_py, conf_py, language="python")
             caption_text = self.options.get("conf-caption", "conf.py")
@@ -341,8 +428,11 @@ class SocialCardDirective(SphinxDirective):
         factory.parse_layout(layout_src)
 
         # generate the image
-        img = factory.render_card()
-        file_hash = hashlib.sha256(img.bits()).hexdigest()[:16]
+        generator: img_gen.Generator = _generators[self.env.app]
+        layout = img_gen.Layout.from_yaml_str(factory._rendered_yaml)
+        layout.debug = img_gen.Debug.from_json_str(conf.debug.model_dump_json())
+        image = asyncio.run(_render(generator, layout))
+        file_hash = image.sha256[:16]
         img_name = f"{self.env.docname}-{file_hash}.png"
 
         # save image; path (& meta_data injection) depends on `dry-run` option
@@ -374,13 +464,14 @@ class SocialCardDirective(SphinxDirective):
                 card_config=conf,
                 page_name=self.env.docname,
                 img_hash=file_hash,
+                layout=layout,
             )
             if img_uri is None:  # if not using html builder
                 return []  # this directive is incompatible with non-html builders
             add_doc_meta_data(self.state.document, added_meta_data)
         img_path = Path(output_path, img_name)
         img_path.parent.mkdir(parents=True, exist_ok=True)
-        img.save(str(img_path))
+        image.save(str(img_path))
 
         self.set_source_info(container_node)
         self.add_name(container_node)
@@ -427,7 +518,7 @@ class CardGeneratorDirective(SocialCardDirective, Image):
             self.options.pop(key)
         if "target" not in self.options:
             self.options["target"] = ref_uri
-        self.arguments = [str(img_uri)]
+        self.arguments = [img_uri]
         return Image.run(self)
 
 
@@ -435,6 +526,7 @@ def setup(app: Sphinx):
     app.add_config_value("social_cards", default={}, rebuild="html", types=[Social_Cards])
     app.add_transform(SocialCardTransform)
     app.connect("config-inited", _load_config)
+    app.connect("builder-inited", _init_generator)
     app.connect("builder-inited", _assert_plugin_context, priority=999)
     app.connect("env-get-outdated", flush_cache)
     app.add_directive("social-card", SocialCardDirective)

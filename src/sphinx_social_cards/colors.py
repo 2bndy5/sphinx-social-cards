@@ -1,30 +1,5 @@
-from typing import NamedTuple, Sequence, cast
-
-from pydantic_extra_types.color import Color
-from PySide6.QtGui import (
-    QColor,
-    QBrush,
-    QGradient,
-    QRadialGradient,
-    QLinearGradient,
-    QConicalGradient,
-)
-
-from .validators.common import (
-    ColorType,
-    Gradient,
-    Linear_Gradient,
-    Radial_Gradient,
-    Conical_Gradient,
-)
-from .validators.layers import Offset
-
-
-class ColorAttr(NamedTuple):
-    #: The color used as the background fill color.
-    fill: QColor | QBrush
-    #: The color used for the foreground text.
-    text: QColor | QBrush
+from typing import Sequence
+import img_gen
 
 
 #: The default color palette
@@ -53,45 +28,6 @@ MD_COLORS = {
 }
 
 
-def get_qt_color(color: Color) -> QColor:
-    return QColor.fromHslF(*color.as_hsl_tuple(alpha=True))
-
-
-def get_qt_gradient(
-    color: Linear_Gradient | Radial_Gradient | Conical_Gradient, offset: Offset
-) -> QLinearGradient | QRadialGradient | QConicalGradient:
-    assert isinstance(color, Gradient)
-    if isinstance(color, Linear_Gradient):
-        grad = QLinearGradient(
-            color.start.x - offset.x,
-            color.start.y - offset.y,
-            color.end.x - offset.x,
-            color.end.y - offset.y,
-        )
-    if isinstance(color, Radial_Gradient):
-        grad = QRadialGradient(color.center.x - offset.x, color.center.y - offset.y, color.radius)
-        if color.focal_point is not None:
-            grad.setFocalPoint(color.focal_point.x - offset.x, color.focal_point.y - offset.y)
-        if color.focal_radius is not None:
-            grad.setFocalRadius(color.focal_radius)
-    if isinstance(color, Conical_Gradient):
-        grad = QConicalGradient(color.center.x - offset.x, color.center.y - offset.y, color.angle)
-    if color.preset is not None:
-        for p_grad in list(QGradient.Preset):
-            if isinstance(color.preset, int) and color.preset == p_grad.value:
-                grad.setStops(QGradient(p_grad).stops())
-                break
-            if isinstance(color.preset, str) and color.preset == p_grad.name:
-                grad.setStops(QGradient(p_grad).stops())
-                break
-    if isinstance(color, (Radial_Gradient, Linear_Gradient)):
-        grad.setSpread(QGradient.Spread[f"{color.spread.title()}Spread"])
-    for pos, c_spec in color.colors.items():
-        color = get_qt_color(c_spec)
-        grad.setColorAt(pos, color)
-    return grad
-
-
 def get_luminance_contrast(rgba: Sequence[float]) -> float:
     """
     Calculate the luminance according to WCAG std (normalized in range [0, 1])
@@ -102,29 +38,20 @@ def get_luminance_contrast(rgba: Sequence[float]) -> float:
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def auto_get_fg_color(color: ColorType) -> Color:
-    luminance: float | None = None
-    assert isinstance(color, (Color, Linear_Gradient, Radial_Gradient, Conical_Gradient)), (
-        "color should already be validated"
-    )
-    if isinstance(color, Color):
-        rgb = [c / 255 for c in color.as_rgb_tuple(alpha=False)]
-        luminance = get_luminance_contrast(rgb)
-    elif isinstance(color, (Linear_Gradient, Radial_Gradient, Conical_Gradient)):
-        # Gradient colors can use a preset color list, a user-defined color list, or
-        # an empty color list (in which default gradient is black to white).
-        # We'll take the average of luminance contrast for each color & hope for the best
-        gradient = get_qt_gradient(color, Offset(x=0, y=0))
-        total = 0.0
-        for _, grad_color in cast(list[tuple[float, QColor]], gradient.stops()):
-            total += get_luminance_contrast(
-                [
-                    grad_color.redF(),
-                    grad_color.greenF(),
-                    grad_color.blueF(),
-                ]
-            )
-        luminance = total / len(gradient.stops())
-    assert luminance is not None
-    # WCAG mandates a contrast of 4.5 to 1. Here 0.451 is our tie-breaker
-    return Color("black" if luminance > 0.451 else "white")
+def auto_get_fg_color(color: str) -> str:
+    """Return 'black' or 'white' depending on luminance of the given CSS color string.
+
+    Accepts hex colors (#rgb or #rrggbb). Named colors should be resolved to hex via
+    MD_COLORS before calling this function.
+    """
+    css_color = img_gen.SolidColor.from_string(color)
+    default_color = "".join([hex(c)[2:] for c in css_color.to_tuple()[:3]])
+    hex_color = MD_COLORS.get(color, default_color)
+    hex_color = hex_color.lstrip("#")
+    if len(hex_color) == 3:
+        hex_color = "".join(c * 2 for c in hex_color)
+    r = int(hex_color[0:2], 16) / 255
+    g = int(hex_color[2:4], 16) / 255
+    b = int(hex_color[4:6], 16) / 255
+    luminance = get_luminance_contrast([r, g, b])
+    return "black" if luminance > 0.451 else "white"

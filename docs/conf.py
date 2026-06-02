@@ -5,7 +5,7 @@ import time
 
 import docutils.nodes
 from importlib.metadata import metadata as get_metadata
-from PySide6.QtGui import QGradient
+import img_gen
 import sphinx
 import sphinx.addnodes
 from sphinx.application import Sphinx
@@ -18,7 +18,7 @@ from typing import Literal, cast
 
 LOGGER = getLogger(__name__)
 
-if sphinx.version_info >= (6, 1):
+if sphinx.version_info >= (6, 1):  # type: ignore[unsupported-operation]
     stringify = sphinx.util.typing.stringify_annotation
 else:
     stringify = sphinx.util.typing.stringify
@@ -273,22 +273,27 @@ layouts = sorted(
 )
 
 github_plugin_layouts = Path(pkg_root, "plugins", "github", "layouts")
-if not use_gh_rest_api:
-    github_layouts = []
-else:
-    github_layouts = sorted(
-        [
-            layout.relative_to(github_plugin_layouts).with_suffix("").as_posix()
-            for layout in github_plugin_layouts.rglob("*.yml")
-        ]
-    )
-
+# if not use_gh_rest_api:
+github_layouts = []
+# else:
+#     github_layouts = sorted(
+#         [
+#             layout.relative_to(github_plugin_layouts).with_suffix("").as_posix()
+#             for layout in github_plugin_layouts.rglob("*.yml")
+#         ]
+#     )
+presets = [
+    (int(getattr(img_gen.Presets, p)), p)
+    for p in dir(img_gen.Presets)
+    if not p.startswith("_") and not p.startswith("from_")
+]
+presets = dict(sorted(presets, key=lambda p: p[0]))
 pkg_deps = cast(list[str], pkg_meta["requires_dist"])
 jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
     "gradient_presets": {
-        "presets": {p.value: p.name for p in list(QGradient.Preset) if p.name != "NumPresets"}
+        "presets": presets,
     },
     "deps": {"deps": pkg_deps},
 }
@@ -299,25 +304,25 @@ def _parse_confval_signature(
 ) -> str:
     values = env.config.values
     registry_option = values.get(signature)
-    node += sphinx.addnodes.desc_name(signature, signature)
+    node += sphinx.addnodes.desc_name(signature, signature)  # type: ignore[assignment, operator]
     if not use_gh_rest_api and signature == "repo_url":
         # avoids triggering the below warning when CI is not supposed to use GH REST API
         return signature
     elif registry_option is None:
         LOGGER.error("Invalid config option: %r", signature, location=node)
     else:
-        default, rebuild, types = registry_option
+        default, rebuild, types = registry_option  # type: ignore
         if isinstance(types, sphinx.config.ENUM):
             types = (Literal[tuple(types.candidates)],)  # type: ignore
         if isinstance(types, type):
             types = (types,)
         if types:
             type_constraint = tuple(types)  # type: ignore
-            node += sphinx.addnodes.desc_sig_punctuation(" : ", " : ")
+            node += sphinx.addnodes.desc_sig_punctuation(" : ", " : ")  # type: ignore[assignment, operator]
             annotations = sphinx.domains.python._parse_annotation(stringify(type_constraint), env)
-            node += sphinx.addnodes.desc_type("", "", *annotations)
+            node += sphinx.addnodes.desc_type("", "", *annotations)  # type: ignore[assignment, operator]
         if not callable(default):
-            node += sphinx.addnodes.desc_sig_punctuation(" = ", " = ")
+            node += sphinx.addnodes.desc_sig_punctuation(" = ", " = ")  # type: ignore[assignment, operator]
             default_repr = repr(default)
             node += docutils.nodes.literal(  # type: ignore[assignment, operator]
                 default_repr,

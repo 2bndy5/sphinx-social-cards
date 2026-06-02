@@ -8,10 +8,10 @@ layers:
   # the base layer for the background
   #% block background -%#
   - background:
-      linear_gradient:
+      color: #linear_gradient:
         preset: PremiumWhite
-        start: {}
-        end: { x: 400, y: 210}
+        start: { x: 0, y: 0 }
+        end: { x: 400, y: 210 }
         spread: reflect
   #%- endblock %#
   # the layer for the logo image
@@ -84,7 +84,7 @@ layers:
         #% if page.meta.icon -%#
         '{{ page.meta.icon }}'
         #%- else -%#
-        sphinx_logo
+        simple/sphinx
         #%- endif %#
       color: rgb(132, 146, 175)
     #%- endblock %#
