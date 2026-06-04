@@ -279,7 +279,11 @@ class SocialCardTransform(SphinxTransform):
         factory.parse_layout()
         generator: img_gen.Generator = _generators[self.app]
         layout = img_gen.Layout.from_yaml_str(factory._rendered_yaml)
-        layout.debug = img_gen.Debug.from_json_str(conf.debug.model_dump_json())
+        layout.debug = (
+            conf.debug
+            if isinstance(conf.debug, img_gen.Debug)
+            else img_gen.Debug(enable=conf.debug)
+        )
         image = asyncio.run(_render(generator, layout))
         file_hash = image.sha256[:16]
 
@@ -430,7 +434,11 @@ class SocialCardDirective(SphinxDirective):
         # generate the image
         generator: img_gen.Generator = _generators[self.env.app]
         layout = img_gen.Layout.from_yaml_str(factory._rendered_yaml)
-        layout.debug = img_gen.Debug.from_json_str(conf.debug.model_dump_json())
+        layout.debug = (
+            conf.debug
+            if isinstance(conf.debug, img_gen.Debug)
+            else img_gen.Debug(enable=conf.debug)
+        )
         image = asyncio.run(_render(generator, layout))
         file_hash = image.sha256[:16]
         img_name = f"{self.env.docname}-{file_hash}.png"

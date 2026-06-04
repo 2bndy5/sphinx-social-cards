@@ -111,3 +111,6 @@ test = [
 coverage = [
     "coverage[toml]>=7.10.6",
 ]
+
+[tool.uv.sources]
+img-gen = { git = "https://github.com/2bndy5/img-gen", branch = "ironing-kinks" }
