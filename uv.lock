@@ -473,8 +473,26 @@ wheels = [
 
 [[package]]
 name = "img-gen"
-version = "0.2.2"
-source = { git = "https://github.com/2bndy5/img-gen?branch=ironing-kinks#47c62af80a4a740e8e4a0c87067b775676c2ecdc" }
+version = "0.2.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/f6/e8594f85a7222db6e99f72fa0e346e02fd27841ebd196fad7ccac7dae515/img_gen-0.2.3.tar.gz", hash = "sha256:c8b798dcc4852aca35217ed2d586bc50601bf05d87fada50586e07915a7133b4", size = 133325, upload-time = "2026-06-22T08:06:04.606Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/6f/dc7e883973925c3dc45206960296d51784bbe8b639b26889c504f71e9d0d/img_gen-0.2.3-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:9bad8e8bb17176676f6586fbf90ad87c09320b5c2c6f4c4c1364d1dfa9a321e4", size = 13209850, upload-time = "2026-06-22T08:05:31.022Z" },
+    { url = "https://files.pythonhosted.org/packages/1d/02/182199bf5bd45d6d8e8c60dda8624833d07f6777fc4502e0f316a110f637/img_gen-0.2.3-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:0b3875831db3b492a769c279370c7fefb8b72a41565049c2a111c42fcc4491e4", size = 13097917, upload-time = "2026-06-22T08:05:33.313Z" },
+    { url = "https://files.pythonhosted.org/packages/1b/3e/77745b1aec8271cdec277f2a7b25bc016f3ac4fd21042ed42b80e2c7c375/img_gen-0.2.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:25d2f1d6de08a98196fb6ed22dee2394ffa5565f670339cfd94414478a308e6f", size = 12445657, upload-time = "2026-06-22T08:05:35.427Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/4e/a3da2dc30e750567eac68a44db4c6ca709fcd67007c15e6d572691164e3d/img_gen-0.2.3-cp310-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:89931fc2833d31ca845f9baae406b1be2477270978806a136fa3ae18c49e1563", size = 11727048, upload-time = "2026-06-22T08:05:37.69Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/ad/91d06f16cdbdbd30912adcfaa308087baf31d7724852d657a9e23b829f93/img_gen-0.2.3-cp310-abi3-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:73ad95c624290b6d92e8806520d5384b0482118a9a585889fb29e4cd47388856", size = 13255506, upload-time = "2026-06-22T08:05:39.79Z" },
+    { url = "https://files.pythonhosted.org/packages/df/a5/5ff646344d294d88cf83a9e65cb0681564a488181d570928d943188a83a0/img_gen-0.2.3-cp310-abi3-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:0b74329883c10b57f1f84efb3ff4dff8a353d7d92ff7a545cfe65846347e9e48", size = 15538333, upload-time = "2026-06-22T08:05:41.924Z" },
+    { url = "https://files.pythonhosted.org/packages/63/bf/4a1798cf73d8170c94fd57bcaf2af3c1f83e8b694920a623f6e1f134900d/img_gen-0.2.3-cp310-abi3-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:1eeda71d4d996876b37457077fb2289c719fe9f14abeeb80f0683ab8b4db7503", size = 13778953, upload-time = "2026-06-22T08:05:44.091Z" },
+    { url = "https://files.pythonhosted.org/packages/9f/db/44c8ccb2161586161c964fb6a4068bc2eaa2bd6308aa112e6019553c459d/img_gen-0.2.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b35cbcb0a0df2e19719f72768fa472cd68df6bf65375e401a43d09e80c901dfb", size = 13069487, upload-time = "2026-06-22T08:05:47.657Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/6e/4bf92d67dc617a326936f164e6dfb59ddb05b3f67e9f9b3eb973134ae3a2/img_gen-0.2.3-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:98da080a8752e584c748056f3fd2dfa2a93e3bb274f50c97b830b381a06be0b8", size = 12445479, upload-time = "2026-06-22T08:05:49.773Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/0a/9a0e6268008838874aad6edf415103d7c479418114ca1152908297cdf243/img_gen-0.2.3-cp310-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:b00c9b6e5f4f884cc57bc17805149c05a2c9801b0e49edf7348f6a8867bd305c", size = 11725934, upload-time = "2026-06-22T08:05:51.951Z" },
+    { url = "https://files.pythonhosted.org/packages/72/b4/007878a7a9e02162a9848dfe47a7ac6e544a060b6417c57a01bfc1b35a92/img_gen-0.2.3-cp310-abi3-musllinux_1_2_i686.whl", hash = "sha256:b944882dfb37835f0c2e5dee344ae180f8f00f00a680030730c9b2774aef4966", size = 12758468, upload-time = "2026-06-22T08:05:53.896Z" },
+    { url = "https://files.pythonhosted.org/packages/05/2e/780289b21491f4bb8e5596dfbc83ba959e01e0d99b95e64fca94343cb277/img_gen-0.2.3-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:7ec744875baf6d7fbdcf6bb462b57d848d34e00606a24057644dee68b90b67fa", size = 13070032, upload-time = "2026-06-22T08:05:56.117Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/62/c9eb9da3999e8c9ec6089c7c5dcd1de5c080d40f05bd0c2a51c721d55006/img_gen-0.2.3-cp310-abi3-win32.whl", hash = "sha256:c16f4062bc7bd2b00b4bdf1b84b171d362646b2aa9de874267132442b66f928c", size = 12138119, upload-time = "2026-06-22T08:05:58.134Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/93/3e5e4f6acae29ddecc34bcd23a0924e62268b4d38b871ed5cb1a27cfc3c1/img_gen-0.2.3-cp310-abi3-win_amd64.whl", hash = "sha256:f0542203dc8ff9fbad4ac55d8ec961a1e96ae3f07df40856583a84382b8fb2a9", size = 12717305, upload-time = "2026-06-22T08:06:00.842Z" },
+    { url = "https://files.pythonhosted.org/packages/82/98/6d6d52eb60687466b4bc8d50bff1db6fcc92a6dd3430e7e5f548e994710a/img_gen-0.2.3-cp311-abi3-win_arm64.whl", hash = "sha256:3cd23c81419e9d71bd36bba3d93d4accc6231d41814017b4a95df2ef88f31fcd", size = 12260501, upload-time = "2026-06-22T08:06:02.841Z" },
+]
 
 [[package]]
 name = "iniconfig"
@@ -1045,7 +1063,7 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "appdirs", marker = "extra == 'github'", specifier = ">=1.4.4" },
-    { name = "img-gen", git = "https://github.com/2bndy5/img-gen?branch=ironing-kinks" },
+    { name = "img-gen", specifier = ">=0.2.3" },
     { name = "pydantic", specifier = ">=2.4" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "requests", specifier = ">=2.32.5" },
