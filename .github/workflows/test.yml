@@ -46,7 +46,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgl-dev libglvnd-dev libxkbcommon-x11-0
           echo "QT_QPA_PLATFORM=offscreen" >> "${GITHUB_ENV}"
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Setup Python ${{ matrix.python-version }}
@@ -61,7 +61,7 @@ jobs:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
       - name: Restore cache of sphinx-immaterial fonts
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         id: restore-cache
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
@@ -74,7 +74,7 @@ jobs:
           FORCE_COLOR: 1
       - name: Cache sphinx-immaterial fonts
         if: always() && steps.restore-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ env.SPHINX_IMMATERIAL_EXTERNAL_RESOURCE_CACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.python-version }}-test-docs-cache-${{ github.run_id }}
@@ -89,7 +89,7 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Download all artifacts
