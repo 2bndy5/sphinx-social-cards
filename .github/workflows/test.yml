@@ -51,12 +51,12 @@ jobs:
           persist-credentials: false
       - name: Setup Python ${{ matrix.python-version }}
         id: python-setup
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Setup UV
         id: uv-setup
-        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
@@ -99,12 +99,12 @@ jobs:
           merge-multiple: true
       - name: Setup Python
         id: python-setup
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
       - name: Setup UV
         id: uv-setup
-        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           python-version: ${{ steps.python-setup.outputs.python-version }}
           enable-cache: true
