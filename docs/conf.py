@@ -274,7 +274,7 @@ layouts = sorted(
 
 github_plugin_layouts = Path(pkg_root, "plugins", "github", "layouts")
 # if not use_gh_rest_api:
-github_layouts = []
+github_layouts = []  # type: ignore
 # else:
 #     github_layouts = sorted(
 #         [
@@ -287,13 +287,13 @@ presets = [
     for p in dir(img_gen.Presets)
     if not p.startswith("_") and not p.startswith("from_")
 ]
-presets = dict(sorted(presets, key=lambda p: p[0]))
+gradient_presets = dict(sorted(presets, key=lambda p: p[0]))
 pkg_deps = cast(list[str], pkg_meta["requires_dist"])
 jinja_contexts = {
     "layouts": {"layouts": layouts},
     "github_plugin_layouts": {"layouts": github_layouts},
     "gradient_presets": {
-        "presets": presets,
+        "presets": gradient_presets,
     },
     "deps": {"deps": pkg_deps},
 }

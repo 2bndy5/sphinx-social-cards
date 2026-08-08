@@ -26,7 +26,7 @@ Layer Typography Attribute
                     :hide-layout:
                     :meta-data: {
                       "title":
-                        "sphinx_social_cards.validators.LayerTypographyDataclass._fg_color"}
+                        "sphinx_social_cards.validators.LayerTypographyDataClass._fg_color"}
                     :meta-data-caption: Using an API name as the page title
 
                     layers:

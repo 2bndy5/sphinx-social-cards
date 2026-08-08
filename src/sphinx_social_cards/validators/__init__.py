@@ -250,10 +250,15 @@ class Social_Cards(CustomBaseModel):
     """
 
     @field_validator("debug")
-    def validate_debug(cls, val: bool | Debug) -> Debug:
+    def validate_debug(cls, val: bool | Debug) -> img_gen.Debug:
         if isinstance(val, bool):
-            return Debug(enable=val)
-        return val
+            return img_gen.Debug(enable=val)
+        return img_gen.Debug(
+            enable=val.enable,
+            grid=val.grid,
+            grid_step=val.grid_step,
+            color=None,  # img_gen.SolidColor.from_string(val.color),
+        )
 
     def set_defaults(self, doc_src: str | os.PathLike[str], config: Config):
         # sets the default values for colors, fonts, logo, and paths based on sphinx'
