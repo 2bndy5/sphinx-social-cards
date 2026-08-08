@@ -1,6 +1,8 @@
 from typing import cast, Type
 
+import img_gen
 import sphinx
+from sphinx.builders import Builder
 from sphinx.builders.html import StandaloneHTMLBuilder
 import docutils.nodes
 from .validators import Social_Cards
@@ -8,12 +10,12 @@ from .validators import Social_Cards
 
 meta_node_types: tuple[Type[docutils.nodes.Element], ...]
 
-if sphinx.version_info >= (6,):
+if sphinx.version_info >= (6,):  # type: ignore[unsupported-operation]
     meta_node_types = (docutils.nodes.meta,)  # type: ignore[attr-defined]
 else:
     from sphinx.addnodes import (  # type: ignore[attr-defined]
-        docutils_meta,
-        meta as sphinx_meta,
+        docutils_meta,  # type: ignore[missing-module-attribute]
+        meta as sphinx_meta,  # type: ignore[missing-module-attribute]
     )
 
     meta_node_types = (docutils_meta, sphinx_meta)
@@ -21,12 +23,13 @@ else:
 
 def complete_doc_meta_data(
     existing_meta_data: dict[str, str],
-    builder: StandaloneHTMLBuilder,
+    builder: Builder,
     title: str,
     description: str,
     card_config: Social_Cards,
     page_name: str,
     img_hash: str,
+    layout: img_gen.Layout | None = None,
 ) -> tuple[str | None, dict[str, str]]:
     new_meta_data: dict[str, str] = {}
     if not isinstance(builder, StandaloneHTMLBuilder):
@@ -49,11 +52,19 @@ def complete_doc_meta_data(
     update_meta(id_={"name": "twitter:card"}, content="summary_large_image")
     update_meta(id_={"property": "og:type"}, content="website")
     update_meta(id_={"property": "og:url"}, content=page_url)
-    for key, val in dict(
-        type="image/png",
-        width=card_config._parsed_layout.size.width,
-        height=card_config._parsed_layout.size.height,
-    ).items():
+    img_width = layout.size.width if layout is not None and layout.size is not None else None
+    img_height = layout.size.height if layout is not None and layout.size is not None else None
+    for key, val in {
+        "type": "image/png",
+        **(
+            {
+                "width": img_width,
+                "height": img_height,
+            }
+            if img_width is not None and img_height is not None
+            else {}
+        ),
+    }.items():
         update_meta(id_={"property": f"og:{key}"}, content=str(val))
     for key, val in dict(title=title, description=description, image=img_url).items():
         assert val is not None, f"{key} cannot be None"

@@ -13,10 +13,6 @@ meta_info_lines: &meta_info_lines
   line:
     amount: 3
     height: 1.1
-avatar_size: &avatar_size
-  size:
-    width: 120
-    height: 120
 
 size: { width: 1200, height: 630 }
 layers:

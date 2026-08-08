@@ -14,10 +14,109 @@ Each layer can be specified in layout's YAML file as a YAML list value for the `
           color: orange
       - # layer 1
         icon:
-          image: sphinx_logo
+          image: simple/sphinx
 
-.. autoclass:: sphinx_social_cards.validators.layout.Layer
-    :members:
+.. py:class:: Layer
+
+    Each layer can have different attributes. A typical layer has :attr:`size` and
+    :attr:`offset` attributes with 1 additional attribute detailing a
+    :attr:`background` or :attr:`icon` or :attr:`typography` or :attr:`rectangle` or
+    :attr:`ellipse`. However, these attributes may combined as needed.
+
+    Each attribute has a priority, so using multiple attributes on a single layer
+    will render consistently. The priority order is as follows (excluding
+    :attr:`size` and :attr:`offset`):
+
+    1. :attr:`background`
+    #. :attr:`rectangle`
+    #. :attr:`ellipse`
+    #. :attr:`polygon`
+    #. :attr:`icon`
+    #. :attr:`typography`
+    #. :attr:`mask`
+
+    Meaning, any :attr:`background` attribute is always rendered before other layer
+    attributes. Additionally, any :attr:`typography` attribute is rendered after
+    other attributes but before applying the :attr:`mask`.
+
+    .. social-card::
+        :dry-run:
+        :layout-caption: A layout with a single layer that has multiple attributes
+
+        size: { width: 200, height: 200 }
+        layers:
+          - typography: # the layer's typography attribute
+              content: "S"
+              align: center
+            background: # the layer's background attribute
+              color: '{{ layout.background_color | yaml }}'
+            icon: # the layer's icon attribute
+              image: '{{ layout.logo.image }}'
+
+        # NOTE that the order of layer attributes does not matter
+
+    .. error::
+        Each layer can only have 1 of each type of attribute. For example you cannot use
+        2 :attr:`background` attributes in a single layer:
+
+        .. social-card::
+            :dry-run:
+
+            size: { width: 600, height: 250 }
+            layers:
+              - background: { image: 'images/rainbow.png' }
+                # The `background` attribute cannot overwritten by next line
+                background: { color: '#ff000037' }
+
+            # NOTE: The layer's background attribute is composed solely by
+            # the last instance of the background attribute in the layer.
+
+    .. py:attribute:: background
+        :type: Background | None
+
+        An optional :doc:`background`.
+
+    .. py:attribute:: typography
+        :type: Typography | None
+
+        An optional :doc:`typography`.
+
+    .. py:attribute:: rectangle
+        :type: Rectangle | None
+
+        An optional :doc:`shapes/rectangle`.
+
+    .. py:attribute:: ellipse
+        :type: Ellipse | None
+
+        An optional :doc:`shapes/ellipse`.
+
+    .. py:attribute:: polygon
+        :type: Polygon | None
+
+        An optional :doc:`shapes/polygon`.
+
+    .. py:attribute:: icon
+        :type: Icon | None
+
+        An optional :doc:`icon`.
+
+    .. py:attribute:: size
+        :type: Size | None
+
+        The layer `size <Size>`. Defaults to values inherited from the
+        `layout.size <Layout.size>`.
+
+    .. py:attribute:: offset
+        :type: Offset
+        :value: Offset()
+
+        The layer `offset <Offset>`. Defaults to :yaml:`{ x: 0, y: 0 }`.
+
+    .. py:attribute:: mask
+        :type: Mask | None
+
+        An optional :doc:`mask`.
 
 .. _using_jinja:
 
@@ -87,8 +186,8 @@ A layout file is basically a Jinja template. So, layers can be generated dynamic
           width: '{{ diameter }}'
           height: '{{ diameter }}'
         offset:
-          x: '{{ width / 6 * (i * 2 + 1) - (diameter / 2) }}'
-          y: '{{ (height - diameter) / 2  }}'
+          x: '{{ (width / 6 * (i * 2 + 1) - (diameter / 2)) | int }}'
+          y: '{{ ((height - diameter) / 2) | int }}'
       #% endfor %#
 
 Inheriting Layouts
@@ -226,7 +325,7 @@ customizations:
 
         #% block watermark_icon -%#
         icon:
-          image: sphinx_logo
+          image: simple/sphinx
           color: rgb(116, 116, 83)
         #%- endblock %#
 

@@ -46,8 +46,27 @@ Card Layout Options
 Layout Attributes
 ~~~~~~~~~~~~~~~~~
 
-.. autoclass:: sphinx_social_cards.validators.layout.Layout
-    :members:
+.. py:class:: Layout
+
+    The `Layout.size` attribute is not required (see `width <Size.width>` and
+    `height <Size.height>` for default values), but the :attr:`layers` attribute is
+    required.
+
+    Each layout supports these options:
+
+    .. py:attribute:: size
+        :type: Size
+
+        The card's absolute maximum `size <Size>`. Any :attr:`layers` with no
+        `size <Size>` specified will fallback to this :attr:`layout.size <Layout.size>`.
+        If this is not specified, then the layout uses the default `width <Size.width>` and
+        `height <Size.height>` values.
+
+    .. py:attribute:: layers
+        :type: list[Layer]
+
+        A YAML list of :doc:`layers in the layout <layers>` that define the entire
+        content of the layout.
 
 Positioning Attributes
 **********************
@@ -77,8 +96,38 @@ Upon closer inspection you'll notice that
 - layer :yaml:`1` uses a specified `size <Size>` and `offset <Offset>`
 
 
-.. autoclass:: sphinx_social_cards.validators.layout.Size
-    :members:
+.. py:class:: Size
 
-.. autoclass:: sphinx_social_cards.validators.layout.Offset
-    :members:
+    An attribute to describe a layer's or layout's size.
+
+    .. py:attribute:: width
+        :type: int
+        :value: 1200
+
+        The width of the layer (relative to the `offset <Offset>`).
+        Defaults to 1200 pixels width.
+
+    .. py:attribute:: height
+        :type: int
+        :value: 630
+
+        The height of the layer (relative to the `offset <Offset>`).
+        Defaults to 630 pixels height.
+
+.. py:class:: Offset
+
+    An attribute to describe a layer's positional offset.
+
+    .. py:attribute:: x
+        :type: int
+        :value: 0
+
+        The offset on the X axis (relative to the top-left corner of the card). Defaults
+        to 0.
+
+    .. py:attribute:: y
+        :type: int
+        :value: 0
+
+        The offset on the Y axis (relative to the top-left corner of the card). Defaults
+        to 0.

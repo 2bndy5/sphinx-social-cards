@@ -1,7 +1,5 @@
 import pytest
 from sphinx.testing.util import SphinxTestApp
-from sphinx_social_cards.validators.layers import Font
-from sphinx_social_cards.fonts import FontSourceManager
 
 
 @pytest.mark.parametrize("style", ["normal", pytest.param("bold", marks=pytest.mark.xfail)])
@@ -37,9 +35,4 @@ A Really Long Test Title That Overflows 2 Lines
         },
     )
     app.build()
-    assert not app._warning.getvalue()
-
-
-@pytest.mark.xfail
-def test_invalid_family() -> None:
-    FontSourceManager.get_font(Font(family="X"))
+    assert not app._warning.getvalue()  # type: ignore[attr-defined]

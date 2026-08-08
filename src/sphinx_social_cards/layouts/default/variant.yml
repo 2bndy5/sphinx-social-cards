@@ -34,6 +34,7 @@ layers:
     size: { width: 960, height: 60 }
     typography:
       content: '{{ config.docstitle }}'
+      color: '{{ layout.color | yaml }}'
       line:
         height: 0.85
         amount: 1
@@ -48,6 +49,7 @@ layers:
         #%- elif page.title -%#
         '{{ page.title }}'
         #%- endif %#
+      color: '{{ layout.color | yaml }}'
       line:
         # height: 1.25
         amount: 3
@@ -63,6 +65,7 @@ layers:
         #%- else -%#
         '{{ config.site_description }}'
         #%- endif %#
+      color: '{{ layout.color | yaml }}'
       line:
         height: 0.87
         amount: 2

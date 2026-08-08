@@ -27,7 +27,7 @@ preset.
               {{grad}}_gradient:
                 preset: {{ name }}
                 # or equivalently
-                # preset: {{ index }}
+                preset: {{ index }}
                 {% if grad == 'linear' -%}
                 start: { y: 125 }
                 end: { x: 250, y: 125 }
