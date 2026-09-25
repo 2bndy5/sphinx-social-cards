@@ -1,17 +1,24 @@
 """This module holds the data classes used to populate the jinja contexts."""
 
 from importlib import import_module
+from pathlib import Path
+from typing import Annotated, Any, cast
 import platform
 import time
-from typing import Any, cast, Annotated
 
-from pydantic import BaseModel, field_validator, Field, ConfigDict, field_serializer
+import img_gen
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sphinx.search import languages, SearchLanguage
-from .common import CustomBaseModel, ColorType, PathType, serialize_color
-from .layers import Icon, Font
 
 time_fmt = "%B %#d %Y" if platform.system().lower() == "windows" else "%B %-d %Y"
 today_default = time.strftime(time_fmt, time.localtime())
+
+
+def _validate_path(val: str | Path) -> str:
+    val = Path(val)
+    if val.is_absolute() and not val.exists():
+        raise FileNotFoundError(f"{str(val)} does not exist")
+    return str(val)
 
 
 class Cards_Layout_Options(BaseModel):
@@ -24,9 +31,14 @@ class Cards_Layout_Options(BaseModel):
         This section heavily relies on knowledge about :ref:`using_jinja`
     """
 
-    model_config = ConfigDict(validate_assignment=True, extra="allow", str_strip_whitespace=True)
+    model_config = ConfigDict(
+        validate_assignment=True,
+        extra="allow",
+        str_strip_whitespace=True,
+        arbitrary_types_allowed=True,
+    )
 
-    background_image: PathType | None = None
+    background_image: str | None = None
     """The fallback value used for a layer's `background.image <Background.image>`
     attribute. Default is :python:`None`. This image will not be shown if the
     `background_color` has no alpha channel (transparency) value.
@@ -43,7 +55,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               image: '{{ layout.background_image }}'
     """
-    background_color: ColorType | None = None
+    background_color: str | None = None
     """The fallback value used for a layer's `background.color <Background.color>`
     attribute in most `pre-designed layouts <pre-designed-layouts>`. By default, this
     value is set to the :themeconf:`palette`\\ [:themeconf:`primary`] color or
@@ -61,7 +73,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               color: '{{ layout.background_color | yaml }}'
     """
-    color: ColorType | None = None
+    color: str | None = None
     """The color used for the foreground text in most `pre-designed layouts
     <pre-designed-layouts>`. By default, this will be computed as :yaml:`"white"` or
     :yaml:`"black"` based on the `background_color`.
@@ -83,7 +95,7 @@ class Cards_Layout_Options(BaseModel):
               align: center
               line: { amount: 2 }
     """
-    accent: ColorType | None = None
+    accent: str | None = None
     """The color used as a foreground accentuating color. By default, this value is set
     to the :themeconf:`palette`\\ [:themeconf:`accent`] color or :yaml:`"#4051B2"` for
     themes other than sphinx-immaterial_.
@@ -100,7 +112,7 @@ class Cards_Layout_Options(BaseModel):
           - background:
               color: '{{ layout.accent| yaml }}'
     """
-    font: Font | None = None
+    font: img_gen.Font | None = None
     """The `font <Font>` specification to be used.
 
     .. seealso:: Please review :ref:`choosing-a-font` section.
@@ -124,7 +136,7 @@ class Cards_Layout_Options(BaseModel):
               line: { amount: 2 }
               align: center
     """
-    logo: Icon | None = None
+    logo: img_gen.Icon | None = None
     """The icon used for branding of the site. By default, this will be the
     :confval:`html_logo` (or the sphinx-immaterial_ theme's
     :themeconf:`icon`\\ [:themeconf:`logo`]).
@@ -151,20 +163,24 @@ class Cards_Layout_Options(BaseModel):
           - background: { color: black }
           - icon:
               image: '{{ layout.logo.image }}'
-              color: '{{ layout.logo.color | yaml }}'
     """
 
-    @field_serializer("background_color")
-    def serialize_bg_color(self, color: ColorType | None, _info):
-        return serialize_color(color)
+    @field_validator("font", mode="before")
+    @classmethod
+    def coerce_font(cls, v):
+        if isinstance(v, dict):
+            return img_gen.Font(**v)
+        return v
 
-    @field_serializer("color")
-    def serialize_fg_color(self, color: ColorType | None, _info):
-        return serialize_color(color)
-
-    @field_serializer("accent")
-    def serialize_accent_color(self, color: ColorType | None, _info):
-        return serialize_color(color)
+    @field_validator("logo", mode="before")
+    @classmethod
+    def coerce_logo(cls, v):
+        if isinstance(v, dict):
+            color = v.get("color")
+            if color is not None and isinstance(color, str):
+                v["color"] = img_gen.ColorKind.solid_color_from_str(color)
+            return img_gen.Icon(**v)
+        return v
 
 
 class Config(BaseModel):
@@ -204,13 +220,18 @@ class Config(BaseModel):
         if lang_class is None:
             return val
         if isinstance(lang_class, type(SearchLanguage)):
-            return lang_class.language_name
+            return lang_class.language_name  # type: ignore[union-attr]
         assert isinstance(lang_class, str)
         module, attr = lang_class.rsplit(".", 1)
         return cast(SearchLanguage, getattr(import_module(module), attr)).language_name
 
 
-class Page(CustomBaseModel):
+class Page(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_assignment=True,
+        str_strip_whitespace=True,
+    )
     """A `dict` whose items include the following:"""
 
     meta: dict[str, str] = {}

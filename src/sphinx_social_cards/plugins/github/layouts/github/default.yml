@@ -43,7 +43,7 @@ layers:
   - offset: { x: 950, y: 70 }
     <<: *avatar_size
     background:
-      image: "'{{ plugin.github.owner.avatar }}'"
+      image: "'{{ plugin.github.owner.avatar | cache_url }}'"
     mask:
       <<: *avatar_size
       ellipse: { color: black }
@@ -63,7 +63,7 @@ layers:
       line: { height: 0.85 }
       font:
         family: Archivo
-        weight: 200
+        weight: 300
   - size: { width: 870, height: 150 }
     offset: { x: 60, y: 145 }
     typography:

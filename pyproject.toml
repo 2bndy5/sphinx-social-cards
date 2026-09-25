@@ -27,17 +27,15 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "fontawesome-free-pack>=7.0.1",
-    "material-design-icons-pack>=7.4.47",
-    "octicons-pack>=19.18.0",
+    "img-gen>=0.2.4",
     "pydantic>=2.4",
-    "pydantic-extra-types>=2.10.5",
-    "pyside6>=6.9.2",
     "pyyaml>=6.0.2",
     "requests>=2.32.5",
-    "simple-icons-pack>=15.15.0",
-    "sphinx>=4.5",
+    "sphinx>=4.5,<9",
 ]
+
+# [tool.uv.sources]
+# img-gen = { git = "https://github.com/2bndy5/img-gen", branch = "ironing-kinks" }
 
 [project.urls]
 Documentation =  "https://2bndy5.github.io/sphinx-social-cards"

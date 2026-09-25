@@ -1,20 +1,37 @@
 """This module contains validating dataclasses for the configurations in python"""
 
+import os
 from pathlib import Path
-from typing import cast
+from typing import Annotated, cast
 
-from pydantic import field_validator, PrivateAttr
-from pydantic_extra_types.color import Color
+import img_gen
+from pydantic import BaseModel, ConfigDict, field_validator, AfterValidator
 import requests
 from sphinx.config import Config
 from sphinx.util import isurl
 from sphinx.util.logging import getLogger
 
-from .common import CustomBaseModel, PathType
-from .layers import Icon, Font
-from .layout import Layout
 from .contexts import Cards_Layout_Options
 from ..colors import auto_get_fg_color, MD_COLORS
+
+
+def _validate_path(val: str | Path) -> str:
+    val = Path(val)
+    if val.is_absolute() and not val.exists():
+        raise FileNotFoundError(f"{str(val)} does not exist")
+    return str(val)
+
+
+PathType = Annotated[str | Path, AfterValidator(_validate_path)]
+
+
+class CustomBaseModel(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_assignment=True,
+        str_strip_whitespace=True,
+    )
+
 
 LOGGER = getLogger(__name__)
 REQUEST_TIMEOUT = (5, 10)
@@ -27,7 +44,12 @@ def try_request(url, timeout=REQUEST_TIMEOUT, **kwargs) -> requests.Response:
     return response
 
 
-class Debug(CustomBaseModel):
+class Debug(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_assignment=True,
+        str_strip_whitespace=True,
+    )
     """To ease creation of custom layouts, optional debugging glyphs can be `enable`\\ d
     in the generated social card images.
 
@@ -56,7 +78,7 @@ class Debug(CustomBaseModel):
     .. social-card:: {"debug": {"enable": true, "grid_step": 15}}
         :dry-run:
     """
-    color: Color = Color("grey")
+    color: str = "grey"
     """The color used to draw the debugging outlines, labels, and grid. The color for
     the debugging text is automatically set based on this color value.
 
@@ -184,8 +206,8 @@ class Social_Cards(CustomBaseModel):
 
             * - name
               - Referenced in layouts using
-            * - :si-icon:`sphinx_logo` Sphinx logo
-              - ``sphinx_logo``
+            * - :si-icon:`simple/sphinx` Sphinx logo
+              - ``simple/sphinx``
             * - :si-icon:`material/material-design`
                 `Material Design <https://materialdesignicons.com/>`_
               - ``material/<icon-name>``
@@ -202,7 +224,6 @@ class Social_Cards(CustomBaseModel):
     debug: Debug | bool = Debug()
     """A field to specify layout debugging helpers. See `Debugging Layouts`_ for more
     detail."""
-    _parsed_layout: Layout = PrivateAttr(default=Layout())
     path: str = "_static/social_cards"
     """This option specifies where the generated social card images will be written to.
     It's normally not necessary to change this option. Defaults to the documentation's
@@ -229,30 +250,30 @@ class Social_Cards(CustomBaseModel):
     """
 
     @field_validator("debug")
-    def validate_debug(cls, val: bool | Debug) -> Debug:
+    def validate_debug(cls, val: bool | Debug) -> img_gen.Debug:
         if isinstance(val, bool):
-            return Debug(enable=val)
-        return val
+            return img_gen.Debug(enable=val)
+        return img_gen.Debug(
+            enable=val.enable,
+            grid=val.grid,
+            grid_step=val.grid_step,
+            color=None,  # img_gen.SolidColor.from_string(val.color),
+        )
 
-    def get_fonts(self) -> list[Font]:
-        assert self.cards_layout_options.font is not None
-        fonts: list[Font] = [self.cards_layout_options.font]
-        for layer in self._parsed_layout.layers:
-            if layer.typography is not None and layer.typography.font is not None:
-                fonts.append(layer.typography.font)
-        # LOGGER.info("found %d typography layers with fonts", len(fonts))
-        return fonts
-
-    def set_defaults(self, doc_src: str, config: Config):
+    def set_defaults(self, doc_src: str | os.PathLike[str], config: Config):
         # sets the default values for colors, fonts, logo, and paths based on sphinx'
         # runtime configuration
         theme_options = getattr(config, "html_theme_options")
         self._set_default_paths(doc_src)
         self._set_default_colors(theme_options)
         self._set_default_font(theme_options)
-        self._set_default_logo(config, theme_options)
+        self._set_default_logo(config, theme_options, doc_src)
 
-    def _set_default_paths(self, doc_src: str):
+    def _set_default_paths(self, doc_src: str | os.PathLike[str]):
+        # Always include doc_src as the first search path (per docstring guarantee)
+        doc_src_path = Path(doc_src)
+        if doc_src_path not in [Path(p) for p in self.image_paths]:
+            self.image_paths.insert(0, doc_src_path)
         for index, possible_dir in enumerate(self.image_paths):
             possible = Path(possible_dir)
             if not possible.is_absolute():
@@ -279,23 +300,35 @@ class Social_Cards(CustomBaseModel):
                 included.add(rel_uri)
         self.cards_include = included
 
-    def _set_default_logo(self, config: Config, theme_options: dict):
+    def _set_default_logo(
+        self, config: Config, theme_options: dict, doc_src: str | os.PathLike[str]
+    ):
         theme_icon: dict[str, str] | None = theme_options.get("icon", None)
         theme_logo: str | None = None
         if theme_icon is not None and "logo" in theme_icon:
-            theme_logo = cast(str, theme_icon["logo"])
+            theme_logo = theme_icon["logo"]
+            # resolve plain icon names (e.g. "sphinx_logo") from the bundled .icons dir
+            if "/" not in theme_logo and not Path(theme_logo).suffix:
+                bundled = Path(__file__).parent.parent / ".icons" / (theme_logo + ".svg")
+                if bundled.exists():
+                    theme_logo = str(bundled)
         if self.cards_layout_options.logo is None:
-            self.cards_layout_options.logo = Icon(
-                image=getattr(config, "html_logo", None) or theme_logo
-            )
-        if self.cards_layout_options.logo.image is not None and isurl(
+            logo_image: str | None = getattr(config, "html_logo", None) or theme_logo
+            if logo_image is not None and not isurl(logo_image):
+                logo_path = Path(logo_image)
+                if not logo_path.is_absolute():
+                    logo_path = Path(doc_src, logo_image)
+                logo_image = str(logo_path) if logo_path.exists() else None
+            if logo_image is not None:
+                self.cards_layout_options.logo = img_gen.Icon(image=logo_image)
+        if self.cards_layout_options.logo is not None and isurl(
             self.cards_layout_options.logo.image
         ):
             response = try_request(self.cards_layout_options.logo.image)
             f_name = Path(self.cards_layout_options.logo.image).name
             cache_logo = Path(self.cache_dir, f_name)
             cache_logo.write_bytes(response.content)
-            self.cards_layout_options.logo.image = str(cache_logo)
+            self.cards_layout_options.logo = img_gen.Icon(image=str(cache_logo))
 
     def _set_default_colors(self, theme_options: dict):
         color = self.cards_layout_options.background_color
@@ -334,6 +367,6 @@ class Social_Cards(CustomBaseModel):
             and "text" in theme_options["font"]
             and isinstance(theme_options["font"]["text"], str)
         ):
-            self.cards_layout_options.font = Font(family=theme_options["font"]["text"])
+            self.cards_layout_options.font = img_gen.Font(family=theme_options["font"]["text"])
         else:
-            self.cards_layout_options.font = Font()
+            self.cards_layout_options.font = img_gen.Font()

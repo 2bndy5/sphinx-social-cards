@@ -136,7 +136,7 @@ attributes) can be specified as a `solid_color` or a `gradient_color`.
 Solid color syntax
 ~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: pydantic_extra_types.color.Color
+.. py:class:: Color
 
     A solid color can be specified in the following string forms:
 
@@ -365,7 +365,7 @@ To do this, use either the :meta-field:`icon` or the :meta-field:`card-icon` met
 
     .. code-block:: rst
 
-        :card-icon: sphinx_logo.svg
+        :card-icon: simple/sphinx
 
 Blog front matter
 ~~~~~~~~~~~~~~~~~

@@ -4,7 +4,7 @@ from typing import Callable, Generator
 import pytest
 import sphinx
 
-if sphinx.version_info < (7, 2):
+if sphinx.version_info < (7, 2):  # type: ignore[unsupported-operation]
     from sphinx.testing.path import path as SphinxPath
 else:
     from pathlib import Path as SphinxPath
@@ -39,7 +39,7 @@ social_cards = {
         for filename, content in files.items():
             (tmp_path / filename).write_text(content, encoding="utf-8")
         app = make_app(
-            srcdir=SphinxPath(str(tmp_path)),
+            srcdir=SphinxPath(str(tmp_path)),  # type: ignore[call-arg]
             **kwargs,  # type: ignore[call-arg]
         )
         return app

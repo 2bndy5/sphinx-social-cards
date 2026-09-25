@@ -1,5 +1,5 @@
 :title: Social media card extension
-:icon: sphinx_logo
+:icon: simple/sphinx
 
 .. toctree::
     :hidden:
